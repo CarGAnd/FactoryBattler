@@ -23,7 +23,6 @@ public class CustomGridMapEditor : Editor
     private void OnEnable() {
         customLayout = (CustomGridMap)target;
         factoryGrid = serializedObject.FindProperty("grid");
-        grid = (FactoryGrid)factoryGrid.objectReferenceValue;
         customSpawnMask = serializedObject.FindProperty("customSpawnMask");
         showCustomLayout = serializedObject.FindProperty("showCustomLayout");
         currentHeight = serializedObject.FindProperty("currentHeight");
@@ -33,6 +32,12 @@ public class CustomGridMapEditor : Editor
     public override void OnInspectorGUI() {
         DrawDefaultInspector();
         DrawPaintButton();
+
+
+        grid = (FactoryGrid)factoryGrid.objectReferenceValue;
+        if(grid == null) {
+            return;
+        }
 
         if (isPainting) {
             if(GUILayout.Button("Fill Grid")) {
