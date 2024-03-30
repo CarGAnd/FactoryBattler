@@ -1,0 +1,19 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+
+RWTexture2D<float4> Result;
+RWStructuredBuffer<int2> positions;
+uint numPositions;
+
+[numthreads(32,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= numPositions) {
+        return;
+    }
+    int2 pixelPos = positions[id.x];
+    Result[pixelPos.xy] = float4(0.0, 0.0, 0.0, 0.0);
+}
+
+
