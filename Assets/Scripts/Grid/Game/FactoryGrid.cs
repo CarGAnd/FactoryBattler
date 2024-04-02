@@ -9,14 +9,15 @@ public class FactoryGrid : MonoBehaviour, ISearchable
 {
     [HideInInspector] public UnityEvent<IGridObject, List<Vector2Int>> objectPlaced;
 
-    [field: SerializeField] public int Rows { get; private set; }
-    [field: SerializeField] public int Columns { get; private set; }
+    public int Rows { get { return gridSize.Rows; } }
+    public int Columns { get { return gridSize.Columns; } }
 
     public Quaternion Rotation { get { return gridLayout.Rotation; } }
     public Vector2 CellSize { get { return gridLayout.CellSize; } }
     public Vector3 Origin { get { return gridLayout.Origin; } }
 
     [SerializeField] private GridSystem.GridLayout gridLayout;
+    [SerializeField] private GridSize gridSize;
     [SerializeField] private GridCellSpawner cellSpawner;
 
     private CellGrid<IGridObject> placementGrid;

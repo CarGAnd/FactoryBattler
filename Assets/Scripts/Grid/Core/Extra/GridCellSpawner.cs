@@ -2,10 +2,15 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GridSystem;
 
-[RequireComponent(typeof(FactoryGrid))]
 public class GridCellSpawner : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private GridSystem.GridLayout gridLayout;
+    [SerializeField] private GridSize gridSize;
+    
+    [Header("Settings")]
     [SerializeField] private GameObject cellPrefab;
     [SerializeField] Vector3 spawnOffset;
     [SerializeField] private Transform cellParent;
@@ -14,7 +19,6 @@ public class GridCellSpawner : MonoBehaviour
     [SerializeField, ShowIf("@spawnType == SpawnType.Custom")] 
     private CustomGridMap customMap;
 
-    private FactoryGrid grid;
     private GameObject[,] cells;
 
     private void Awake() {
@@ -27,10 +31,10 @@ public class GridCellSpawner : MonoBehaviour
     }
 
     public void CreateObjectAt(Vector2Int coord) {
-        Vector3 spawnPos = grid.GetCellCenter(coord) + grid.Rotation * spawnOffset;
-        Quaternion rotation = grid.Rotation;
+        Vector3 spawnPos = gridLayout.GetCellCenter(coord) + gridLayout.Rotation * spawnOffset;
+        Quaternion rotation = gridLayout.Rotation;
         cells[coord.y, coord.x] = Instantiate(cellPrefab, spawnPos, rotation, cellParent);
-        cells[coord.y, coord.x].transform.localScale = new Vector3(grid.CellSize.x, 1, grid.CellSize.y);
+        cells[coord.y, coord.x].transform.localScale = new Vector3(gridLayout.CellSize.x, 1, gridLayout.CellSize.y);
     }
 
     public GameObject GetGameObjectAt(Vector2Int coord) {
@@ -38,7 +42,7 @@ public class GridCellSpawner : MonoBehaviour
     }
 
     public GameObject GetGameObjectAt(Vector3 worldPos) {
-        Vector2Int coord = grid.GetCellCoords(worldPos);
+        Vector2Int coord = gridLayout.WorldToGrid(worldPos);
         return GetGameObjectAt(coord);
     }
 
@@ -50,7 +54,7 @@ public class GridCellSpawner : MonoBehaviour
     }
 
     private bool IsWithingBounds(int x, int y) {
-        return x >= 0 && x < grid.Columns && y >= 0 && y < grid.Rows; 
+        return x >= 0 && x < gridSize.Columns && y >= 0 && y < gridSize.Rows; 
     }
 
     [Button("Destroy Prefabs", ButtonSizes.Medium)]
@@ -64,14 +68,13 @@ public class GridCellSpawner : MonoBehaviour
     [Button("Create Prefabs", ButtonSizes.Medium)]
     private void CreateCells() {
         DestroyCells();
-        grid = GetComponent<FactoryGrid>();
-        cells = new GameObject[grid.Rows, grid.Columns];
+        cells = new GameObject[gridSize.Rows, gridSize.Columns];
 
         if(spawnType == SpawnType.FillGrid) {
             FillGridWithPrefabs();
         }
         else if(spawnType == SpawnType.Custom) {
-            MaskGridWithPrefabs();
+            FillMaskWithPrefabs();
         }
     }
 
@@ -83,7 +86,7 @@ public class GridCellSpawner : MonoBehaviour
         }
     }
 
-    private void MaskGridWithPrefabs() {
+    private void FillMaskWithPrefabs() {
         for (int y = 0; y < cells.GetLength(0); y++) {
             for (int x = 0; x < cells.GetLength(1); x++) {
                 if (customMap.GetMaskValue(x, y)) {

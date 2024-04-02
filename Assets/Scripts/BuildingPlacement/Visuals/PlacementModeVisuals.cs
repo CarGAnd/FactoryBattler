@@ -25,6 +25,7 @@ public class PlacementModeVisuals : MonoBehaviour
 
     private Vector3 arrowObjectRotationOffset = new Vector3(90, 90, 0);
     private float groundIndicatorAlpha = 0.6f;
+    private Vector3 indicatorOffset = Vector3.up * 0.01f;
 
     private void Awake() {
         buildGrid = playerModeManager.Grid;
@@ -129,7 +130,7 @@ public class PlacementModeVisuals : MonoBehaviour
             GameObject markerObject = hoveredCellsMarker.GetMarker(i);
             Vector2Int buildPosition = hoveredPositions[i];
             bool isBuildable = buildGrid.CellWithinBounds(buildPosition) && !buildGrid.PositionIsOccupied(buildPosition);
-            markerObject.transform.position = buildGrid.GetCellCenter(buildPosition);
+            markerObject.transform.position = buildGrid.GetCellCenter(buildPosition) + buildGrid.Rotation * indicatorOffset;
             Color color = isBuildable ? Color.green : Color.red;
             color = new Vector4(color.r, color.g, color.b, groundIndicatorAlpha);
             markerObject.GetComponent<MeshRenderer>().material.color = color;
@@ -147,7 +148,7 @@ public class PlacementModeVisuals : MonoBehaviour
         Vector3 buildingCenter = buildGrid.GetSubgridCenter(buildingOriginCoord, buildingDimensions);
         Vector3 arrowDelta = placementMode.CurrentPlacementRotation * (new Vector3(-buildGrid.CellSize.x * buildingDimensions.x, 0, 0) / 2f + Vector3.left * buildGrid.CellSize.x / 2f);
         Vector3 arrowPosition = buildingCenter + arrowDelta;
-        arrowObject.transform.position = arrowPosition;
+        arrowObject.transform.position = arrowPosition + buildGrid.Rotation * indicatorOffset;
         Quaternion moduleRot = placementMode.CurrentPlacementRotation;
         arrowObject.transform.rotation = Quaternion.Euler(arrowObjectRotationOffset) * Quaternion.Euler(moduleRot.eulerAngles.x, moduleRot.eulerAngles.z, -moduleRot.eulerAngles.y);
     }
