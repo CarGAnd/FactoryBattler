@@ -158,7 +158,7 @@ public class PlacementModeVisuals : MonoBehaviour
 
     private GameObject CreateIndicatorObject() {
         GameObject newIndicatorObject = Instantiate(indicatorPrefab);
-        newIndicatorObject.transform.localScale = Vector3.one * buildGrid.CellSize;
+        newIndicatorObject.transform.localScale = new Vector3(buildGrid.CellSize.x, buildGrid.CellSize.y, 1);
         Quaternion oldRot = newIndicatorObject.transform.rotation;
         newIndicatorObject.transform.rotation = buildGrid.Rotation * oldRot;
         newIndicatorObject.transform.parent = transform;
