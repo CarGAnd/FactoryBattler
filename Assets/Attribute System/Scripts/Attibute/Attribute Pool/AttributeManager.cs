@@ -59,7 +59,7 @@ namespace AttributeSystem
             foreach (var updatedAttribute in updatedPoolAttributes)
             {
                 poolAttributes[updatedAttribute.Id] = updatedAttribute;
-                UnityEngine.Debug.Log($"{updatedAttribute.definition.name} with {updatedAttribute.value} was added to the AttributeManager.");
+                // UnityEngine.Debug.Log($"{updatedAttribute.definition.name} with {updatedAttribute.value} was added to the AttributeManager.");
             }
 
             MarkAttributesAsDirty(updatedPoolAttributes);

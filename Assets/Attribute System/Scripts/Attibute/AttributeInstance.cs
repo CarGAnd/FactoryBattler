@@ -24,21 +24,27 @@ namespace AttributeSystem
     [Serializable]
     public class AttributeInstance
     {
-        internal string Id = Guid.NewGuid().ToString();
+        internal string Id;
+
         [HideLabel][PropertyOrder(1)]
         public AttributeDefinition definition;
+
         [HideLabel][PropertyOrder(0)][TableColumnWidth(-300)]
         public float value;
 
         public AttributeInstance() {
-            this.Id = Guid.NewGuid().ToString();
+            CalculateNewID();
         }
 
         public AttributeInstance(AttributeDefinition definition, float value)
         {
-            this.Id = Guid.NewGuid().ToString();
+            CalculateNewID();
             this.definition = definition;
             this.value = value;
+        }
+
+        public void CalculateNewID() {
+            Id = Guid.NewGuid().ToString();
         }
     }
 }

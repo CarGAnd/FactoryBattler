@@ -11,7 +11,10 @@ namespace AttributeSystem
 {
     public interface IAttributeSource
     {
+        string Id { get; }
+        abstract void CalculateNewID();
         List<AttributeInstance> SourceAttributes { get; }
         virtual HashSet<AttributeInstance> GetAttributes() { return SourceAttributes.ToHashSet(); }
+        virtual void SetInstanceIDs () {SourceAttributes.ForEach(instance => instance.CalculateNewID());}
     }
 }

@@ -12,12 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31a745b1712284418731bd2a91a182a, type: 3}
   m_Name: CreateAttributeWindow
   m_EditorClassIdentifier: 
-  attributeBasePath: Assets/ScriptableObjects/Attributes/
-  setBasePath: Assets/ScriptableObjects/AttributeSets/
-  attributeName: Dexterity
+  options:
+  - type: 0
+    typeName: Base
+    createType: 0
+  - type: 1
+    typeName: Additive
+    createType: 0
+  - type: 2
+    typeName: Multiplicative
+    createType: 0
+  - type: 3
+    typeName: MultiplicativeMore
+    createType: 0
+  attributeName: Health
   calculationGroup: {fileID: 11400000, guid: f3776d4d47f5ac2488a678b353392c6c, type: 2}
-  createMainAttribute: 1
-  createAdditiveAttribute: 1
-  createMultiplicativeAttribute: 1
-  createMultiplicativeMoreAttribute: 1
   createAndAddToSet: 1
