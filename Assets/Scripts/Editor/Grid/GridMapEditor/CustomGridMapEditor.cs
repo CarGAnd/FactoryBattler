@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Sirenix.OdinInspector;
+using GridSystem;
 
 [CustomEditor(typeof(CustomGridMap))]
 public class CustomGridMapEditor : Editor
 {
-    private SerializedProperty factoryGrid;
+    private SerializedProperty gridSizeProperty;
+    private SerializedProperty gridLayoutProperty;
     private SerializedProperty customSpawnMask;
     private SerializedProperty showCustomLayout;
     private SerializedProperty currentHeight;
     private SerializedProperty currentWidth;
 
     private CustomGridMap customLayout;
-    private FactoryGrid grid;
+    private GridSize gridSize;
+    private GridSystem.GridLayout gridLayout;
 
     private bool isPainting;
     private bool leftMousePressed;
@@ -22,7 +25,8 @@ public class CustomGridMapEditor : Editor
 
     private void OnEnable() {
         customLayout = (CustomGridMap)target;
-        factoryGrid = serializedObject.FindProperty("grid");
+        gridSizeProperty = serializedObject.FindProperty("gridSize");
+        gridLayoutProperty = serializedObject.FindProperty("gridLayout");
         customSpawnMask = serializedObject.FindProperty("customSpawnMask");
         showCustomLayout = serializedObject.FindProperty("showCustomLayout");
         currentHeight = serializedObject.FindProperty("currentHeight");
@@ -33,9 +37,9 @@ public class CustomGridMapEditor : Editor
         DrawDefaultInspector();
         DrawPaintButton();
 
-
-        grid = (FactoryGrid)factoryGrid.objectReferenceValue;
-        if(grid == null) {
+        gridLayout = (GridSystem.GridLayout)gridLayoutProperty.objectReferenceValue;
+        gridSize = (GridSize)gridSizeProperty.objectReferenceValue;
+        if(gridSize == null) {
             return;
         }
 
@@ -49,18 +53,18 @@ public class CustomGridMapEditor : Editor
             }
         }
 
-        if(grid.Rows != currentHeight.intValue || grid.Columns != currentWidth.intValue || customSpawnMask.arraySize != currentHeight.intValue * currentWidth.intValue) {
+        if(gridSize.Rows != currentHeight.intValue || gridSize.Columns != currentWidth.intValue || customSpawnMask.arraySize != currentHeight.intValue * currentWidth.intValue) {
             Undo.RegisterCompleteObjectUndo(customLayout, "Resize");
             customSpawnMask.arraySize = currentWidth.intValue * currentHeight.intValue;
-            bool[] newMask = new bool[grid.Rows * grid.Columns];
-            int newWidth = Mathf.Min(currentWidth.intValue, grid.Columns);
-            for (int y = 0; y < Mathf.Min(currentHeight.intValue, grid.Rows); y++) {
+            bool[] newMask = new bool[gridSize.Rows * gridSize.Columns];
+            int newWidth = Mathf.Min(currentWidth.intValue, gridSize.Columns);
+            for (int y = 0; y < Mathf.Min(currentHeight.intValue, gridSize.Rows); y++) {
                 for(int x = 0; x < newWidth; x++) {
-                    newMask[y * grid.Columns + x] = customSpawnMask.GetArrayElementAtIndex(y * currentWidth.intValue + x).boolValue;
+                    newMask[y * gridSize.Columns + x] = customSpawnMask.GetArrayElementAtIndex(y * currentWidth.intValue + x).boolValue;
                 }
             }
-            currentWidth.intValue = grid.Columns;
-            currentHeight.intValue = grid.Rows;
+            currentWidth.intValue = gridSize.Columns;
+            currentHeight.intValue = gridSize.Rows;
             customSpawnMask.arraySize = currentWidth.intValue * currentHeight.intValue;
 
             for (int y = 0; y < currentHeight.intValue; y++) {
@@ -151,8 +155,8 @@ public class CustomGridMapEditor : Editor
 
     private void Paint(Vector2 clickPosition, bool value) {
         Ray ray = HandleUtility.GUIPointToWorldRay(clickPosition);
-        Vector3 worldPosition = grid.RaycastGridPlane(ray);
-        Vector2Int gridPosition = grid.GetCellCoords(worldPosition);
+        Vector3 worldPosition = gridLayout.RaycastGridPlane(ray);
+        Vector2Int gridPosition = gridLayout.WorldToGrid(worldPosition);
         SetGridValue(gridPosition.x, gridPosition.y, value);
         //Manually update the scene view as the update rate would otherwise be very choppy
         EditorWindow view = EditorWindow.GetWindow<SceneView>();

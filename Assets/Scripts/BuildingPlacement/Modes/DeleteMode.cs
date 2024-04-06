@@ -3,8 +3,8 @@ using UnityEngine.Events;
 
 public class DeleteMode : MonoBehaviour, IMouseMode {
 
-    public UnityEvent enterDeleteMode;
-    public UnityEvent exitDeleteMode;
+    [HideInInspector] public UnityEvent enterDeleteMode;
+    [HideInInspector] public UnityEvent exitDeleteMode;
 
     public Vector3 LastMouseGridPosition { get; private set; }
 
