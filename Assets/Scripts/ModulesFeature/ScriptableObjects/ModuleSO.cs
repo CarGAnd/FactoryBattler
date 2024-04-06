@@ -20,7 +20,7 @@ public class ModuleSO : GridObjectSO
     public override IGridObject CreateInstance(Vector3 position, Quaternion rotation, Facing facing, AssemblyLineSystem assemblyLineSystem) {
         GameObject g = Instantiate(ModulePrefab, position, rotation);
         ModuleInputOutput inputOutput = g.GetComponent<ModuleInputOutput>();
-        inputOutput.Initialize(this, facing, assemblyLineSystem);
+        inputOutput.Initialize(this, facing);
         return inputOutput;
     }
 }

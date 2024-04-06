@@ -13,17 +13,7 @@ public class ModulePlacer : MonoBehaviour
         return gridPosition;
     }
 
-    public IGridObject TryPlaceModule(GridObjectSO moduleData, Vector2Int lowerLeftPosition, Facing facing) {
-        if (CanPlaceModule(moduleData, lowerLeftPosition, facing)) {
-            IGridObject placedObject = PlaceModule(moduleData, lowerLeftPosition, facing);
-            return placedObject;
-        }
-        else {
-            return null;
-        }
-    }
-
-    private bool CanPlaceModule(GridObjectSO gridObject, Vector2Int lowerLeft, Facing facing) {
+    public bool CanPlaceModule(GridObjectSO gridObject, Vector2Int lowerLeft, Facing facing) {
         List<Vector2Int> buildingPositions = gridObject.GetLayoutShape(facing);
         for(int i = 0; i < buildingPositions.Count; i++) {
             buildingPositions[i] += lowerLeft;
@@ -34,18 +24,18 @@ public class ModulePlacer : MonoBehaviour
 
     private bool AllPositionsAreBuildable(List<Vector2Int> positions) {
         foreach(Vector2Int position in positions) {
-            if (!PositionsIsBuildable(position)) {
+            if (!PositionIsBuildable(position)) {
                 return false;
             }
         }
         return true;
     }
 
-    private bool PositionsIsBuildable(Vector2Int position) {
+    private bool PositionIsBuildable(Vector2Int position) {
         return grid.CellWithinBounds(position) && !grid.PositionIsOccupied(position);
     }
 
-    private IGridObject PlaceModule(GridObjectSO moduleData, Vector2Int lowerLeft, Facing facing) {
+    public IGridObject PlaceModule(GridObjectSO moduleData, Vector2Int lowerLeft, Facing facing) {
         Quaternion rotation = grid.Rotation * facing.GetRotationFromFacing();
         Vector3 spawnPos = grid.GetSubgridCenter(lowerLeft, moduleData.GetLayoutShapeDimensions(facing));
         IGridObject gridObject = moduleData.CreateInstance(spawnPos, rotation, facing, assemblyLineSystem);

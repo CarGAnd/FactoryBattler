@@ -120,6 +120,14 @@ public abstract class AssemblyPiece : IGridInteractable, ITransportable
     {
         throw new System.NotImplementedException();
     }
+
+    public object Serialize() {
+        throw new NotImplementedException();
+    }
+
+    public void Deserialize(object data) {
+        throw new NotImplementedException();
+    }
 }
 
 

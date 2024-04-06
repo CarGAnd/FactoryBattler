@@ -16,15 +16,14 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
     private FactoryGrid grid;
     private PlayerModeManager playerModeManager;
     private IPlacementStrategy placementHandler;
-    private ModulePlacer modulePlacer;
-    private GridObjectSO currentBuilding;
+    private Builder builder;
 
-    public void Initialize(FactoryGrid grid, ModulePlacer modulePlacer, PlayerModeManager playerModeManager){
+    public void Initialize(FactoryGrid grid, Builder builder, PlayerModeManager playerModeManager){
         this.grid = grid;
         this.playerModeManager = playerModeManager;
         SetModuleRotation(Facing.West);
         placementHandler = new NoPlacement();
-        this.modulePlacer = modulePlacer;
+        this.builder = builder;
     }
 
     public void UpdateInput(MouseInput mouseInput, Vector3 mousePosOnGrid) {
@@ -55,7 +54,6 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
         else {
             placementHandler = newBuilding.GetPlacementHandler(grid, this);
         }
-        currentBuilding = newBuilding;
         moduleChanged?.Invoke(newBuilding);
     }
 
@@ -75,13 +73,12 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
     }
 
     public IGridObject TryPlaceModule(GridObjectSO gridObject, Vector3 worldPos, Facing facing) {
-        Vector2Int gridPosition = modulePlacer.GetModulePlacementPosition(gridObject, worldPos, facing);
+        Vector2Int gridPosition = builder.GetModulePlacementPosition(gridObject, worldPos, facing);
         return TryPlaceModule(gridObject, gridPosition, facing);
     }
 
     public IGridObject TryPlaceModule(GridObjectSO gridObject, Vector2Int gridPos, Facing facing) {
-        //Anything extra like cost could go here
-        return modulePlacer.TryPlaceModule(gridObject, gridPos, facing);
+        return builder.TryPlaceBuilding(gridObject, gridPos, facing);
     }
 
     public void EnterMode() {

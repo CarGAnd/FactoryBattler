@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ModuleInputOutput : MonoBehaviour, IGridObject
+public class ModuleInputOutput : MonoBehaviour, IGridObject, IAssemblyLineUser
 {
     [HideInInspector] public UnityEvent<AssemblyTravelingObject> receivedObject;
     [HideInInspector] public UnityEvent<AssemblyTravelingObject, Vector2Int, Vector2Int> sentObject;
@@ -22,10 +22,9 @@ public class ModuleInputOutput : MonoBehaviour, IGridObject
     private ObjectStorage<AssemblyTravelingObject> outputStorage;
     private AssemblyLineSystem assemblyLineSystem;
 
-    public void Initialize(ModuleSO moduleSettings, Facing facing, AssemblyLineSystem assemblyLineSystem) {
+    public void Initialize(ModuleSO moduleSettings, Facing facing) {
         this.moduleSettings = moduleSettings;
         this.facing = facing;
-        this.assemblyLineSystem = assemblyLineSystem;
     }
 
     private void Awake() {
@@ -108,9 +107,7 @@ public class ModuleInputOutput : MonoBehaviour, IGridObject
 
     public void OnPlacedOnGrid(Vector2Int startCell, FactoryGrid grid) {
         this.originCell = startCell;
-        this.Grid = grid;
-        CreatePorts();
-        PlacePorts();
+        this.Grid = grid;       
     }
 
     public void DestroyObject() {
@@ -121,6 +118,20 @@ public class ModuleInputOutput : MonoBehaviour, IGridObject
     public void RemoveFromGrid(FactoryGrid grid) {
         RemovePorts();
         grid.RemoveObject(originCell + moduleSettings.GetLayoutShape(facing)[0]);
+    }
+
+    public object Serialize() {
+        throw new System.NotImplementedException();
+    }
+
+    public void Deserialize(object data) {
+        throw new System.NotImplementedException();
+    }
+
+    public void ConnectToAssemblyLine(AssemblyLineSystem assemblyLineSystem) {
+        this.assemblyLineSystem = assemblyLineSystem;
+        CreatePorts();
+        PlacePorts();
     }
 
     #region Debug
@@ -148,7 +159,9 @@ public class ModuleInputOutput : MonoBehaviour, IGridObject
         }
         Gizmos.matrix = Matrix4x4.identity;
     }
+
     #endregion
+    
 }
 
 public class ObjectStorage<T> {

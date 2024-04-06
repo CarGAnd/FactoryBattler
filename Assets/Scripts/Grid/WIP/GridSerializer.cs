@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-/*using Newtonsoft.Json;
+using Newtonsoft.Json;
 using GridSystem;
 
 public class GridSerializer<T> where T : ISaveable
@@ -39,5 +39,5 @@ public class GridSerializer<T> where T : ISaveable
 public interface ISaveable {
     object Serialize();
     void Deserialize(object data);
-}*/
+}
 

@@ -23,7 +23,7 @@ public class GridInitializer : MonoBehaviour
                 modulePlacer.ConnectExistingBuilding(gridObject, objectData.gridPosition, objectData.objectDefinition.GetLayoutShape(objectData.facing));
             }
             else {
-                modulePlacer.TryPlaceModule(objectData.objectDefinition, objectData.gridPosition, objectData.facing);
+                modulePlacer.PlaceModule(objectData.objectDefinition, objectData.gridPosition, objectData.facing);
                 Destroy(objectData.gameObject);
             }
         }
