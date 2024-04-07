@@ -6,9 +6,8 @@ using UnityEngine;
 public class GridLoader : MonoBehaviour
 {
     [SerializeField] private FactoryGrid factoryGrid;
-    [SerializeField] private ModulePlacer modulePlacer;
-    [SerializeField] private GridObjectSO testObject;
-
+    [SerializeField] private Builder builder;
+    [SerializeField] private BuildingDatabase buildingDatabase;
     private string jsonData;
 
     [Button("Test Save")]
@@ -40,7 +39,7 @@ public class GridLoader : MonoBehaviour
     }
 
     private void PlaceSavedObject(ObjectPlacementData placementData) {
-        IGridObject gridObject = modulePlacer.PlaceModule(testObject, new Vector2Int(placementData.x, placementData.y), placementData.facing);
+        IGridObject gridObject = builder.TryPlaceBuilding(buildingDatabase.GetBuildingByID(placementData.prefabId), new Vector2Int(placementData.x, placementData.y), placementData.facing);
     }
 }
 

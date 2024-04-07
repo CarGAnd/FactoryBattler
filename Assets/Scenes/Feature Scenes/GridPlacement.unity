@@ -963,37 +963,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 30696618}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &31323362
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 31323363}
-  m_Layer: 0
-  m_Name: CombatMode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &31323363
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 31323362}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1306305740}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &32142243
 GameObject:
   m_ObjectHideFlags: 0
@@ -58289,7 +58258,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   factoryGrid: {fileID: 1397216062}
-  testObject: {fileID: 11400000, guid: ca9ce8b43926b2641b9eb94164262b88, type: 2}
+  builder: {fileID: 1397216063}
+  buildingDatabase: {fileID: 11400000, guid: c373f45effdb5b34fac13fd84d877636, type: 2}
 --- !u!1 &1398804344
 GameObject:
   m_ObjectHideFlags: 0
@@ -60979,16 +60949,9 @@ PrefabInstance:
       propertyPath: builder
       value: 
       objectReference: {fileID: 581478109}
-    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
-      propertyPath: modulePlacer
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 1080412103204443430, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 31323363}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
 --- !u!1 &1460878954
@@ -70795,37 +70758,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1721411041}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1725808795
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1725808796}
-  m_Layer: 0
-  m_Name: CombatMode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1725808796
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1725808795}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 441398210136045316}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1726469192
 GameObject:
   m_ObjectHideFlags: 0
@@ -86096,6 +86028,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7207505900094866942, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: placeableObjects.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7207505900094866942, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: placeableObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0adc0f716960c5d4f8baa17aeff38213, type: 2}
     - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
       propertyPath: grid
       value: 
@@ -86110,10 +86050,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 1080412103204443430, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1725808796}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
 --- !u!4 &441398210136045316 stripped

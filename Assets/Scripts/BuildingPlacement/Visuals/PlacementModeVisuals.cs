@@ -57,7 +57,9 @@ public class PlacementModeVisuals : MonoBehaviour
     }
 
     private void OnExitPlacementMode() {
-        placementPreview?.SetActive(false);
+        if(placementPreview != null) {
+            placementPreview?.SetActive(false);
+        }
         arrowObject.SetActive(false);
         //gridPlaneObject.SetActive(false);
         hoveredCellsMarker.RemoveAllMarkers();
