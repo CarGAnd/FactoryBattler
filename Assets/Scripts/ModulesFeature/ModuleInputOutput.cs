@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ModuleInputOutput : MonoBehaviour, IGridObject, IAssemblyLineUser
+public class ModuleInputOutput : MonoBehaviour
 {
     [HideInInspector] public UnityEvent<AssemblyTravelingObject> receivedObject;
     [HideInInspector] public UnityEvent<AssemblyTravelingObject, Vector2Int, Vector2Int> sentObject;
@@ -108,30 +108,16 @@ public class ModuleInputOutput : MonoBehaviour, IGridObject, IAssemblyLineUser
     public void OnPlacedOnGrid(Vector2Int startCell, FactoryGrid grid) {
         this.originCell = startCell;
         this.Grid = grid;       
+        CreatePorts();
+        PlacePorts();
     }
 
-    public void DestroyObject() {
-        RemoveFromGrid(Grid);
-        Destroy(gameObject);
-    }
-
-    public void RemoveFromGrid(FactoryGrid grid) {
+    public void Destroy() {
         RemovePorts();
-        grid.RemoveObject(originCell + moduleSettings.GetLayoutShape(facing)[0]);
-    }
-
-    public object Serialize() {
-        throw new System.NotImplementedException();
-    }
-
-    public void Deserialize(object data) {
-        throw new System.NotImplementedException();
     }
 
     public void ConnectToAssemblyLine(AssemblyLineSystem assemblyLineSystem) {
         this.assemblyLineSystem = assemblyLineSystem;
-        CreatePorts();
-        PlacePorts();
     }
 
     #region Debug
@@ -159,9 +145,7 @@ public class ModuleInputOutput : MonoBehaviour, IGridObject, IAssemblyLineUser
         }
         Gizmos.matrix = Matrix4x4.identity;
     }
-
     #endregion
-    
 }
 
 public class ObjectStorage<T> {

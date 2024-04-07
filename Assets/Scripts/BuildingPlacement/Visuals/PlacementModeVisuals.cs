@@ -31,9 +31,6 @@ public class PlacementModeVisuals : MonoBehaviour
         buildGrid = playerModeManager.Grid;
         CreateArrowObject();
         hoveredCellsMarker = new CellMarker(CreateIndicatorObject, buildGrid);
-    }
-
-    private void Start() {
         //CreateGridPlane();
     }
 
@@ -49,17 +46,20 @@ public class PlacementModeVisuals : MonoBehaviour
         placementMode.moduleRotated.RemoveListener(OnModuleRotated);
         placementMode.enterPlacementMode.RemoveListener(OnEnterPlacementMode);
         placementMode.exitPlacementMode.RemoveListener(OnExitPlacementMode);
+        OnExitPlacementMode();
     }
 
     private void OnEnterPlacementMode() {
         placementPreview.SetActive(true);
         arrowObject.SetActive(true);
+        //gridPlaneObject.SetActive(true);
         UpdateGroundIndicators();
     }
 
     private void OnExitPlacementMode() {
-        placementPreview.SetActive(false);
+        placementPreview?.SetActive(false);
         arrowObject.SetActive(false);
+        //gridPlaneObject.SetActive(false);
         hoveredCellsMarker.RemoveAllMarkers();
     }
 

@@ -13,16 +13,17 @@ public class GridLoader : MonoBehaviour
 
     [Button("Test Save")]
     private void Save() {
-        
+        GridSerializer serializer = new GridSerializer();
+        jsonData = serializer.GridToJson(factoryGrid);
     }
 
     [Button("Test Load")]
     private void Load() {
-        GridSerializer<IGridObject> serializer = new GridSerializer<IGridObject>();
-        /*List<ObjectPlacementData> savedObjects = serializer.JsonToGridObjects(jsonData);
+        GridSerializer serializer = new GridSerializer();
+        List<ObjectPlacementData> savedObjects = serializer.JsonToGridObjects(jsonData);
         foreach(ObjectPlacementData savedObject in savedObjects) {
             PlaceSavedObject(savedObject);
-        }*/
+        }
     }
 
     [Button("Clear Grid")]

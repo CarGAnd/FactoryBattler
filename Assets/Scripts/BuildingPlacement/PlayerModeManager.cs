@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class PlayerModeManager : MonoBehaviour
 {
-    [SerializeField] private MouseInput mouseInput;
-    [SerializeField] private BuildingSelector buildingSelector;
-
     [Header("Systems")]
     [SerializeField] private Builder builder;
     [SerializeField] private FactoryGrid grid;
+
+    [Header("Input")]
+    [SerializeField] private MouseInput mouseInput;
+    [SerializeField] private BuildingSelector buildingSelector;
     
     [Header("Input modes")]
     [SerializeField] private PlacementMode PlacementMode;
@@ -23,9 +24,6 @@ public class PlayerModeManager : MonoBehaviour
         PlacementMode.Initialize(grid, builder, this);
         SelectionMode.Initialize(grid);
         DeleteMode.Initialize(grid, this);
-    }
-
-    private void Start() {
         currentMode = SelectionMode;
         currentMode.EnterMode();
     }
@@ -36,6 +34,7 @@ public class PlayerModeManager : MonoBehaviour
 
     private void OnDisable() {
         buildingSelector.selectedObjectChanged.RemoveListener(OnNewBuildingSelected);
+        GoToSelectionMode();
     }
 
     private void OnNewBuildingSelected(GridObjectSO newBuilding) {

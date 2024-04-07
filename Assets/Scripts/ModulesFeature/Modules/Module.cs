@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ModuleInputOutput))]
-public abstract class Module : MonoBehaviour
+public abstract class Module : MonoBehaviour, IGridObject, IAssemblyLineUser
 {
     private ModuleInputOutput inputOutput;
+    private ModuleSO moduleSettings;
+    private Vector2Int gridPosition;
 
     private void Awake() {
         inputOutput = GetComponent<ModuleInputOutput>();
     }
+
+    public void Initialize(ModuleSO moduleSettings, Facing facing) {
+        inputOutput.Initialize(moduleSettings, facing);
+        this.moduleSettings = moduleSettings;
+    } 
 
     protected void SendObjectOut(AssemblyTravelingObject obj) {
         inputOutput.SendToOutput(obj);
@@ -21,5 +28,37 @@ public abstract class Module : MonoBehaviour
 
     protected AssemblyTravelingObject GetObjectIn() {
         return inputOutput.ReceiveFromInput();    
+    }
+
+    public void ConnectToAssemblyLine(AssemblyLineSystem assemblyLineSystem) {
+        inputOutput.ConnectToAssemblyLine(assemblyLineSystem);
+    }
+
+    public void OnPlacedOnGrid(Vector2Int startCell, FactoryGrid grid) {
+        inputOutput.OnPlacedOnGrid(startCell, grid);
+        this.gridPosition = startCell;
+    }
+
+    public void RemoveFromGrid(FactoryGrid grid) {
+        inputOutput.Destroy();
+    }
+
+    public void DestroyObject() {
+        
+    }
+
+    public ObjectPlacementData Serialize() {
+        ObjectPlacementData data = new ObjectPlacementData
+        {
+            prefabId = "123",
+            x = gridPosition.x,
+            y = gridPosition.y,
+            facing = Facing.East,
+        };
+        return data;
+    }
+
+    public void Deserialize(ObjectPlacementData data) {
+    
     }
 }

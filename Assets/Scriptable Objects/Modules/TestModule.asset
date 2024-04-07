@@ -15,11 +15,11 @@ MonoBehaviour:
   <ModulePrefab>k__BackingField: {fileID: 600062868163198136, guid: d76b126fd0c02db49902ec0cc854faad, type: 3}
   <PreviewPrefab>k__BackingField: {fileID: 600062868163198136, guid: d76b126fd0c02db49902ec0cc854faad, type: 3}
   buildingLayout:
-    <Width>k__BackingField: 1
-    <Height>k__BackingField: 1
-    values: 01
+    <Width>k__BackingField: 2
+    <Height>k__BackingField: 2
+    values: 01010101
   portLayout:
-    width: 1
-    height: 1
-    inputs: 00000000
-    outputs: 00000000
+    width: 2
+    height: 2
+    inputs: 00000000000000000000000000000000
+    outputs: 00000000000000000000000000000000

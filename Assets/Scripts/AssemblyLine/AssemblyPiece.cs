@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-public abstract class AssemblyPiece : IGridInteractable, ITransportable
+public abstract class AssemblyPiece : IGridInteractable, ITransportable, IAssemblyLineUser
 {
     protected Facing facing = default;
     public Facing Facing { get => facing; }
@@ -17,11 +17,10 @@ public abstract class AssemblyPiece : IGridInteractable, ITransportable
     protected GameObject gameObject;
     public abstract override string ToString();
 
-    protected AssemblyPiece(AssemblyPieceData data, AssemblyLineSystem assemblyLineSystem)
+    protected AssemblyPiece(AssemblyPieceData data)
     {
         this.facing = data.ObjectFacing;
         this.distance = data.movementDistance;
-        this.assemblyLineSystem = assemblyLineSystem;
         this.gameObject = data.ModulePrefab;
     }
     public Vector2Int Movement()
@@ -121,12 +120,20 @@ public abstract class AssemblyPiece : IGridInteractable, ITransportable
         throw new System.NotImplementedException();
     }
 
-    public object Serialize() {
+
+
+
+
+    public ObjectPlacementData Serialize() {
         throw new NotImplementedException();
     }
 
-    public void Deserialize(object data) {
+    public void Deserialize(ObjectPlacementData data) {
         throw new NotImplementedException();
+    }
+
+    public void ConnectToAssemblyLine(AssemblyLineSystem assemblyLineSystem) {
+        this.assemblyLineSystem = assemblyLineSystem;
     }
 }
 

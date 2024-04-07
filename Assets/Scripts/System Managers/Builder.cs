@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class Builder : MonoBehaviour
 {
-    [SerializeField] private ModulePlacer modulePlacer;
+    [SerializeField] private FactoryGrid grid;
     [SerializeField] private AssemblyLineSystem assemblyLineSystem;
-    
+
+    private ModulePlacer modulePlacer;
+
+    private void Awake() {
+        this.modulePlacer = new ModulePlacer(grid);
+    }
+
     public IGridObject TryPlaceBuilding(GridObjectSO building, Vector2Int position, Facing rotation) {
         IGridObject newBuilding = null;
         
         if(modulePlacer.CanPlaceModule(building, position, rotation)) {
             newBuilding = modulePlacer.PlaceModule(building, position, rotation);
-            ConnectBuilding(newBuilding);
+            SetupBuilding(newBuilding, position);
         }
         return newBuilding;
     }
@@ -21,9 +27,10 @@ public class Builder : MonoBehaviour
         return modulePlacer.GetModulePlacementPosition(moduleData, mouseHitPosition, facing);    
     }
 
-    private void ConnectBuilding(IGridObject building) {
+    private void SetupBuilding(IGridObject building, Vector2Int gridPosition) {
         if(building is IAssemblyLineUser) {
             ((IAssemblyLineUser)building).ConnectToAssemblyLine(assemblyLineSystem);
         }
+        building.OnPlacedOnGrid(gridPosition, grid);
     }
 }

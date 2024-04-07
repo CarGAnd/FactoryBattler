@@ -17,10 +17,10 @@ public class ModuleSO : GridObjectSO
         return portSettings;
     }
 
-    public override IGridObject CreateInstance(Vector3 position, Quaternion rotation, Facing facing, AssemblyLineSystem assemblyLineSystem) {
+    public override IGridObject CreateInstance(Vector3 position, Quaternion rotation, Facing facing) {
         GameObject g = Instantiate(ModulePrefab, position, rotation);
-        ModuleInputOutput inputOutput = g.GetComponent<ModuleInputOutput>();
-        inputOutput.Initialize(this, facing);
-        return inputOutput;
+        Module module = g.GetComponent<Module>();
+        module.Initialize(this, facing);
+        return module;
     }
 }

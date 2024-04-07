@@ -80,26 +80,6 @@ public class AssemblyLineSystem : MonoBehaviour
         piece.ReceivedObject(travelingObject);
     }
 
-    public AssemblyPiece CreateAssemblyPiece(AssemblyPieceData assemblyPieceData)
-    {
-        AssemblyPieceType type = assemblyPieceData.type;
-        AssemblyPiece newPiece = null;
-
-        switch (type)
-        {
-            case AssemblyPieceType.ConveyerBelt:
-                newPiece = new ConveyerBelt(assemblyPieceData, this);
-                break;
-            case AssemblyPieceType.Cannon:
-                //newPiece = new Cannon(data);
-                break;
-            case AssemblyPieceType.Tunnel:
-                newPiece = new Tunnel(assemblyPieceData, this);
-                break; 
-        }
-        return newPiece;
-    }
-
     public void PlaceTransportablePiece(ITransportable piece)
     {
         assemblyLineManager.PlaceTransportablePiece(piece);

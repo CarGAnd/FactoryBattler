@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModulePlacer : MonoBehaviour
+public class ModulePlacer
 {
-    [SerializeField] private FactoryGrid grid;
-    [SerializeField] private AssemblyLineSystem assemblyLineSystem;
+    private FactoryGrid grid;
+
+    public ModulePlacer(FactoryGrid grid) {
+        this.grid = grid;
+    }
 
     public Vector2Int GetModulePlacementPosition(GridObjectSO moduleData, Vector3 mouseHitPosition, Facing facing) {
         Vector2Int buildingDimensions = moduleData.GetLayoutShapeDimensions(facing);
@@ -38,9 +41,8 @@ public class ModulePlacer : MonoBehaviour
     public IGridObject PlaceModule(GridObjectSO moduleData, Vector2Int lowerLeft, Facing facing) {
         Quaternion rotation = grid.Rotation * facing.GetRotationFromFacing();
         Vector3 spawnPos = grid.GetSubgridCenter(lowerLeft, moduleData.GetLayoutShapeDimensions(facing));
-        IGridObject gridObject = moduleData.CreateInstance(spawnPos, rotation, facing, assemblyLineSystem);
+        IGridObject gridObject = moduleData.CreateInstance(spawnPos, rotation, facing);
         grid.PlaceObject(gridObject, lowerLeft, moduleData.GetLayoutShape(facing));
-        gridObject.OnPlacedOnGrid(lowerLeft, grid);
         return gridObject;
     }
 
@@ -51,9 +53,7 @@ public class ModulePlacer : MonoBehaviour
         }
     }   
 
-    public void ConnectExistingBuilding(IGridObject gridObject, Vector2Int lowerLeft, List<Vector2Int> layoutShape) {
+    public void PlaceExistingBuilding(IGridObject gridObject, Vector2Int lowerLeft, List<Vector2Int> layoutShape) {
         grid.PlaceObject(gridObject, lowerLeft, layoutShape);
-        gridObject.OnPlacedOnGrid(lowerLeft, grid);
     }
- 
 }
