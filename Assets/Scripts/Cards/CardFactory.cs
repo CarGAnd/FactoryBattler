@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardFactory
 {
     private GameObject cardPrefab;
-    
     public CardFactory(GameObject cardPrefab)
     {
         this.cardPrefab = cardPrefab;
@@ -14,6 +12,10 @@ public class CardFactory
     {
         GameObject cardObject = GameObject.Instantiate(cardPrefab);
         Card card = new Card(cardObject, cardData);
+        if(cardData.cardName.Equals("No"))
+        {
+            cardObject.GetComponent<Image>().color = Color.red;
+        }
         //Additional stuff
         return card;
     }
