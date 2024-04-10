@@ -29,6 +29,7 @@ public class RandomDrawingStrategy : IDrawingStrategy
         {
             int randomIndex = Random.Range(0, deck.Count);
             drawnCards.Add(deck[randomIndex]);
+            deck.RemoveAt(randomIndex);
         }
         return drawnCards;
     }
@@ -43,6 +44,7 @@ public class TopDeckStrategy : IDrawingStrategy
         {
             drawnCards.Add(deck[i]);
         }
+        deck.RemoveRange(0, amount);
         return drawnCards;
     }
 }
@@ -56,6 +58,7 @@ public class BottomDeckStrategy : IDrawingStrategy
         for (int i = 0; i < amount; i++)
         {
             drawnCards.Add(deck[^1]);
+            deck.RemoveAt(deck.Count - 1);
         }
         return drawnCards;
     }
@@ -70,6 +73,7 @@ public class MiddleDrawStrategy : IDrawingStrategy
         for (int i = 0; i < amount; i++)
         {
             drawnCards.Add(deck[deck.Count / 2]);
+            deck.RemoveAt(deck.Count / 2);
         }
         return drawnCards;
     }
