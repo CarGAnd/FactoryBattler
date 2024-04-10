@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IGridObject {
-    // Places the object on the grid starting from a specified cell.
+public interface IGridObject : ISaveable {
     void OnPlacedOnGrid(Vector2Int startCell, FactoryGrid grid);
 
     // Removes the object from the grid.

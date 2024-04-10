@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d3e3cb36fcf18b45b3a81d98fb37cf4, type: 3}
-  m_Name: TestModule
+  m_Name: TestModule2
   m_EditorClassIdentifier: 
-  id: 486e4459-219f-4066-abf2-7f7c535076a2
-  <ModulePrefab>k__BackingField: {fileID: 600062868163198136, guid: d76b126fd0c02db49902ec0cc854faad, type: 3}
-  <PreviewPrefab>k__BackingField: {fileID: 600062868163198136, guid: d76b126fd0c02db49902ec0cc854faad, type: 3}
+  id: 6d1cd03c-1cb1-49bc-b556-070981cfc849
+  <ModulePrefab>k__BackingField: {fileID: 600062868163198136, guid: 810bc45b8a34f7b44a352a1e03e16e0d, type: 3}
+  <PreviewPrefab>k__BackingField: {fileID: 600062868163198136, guid: 810bc45b8a34f7b44a352a1e03e16e0d, type: 3}
   buildingLayout:
     <Width>k__BackingField: 2
     <Height>k__BackingField: 2

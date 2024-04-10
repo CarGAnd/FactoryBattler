@@ -19,6 +19,7 @@ public class ModuleSOCustomEditor : Editor
     private SerializedProperty outputPortArray;
     private SerializedProperty portLayoutWidth;
     private SerializedProperty portLayoutHeight;
+    private SerializedProperty IdProperty;
 
     private bool layoutFoldedOut;
 
@@ -36,9 +37,12 @@ public class ModuleSOCustomEditor : Editor
         outputPortArray = portLayout.FindPropertyRelative("outputs");
         portLayoutWidth = portLayout.FindPropertyRelative("width");
         portLayoutHeight = portLayout.FindPropertyRelative("height");
+
+        IdProperty = serializedObject.FindProperty("id");
     }
 
     public override void OnInspectorGUI() {
+        EditorGUILayout.PropertyField(IdProperty);
         EditorGUILayout.PropertyField(modulePrefab);
         EditorGUILayout.PropertyField(previewPrefab);
         EditorGUILayout.PropertyField(boolMatrix);

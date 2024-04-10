@@ -6,24 +6,24 @@ using UnityEngine;
 public class GridLoader : MonoBehaviour
 {
     [SerializeField] private FactoryGrid factoryGrid;
-    [SerializeField] private ModulePlacer modulePlacer;
-    [SerializeField] private GridObjectSO testObject;
-
+    [SerializeField] private Builder builder;
+    [SerializeField] private BuildingDatabase buildingDatabase;
     private string jsonData;
 
     [Button("Test Save")]
     private void Save() {
-        
+        GridSerializer serializer = new GridSerializer();
+        jsonData = serializer.GridToJson(factoryGrid);
     }
 
-    /*[Button("Test Load")]
+    [Button("Test Load")]
     private void Load() {
-        GridSerializer<IGridObject> serializer = new GridSerializer<IGridObject>();
-        List<SavedObjectData> savedObjects = serializer.JsonToGrid(jsonData);
-        foreach(SavedObjectData savedObject in savedObjects) {
-            PlaceSavedObject(savedObject.id, new Vector2Int(savedObject.xPosition, savedObject.yPosition), savedObject.objectJsonData);
+        GridSerializer serializer = new GridSerializer();
+        List<ObjectPlacementData> savedObjects = serializer.JsonToGridObjects(jsonData);
+        foreach(ObjectPlacementData savedObject in savedObjects) {
+            PlaceSavedObject(savedObject);
         }
-    }*/
+    }
 
     [Button("Clear Grid")]
     private void ClearGrid() {
@@ -39,13 +39,12 @@ public class GridLoader : MonoBehaviour
     }
 
     private void PlaceSavedObject(ObjectPlacementData placementData) {
-        IGridObject gridObject = modulePlacer.TryPlaceModule(testObject, new Vector2Int(placementData.x, placementData.y), placementData.facing);
-        //gridObject.Deserialize(placementData.buildingData);
+        IGridObject gridObject = builder.TryPlaceBuilding(buildingDatabase.GetBuildingByID(placementData.prefabId), new Vector2Int(placementData.x, placementData.y), placementData.facing);
     }
 }
 
 public class ObjectPlacementData {
-    public string id;
+    public string prefabId;
     public int x;
     public int y;
     public Facing facing;

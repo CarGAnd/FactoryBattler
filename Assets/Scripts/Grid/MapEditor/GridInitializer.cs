@@ -20,10 +20,10 @@ public class GridInitializer : MonoBehaviour
             //TODO: keeping the existing object is disabled until we can connect an object to the assembly line system after object creating. 
             //Currently it is only possible to connect an object to the assembly line system when the object is created
             if(gridObject != null && false) {
-                modulePlacer.ConnectExistingBuilding(gridObject, objectData.gridPosition, objectData.objectDefinition.GetLayoutShape(objectData.facing));
+                modulePlacer.PlaceExistingBuilding(gridObject, objectData.gridPosition, objectData.objectDefinition.GetLayoutShape(objectData.facing));
             }
             else {
-                modulePlacer.TryPlaceModule(objectData.objectDefinition, objectData.gridPosition, objectData.facing);
+                modulePlacer.PlaceModule(objectData.objectDefinition, objectData.gridPosition, objectData.facing);
                 Destroy(objectData.gameObject);
             }
         }

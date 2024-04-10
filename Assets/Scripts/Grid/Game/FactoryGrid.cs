@@ -40,6 +40,10 @@ public class FactoryGrid : MonoBehaviour, ISearchable
         objectPlaced.Invoke(gridObject, new List<Vector2Int>() { coordinate });
     }
 
+    public List<IGridObject> GetAllPlacedObjects() {
+        return placementGrid.GetAllPlacedObjects();
+    }
+
     public void RemoveObject(Vector2Int coord) {
         placementGrid.RemoveObject(coord);
     }

@@ -10,7 +10,7 @@ public class Tunnel : AssemblyPiece
     private bool canReceive = true;
 
     private Tunnel connectedTunnel;
-    public Tunnel(AssemblyPieceData data, AssemblyLineSystem assemblyLineSystem) : base(data, assemblyLineSystem)
+    public Tunnel(AssemblyPieceData data) : base(data)
     {
 
     }
