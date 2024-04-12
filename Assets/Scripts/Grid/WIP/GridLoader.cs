@@ -5,41 +5,35 @@ using UnityEngine;
 
 public class GridLoader : MonoBehaviour
 {
-    [SerializeField] private FactoryGrid factoryGrid;
-    [SerializeField] private Builder builder;
     [SerializeField] private BuildingDatabase buildingDatabase;
-    private string jsonData;
 
-    [Button("Test Save")]
-    private void Save() {
+    public string SaveGrid(FactoryGrid grid) {
         GridSerializer serializer = new GridSerializer();
-        jsonData = serializer.GridToJson(factoryGrid);
+        string jsonData = serializer.GridToJson(grid);
+        return jsonData;
     }
 
-    [Button("Test Load")]
-    private void Load() {
+    public void LoadDataToGrid(FactoryGrid grid, Builder builder, string jsonData) {
+        grid.ClearGrid();
         GridSerializer serializer = new GridSerializer();
         List<ObjectPlacementData> savedObjects = serializer.JsonToGridObjects(jsonData);
-        foreach(ObjectPlacementData savedObject in savedObjects) {
-            PlaceSavedObject(savedObject);
+        foreach (ObjectPlacementData savedObject in savedObjects) {
+            PlaceSavedObject(savedObject, builder);
         }
     }
 
-    [Button("Clear Grid")]
-    private void ClearGrid() {
-        for(int x = 0; x < factoryGrid.Columns; x++) {
-            for(int y = 0; y < factoryGrid.Rows; y++) {
-                Vector2Int gridPosition = new Vector2Int(x, y);
-                IGridObject gridObject = factoryGrid.GetObjectAt(gridPosition);
-                if(gridObject != null) {
-                    gridObject.DestroyObject();
-                }
-            }
-        }
-    }
-
-    private void PlaceSavedObject(ObjectPlacementData placementData) {
+    private void PlaceSavedObject(ObjectPlacementData placementData, Builder builder) {
         IGridObject gridObject = builder.TryPlaceBuilding(buildingDatabase.GetBuildingByID(placementData.prefabId), new Vector2Int(placementData.x, placementData.y), placementData.facing);
+    }
+
+    public string Base64Decode(string base64EncodedData) {
+        byte[] base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+        return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+    }
+
+    public string Base64Encode(string plainText) {
+        byte[] plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+        return System.Convert.ToBase64String(plainTextBytes);
     }
 }
 

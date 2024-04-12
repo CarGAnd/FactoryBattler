@@ -4,26 +4,39 @@ using UnityEngine.Events;
 
 public class PlacementMode : MonoBehaviour, IMouseMode {
 
-    [HideInInspector] public UnityEvent moduleRotated;
+    [HideInInspector] public UnityEvent<Facing> moduleRotated;
     [HideInInspector] public UnityEvent<GridObjectSO> moduleChanged;
     [HideInInspector] public UnityEvent enterPlacementMode;
     [HideInInspector] public UnityEvent exitPlacementMode;
+    [HideInInspector] public UnityEvent<FactoryGrid> gridSwitched;
 
-    public Quaternion CurrentPlacementRotation { get; private set; }
     public Facing CurrentFacing { get; private set; }
     public Vector3 CurrentMouseWorldPos { get; private set; }
-    
-    private FactoryGrid grid;
+    public FactoryGrid Grid { get; private set; }
+
     private PlayerModeManager playerModeManager;
     private IPlacementStrategy placementHandler;
     private Builder builder;
+    private GridObjectSO currentBuilding;
 
     public void Initialize(FactoryGrid grid, Builder builder, PlayerModeManager playerModeManager){
-        this.grid = grid;
+        this.Grid = grid;
+        this.builder = builder;
         this.playerModeManager = playerModeManager;
         SetModuleRotation(Facing.West);
         placementHandler = new NoPlacement();
+    }
+
+    public void ChangeGrid(FactoryGrid grid, Builder builder) {
+        this.Grid = grid;
         this.builder = builder;
+        if(currentBuilding == null) {
+            placementHandler = new NoPlacement();
+        }
+        else {
+            placementHandler = currentBuilding.GetPlacementHandler(grid, this);
+        }
+        gridSwitched?.Invoke(grid);
     }
 
     public void UpdateInput(MouseInput mouseInput, Vector3 mousePosOnGrid) {
@@ -52,8 +65,9 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
             placementHandler = new NoPlacement();
         }
         else {
-            placementHandler = newBuilding.GetPlacementHandler(grid, this);
+            placementHandler = newBuilding.GetPlacementHandler(Grid, this);
         }
+        currentBuilding = newBuilding;
         moduleChanged?.Invoke(newBuilding);
     }
 
@@ -68,8 +82,7 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
 
     public void SetModuleRotation(Facing facing) {
         CurrentFacing = facing;
-        CurrentPlacementRotation = grid.Rotation * CurrentFacing.GetRotationFromFacing();
-        moduleRotated?.Invoke();
+        moduleRotated?.Invoke(facing);
     }
 
     public IGridObject TryPlaceModule(GridObjectSO gridObject, Vector3 worldPos, Facing facing) {

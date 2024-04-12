@@ -35,6 +35,18 @@ public class FactoryGrid : MonoBehaviour, ISearchable
         objectPlaced.Invoke(gridObject, positions);
     }
 
+    public void ClearGrid() {
+        for (int x = 0; x < Columns; x++) {
+            for (int y = 0; y < Rows; y++) {
+                Vector2Int gridPosition = new Vector2Int(x, y);
+                IGridObject gridObject = GetObjectAt(gridPosition);
+                if (gridObject != null) {
+                    gridObject.DestroyObject();
+                }
+            }
+        }
+    }
+
     public void PlaceObject(IGridObject gridObject, Vector2Int coordinate) {
         placementGrid.PlaceObject(gridObject, coordinate);
         objectPlaced.Invoke(gridObject, new List<Vector2Int>() { coordinate });

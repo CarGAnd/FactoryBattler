@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlacementModeVisuals : MonoBehaviour
 {
     [SerializeField] private PlacementMode placementMode;
-    [SerializeField] private PlayerModeManager playerModeManager;
     
     [Header("Prefabs")]
     [SerializeField] private GameObject indicatorPrefab;
@@ -23,12 +22,14 @@ public class PlacementModeVisuals : MonoBehaviour
     private GridObjectSO selectedObjectData;
     private Vector2Int buildingDimensions;
 
+    private Quaternion currentRotation;
+
     private Vector3 arrowObjectRotationOffset = new Vector3(90, 90, 0);
     private float groundIndicatorAlpha = 0.6f;
     private Vector3 indicatorOffset = Vector3.up * 0.01f;
 
-    private void Awake() {
-        buildGrid = playerModeManager.Grid;
+    private void Start() {
+        buildGrid = placementMode.Grid;
         CreateArrowObject();
         hoveredCellsMarker = new CellMarker(CreateIndicatorObject, buildGrid);
         //CreateGridPlane();
@@ -39,6 +40,7 @@ public class PlacementModeVisuals : MonoBehaviour
         placementMode.moduleRotated.AddListener(OnModuleRotated);
         placementMode.enterPlacementMode.AddListener(OnEnterPlacementMode);
         placementMode.exitPlacementMode.AddListener(OnExitPlacementMode);
+        placementMode.gridSwitched.AddListener(OnGridSwitched);
     }
 
     private void OnDisable() {
@@ -46,7 +48,7 @@ public class PlacementModeVisuals : MonoBehaviour
         placementMode.moduleRotated.RemoveListener(OnModuleRotated);
         placementMode.enterPlacementMode.RemoveListener(OnEnterPlacementMode);
         placementMode.exitPlacementMode.RemoveListener(OnExitPlacementMode);
-        OnExitPlacementMode();
+        placementMode.gridSwitched.RemoveListener(OnGridSwitched);
     }
 
     private void OnEnterPlacementMode() {
@@ -57,20 +59,23 @@ public class PlacementModeVisuals : MonoBehaviour
     }
 
     private void OnExitPlacementMode() {
-        if(placementPreview != null) {
-            placementPreview?.SetActive(false);
-        }
+        placementPreview.SetActive(false);
         arrowObject.SetActive(false);
         //gridPlaneObject.SetActive(false);
         hoveredCellsMarker.RemoveAllMarkers();
     }
 
-    private void OnModuleRotated() {
+    private void OnGridSwitched(FactoryGrid newGrid) {
+        this.buildGrid = newGrid;
+    }
+
+    private void OnModuleRotated(Facing newFacing) {
         if(selectedObjectData == null) {
             return;
         }
 
-        Quaternion newRotation = placementMode.CurrentPlacementRotation;
+        Quaternion newRotation = buildGrid.Rotation * newFacing.GetRotationFromFacing();
+        currentRotation = newRotation;
         placementPreview.transform.rotation = newRotation;
 
         buildingDimensions = selectedObjectData.GetLayoutShapeDimensions(placementMode.CurrentFacing);
@@ -93,7 +98,7 @@ public class PlacementModeVisuals : MonoBehaviour
         placementPreview = Instantiate(newBuilding.PreviewPrefab);
     
         UpdatePreviewPositions(lastOriginCoord, buildingDimensions);
-        OnModuleRotated();
+        OnModuleRotated(placementMode.CurrentFacing);
     }
 
     private void Update() {
@@ -148,10 +153,10 @@ public class PlacementModeVisuals : MonoBehaviour
 
     private void UpdateArrowObject(Vector2Int buildingOriginCoord, Vector2Int buildingDimensions) {
         Vector3 buildingCenter = buildGrid.GetSubgridCenter(buildingOriginCoord, buildingDimensions);
-        Vector3 arrowDelta = placementMode.CurrentPlacementRotation * (new Vector3(-buildGrid.CellSize.x * buildingDimensions.x, 0, 0) / 2f + Vector3.left * buildGrid.CellSize.x / 2f);
+        Vector3 arrowDelta = currentRotation * (new Vector3(-buildGrid.CellSize.x * buildingDimensions.x, 0, 0) / 2f + Vector3.left * buildGrid.CellSize.x / 2f);
         Vector3 arrowPosition = buildingCenter + arrowDelta;
         arrowObject.transform.position = arrowPosition + buildGrid.Rotation * indicatorOffset;
-        Quaternion moduleRot = placementMode.CurrentPlacementRotation;
+        Quaternion moduleRot = currentRotation;
         arrowObject.transform.rotation = Quaternion.Euler(arrowObjectRotationOffset) * Quaternion.Euler(moduleRot.eulerAngles.x, moduleRot.eulerAngles.z, -moduleRot.eulerAngles.y);
     }
 

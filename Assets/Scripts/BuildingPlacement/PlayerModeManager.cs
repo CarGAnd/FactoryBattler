@@ -24,8 +24,15 @@ public class PlayerModeManager : MonoBehaviour
         PlacementMode.Initialize(grid, builder, this);
         SelectionMode.Initialize(grid);
         DeleteMode.Initialize(grid, this);
+
         currentMode = SelectionMode;
         currentMode.EnterMode();
+    }
+
+    public void UpdateGridReference(FactoryGrid grid, Builder builder) {
+        PlacementMode.ChangeGrid(grid, builder);
+        SelectionMode.Initialize(grid);
+        DeleteMode.Initialize(grid, this);
     }
 
     private void OnEnable() {
