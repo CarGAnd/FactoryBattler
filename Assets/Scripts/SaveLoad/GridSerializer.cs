@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Newtonsoft.Json;
-using GridSystem;
 
 public class GridSerializer
 {
@@ -17,21 +16,13 @@ public class GridSerializer
         return savedObjects;
     }    
 
-    private string SerializeSavedObjects(List<ObjectPlacementData> savedObjects) {
+    public string GridToJson(FactoryGrid grid) {
+        List<ObjectPlacementData> savedObjects = SaveGrid(grid);
         return JsonConvert.SerializeObject(savedObjects);
     }
 
-    private List<ObjectPlacementData> DeserializeSavedObjects(string jsonData) {
-        return JsonConvert.DeserializeObject<List<ObjectPlacementData>>(jsonData);
-    }
-
-    public string GridToJson(FactoryGrid grid) {
-        List<ObjectPlacementData> savedObjects = SaveGrid(grid);
-        return SerializeSavedObjects(savedObjects);
-    }
-
     public List<ObjectPlacementData> JsonToGridObjects(string jsonData) {
-        List<ObjectPlacementData> savedObjects = DeserializeSavedObjects(jsonData);
+        List<ObjectPlacementData> savedObjects = JsonConvert.DeserializeObject<List<ObjectPlacementData>>(jsonData);
         return savedObjects;
     }
 }
