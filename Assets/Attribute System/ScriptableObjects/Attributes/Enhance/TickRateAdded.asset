@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a830bc121a738c42974773abbee71ec, type: 3}
   m_Name: TickRateAdded
   m_EditorClassIdentifier: 
-  calculationType: 1
+  calculationType: 20

@@ -11,12 +11,17 @@ public class TestController : MonoBehaviour
     private TestTower testTower;
 
     
-    private void Start() {
+    private void Awake() {
         attributePool.AddMember(testTower.PoolMember);
     } 
 
     [Button]
     private void Request(string attributeName) {
         testTower.PoolMember.GetCalculatedAttributeValue(attributeName);
+    }
+
+    [Button]
+    private void Damage(float amount) {
+        (testTower as IDamagable).Damage(amount);
     }
 }

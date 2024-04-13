@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f6c87892e5e884485d5ae85229d66f, type: 3}
   m_Name: Damage
   m_EditorClassIdentifier: 
-  calculationType: 0
+  calculationType: 10
   roundingStrategy:
     rid: 6776449717177417737
   references:

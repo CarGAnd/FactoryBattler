@@ -35,88 +35,122 @@
 /// <seealso cref="AttributeSetMaster"/>
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AttributeSystem
 {
     public class AttributeManager
     {
         private HashSet<AttributeInstance> inherientAttributes;
-        private HashSet<AttributeInstance> combinedAttributes = new HashSet<AttributeInstance>();
-        private Dictionary<string, AttributeInstance> poolAttributes = new Dictionary<string, AttributeInstance>();
-        private Dictionary<string, float> calculatedAttributes = new Dictionary<string, float>();
-        private HashSet<string> dirtyAttributes = new HashSet<string>();
+        private HashSet<AttributeInstance> combinedAttributes;
+        private Dictionary<string, EnhanceAttributeInstance> poolAttributes = new Dictionary<string, EnhanceAttributeInstance>();
+        private Dictionary<string, BaseAttributeInstance> baseAttributes = new Dictionary<string, BaseAttributeInstance>();
 
-        internal void SetBaseAttributes(IReadOnlyList<AttributeInstance> baseAttributes)
+        internal void SetBaseAttributes(List<BaseAttributeInstance> inherientBaseAttributes, List<EnhanceAttributeInstance> inherientEnhanceAttributes)
         {
-            if (baseAttributes == null)
-                return;
-
-            inherientAttributes = new HashSet<AttributeInstance>(baseAttributes);
+            inherientAttributes = inherientBaseAttributes.ToHashSet<AttributeInstance>();
+            inherientAttributes.UnionWith(inherientEnhanceAttributes.ToHashSet<AttributeInstance>());
         }
 
-        public void AddPoolAttributes(HashSet<AttributeInstance> updatedPoolAttributes)
+        public void AddAttributes(HashSet<EnhanceAttributeInstance> updatedPoolAttributes)
         {
             foreach (var updatedAttribute in updatedPoolAttributes)
             {
-                poolAttributes[updatedAttribute.Id] = updatedAttribute;
-                // UnityEngine.Debug.Log($"{updatedAttribute.definition.name} with {updatedAttribute.value} was added to the AttributeManager.");
+                if (poolAttributes.ContainsKey(updatedAttribute.Id))
+                {
+                    poolAttributes[updatedAttribute.Id].AddStack();
+                }
+                else
+                {
+                    poolAttributes[updatedAttribute.Id] = updatedAttribute;
+                }
+                UnityEngine.Debug.Log($"{updatedAttribute.definition.name} with {updatedAttribute.GetValue()} was added to the AttributeManager.");
             }
 
             MarkAttributesAsDirty(updatedPoolAttributes);
         }
 
-        public void RemovePoolAttributes(HashSet<AttributeInstance> updatedPoolAttributes)
+        public void AddAttributeByName(string attributeName, float value)
+        {
+            var attributeDefinition = AttributeDefinitionHelper.GetEnhanceAttributeDefinitionByName(attributeName);
+            if (attributeDefinition != null)
+            {
+                AddAttributes(new HashSet<EnhanceAttributeInstance> { new EnhanceAttributeInstance(attributeDefinition, value) });
+            }
+        }
+
+        public void RemoveAttributes(HashSet<EnhanceAttributeInstance> updatedPoolAttributes)
         {
             foreach (var updatedAttribute in updatedPoolAttributes)
             {
-                poolAttributes.Remove(updatedAttribute.Id);
-                // UnityEngine.Debug.Log($"{updatedAttribute.definition.name} with {updatedAttribute.value} was removed to the AttributeManager.");
+                if (!poolAttributes[updatedAttribute.Id].RemoveStack())
+                {
+                    poolAttributes.Remove(updatedAttribute.Id);
+                    // UnityEngine.Debug.Log($"{updatedAttribute.definition.name} with {updatedAttribute.value} was removed to the AttributeManager.");
+                }
             }
-
             MarkAttributesAsDirty(updatedPoolAttributes);
         }
 
-        private void MarkAttributesAsDirty(HashSet<AttributeInstance> updatedPoolAttributes)
+        private void MarkAttributesAsDirty(HashSet<EnhanceAttributeInstance> updatedPoolAttributes)
         {
-            foreach (string mainAttributeName in AttributeSetMaster.FindMainAttributeNamesForRelevantSets(updatedPoolAttributes))
+            foreach (BaseAttributeDefinition mainAttribute in AttributeSetMaster.FindMainAttributeNamesForRelevantSets(updatedPoolAttributes))
             {
-                MarkAttributeAsDirty(mainAttributeName);
+                if (mainAttribute.IsAllowedDirty)
+                    MarkAttributeAsDirty(mainAttribute.name);
+                else
+                    CalculateAttributeValue(mainAttribute.name);
             }
         }
 
-        public float GetCalculatedAttributeValue(string mainAttributeName)
+        public float GetCalculatedBaseAttributeValue(string mainAttributeName)
         {
-            if (calculatedAttributes.TryGetValue(mainAttributeName, out float cachedValue))
+            if (baseAttributes.TryGetValue(mainAttributeName, out BaseAttributeInstance cachedMainAttributeInstances) && !cachedMainAttributeInstances.isDirty)
             {
-                // UnityEngine.Debug.Log($"Cached value for {mainAttributeName} is {cachedValue}.");
-                return cachedValue;
+                UnityEngine.Debug.Log($"Cached value for {mainAttributeName} is {cachedMainAttributeInstances.GetValue()}.");
+                return cachedMainAttributeInstances.GetValue();
             }
 
+            return CalculateAttributeValue(mainAttributeName).GetValue();
+        }
+
+        public BaseAttributeInstance GetBaseAttributeInstance(string mainAttributeName)
+        {
+            if (baseAttributes.TryGetValue(mainAttributeName, out BaseAttributeInstance cachedMainAttributeInstances) && !cachedMainAttributeInstances.isDirty)
+            {
+                return cachedMainAttributeInstances;
+            }
+            
+            return CalculateAttributeValue(mainAttributeName);
+        }
+
+        private BaseAttributeInstance CalculateAttributeValue(string mainAttributeName) {
             combinedAttributes = new HashSet<AttributeInstance>(inherientAttributes);
-
             combinedAttributes.UnionWith(poolAttributes.Values);
 
             float setValue = AttributeCalculationSystem.CalculateAttribute(mainAttributeName, combinedAttributes);
-            calculatedAttributes[mainAttributeName] = setValue;
+            BaseAttributeInstance baseAttributeInstance = AddToBaseAttributes(mainAttributeName, setValue, false);
 
-            if (dirtyAttributes.Contains(mainAttributeName))
-            {
-                // UnityEngine.Debug.Log($"{mainAttributeName} is no longer marked dirty.");
-                dirtyAttributes.Remove(mainAttributeName);
+            UnityEngine.Debug.Log($"Calculated value for {mainAttributeName} is {setValue}.");
+
+            return baseAttributeInstance;
+        }
+
+        private BaseAttributeInstance AddToBaseAttributes(string mainAttributeName, float value, bool dirty) {
+            if (baseAttributes.TryGetValue(mainAttributeName, out BaseAttributeInstance cachedMainAttributeInstances)) {
+                cachedMainAttributeInstances.SetValue(value);
+                cachedMainAttributeInstances.isDirty = dirty;
+                return cachedMainAttributeInstances;
+            } else {
+                BaseAttributeInstance newBaseAttributeInstance = new BaseAttributeInstance(value, dirty);
+                baseAttributes.Add(mainAttributeName, newBaseAttributeInstance);
+                return newBaseAttributeInstance;
             }
-
-            return setValue;
         }
 
         public void MarkAttributeAsDirty(string attributeName)
         {
-            if (!dirtyAttributes.Contains(attributeName))
-            {
-                // UnityEngine.Debug.Log($"{attributeName} was marked dirty.");
-                dirtyAttributes.Add(attributeName);
-                if (calculatedAttributes.ContainsKey(attributeName))
-                    calculatedAttributes.Remove(attributeName);
-            }
+            AddToBaseAttributes(attributeName, 0, true);
         }
     }
 }

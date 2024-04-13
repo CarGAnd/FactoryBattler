@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
-using UnityEngine;
 
 namespace AttributeSystem
 {
@@ -15,11 +14,8 @@ namespace AttributeSystem
         [Button]
         public void AddSource(IAttributeSource source)
         {
-            if (!attributeSources.Contains(source))
-            {
-                attributeSources.Add(source);
-                NotifyAllMembersOfNewSource(source);
-            }
+            attributeSources.Add(source);
+            NotifyAllMembersOfNewSource(source);
         }
 
         [Button]
@@ -35,7 +31,7 @@ namespace AttributeSystem
         {
             foreach (var member in members)
             {
-                member.AddPoolAttributes(source.GetAttributes());
+                member.AddAttributes(source.GetAttributes());
             }
         }
 
@@ -43,7 +39,7 @@ namespace AttributeSystem
         {
             foreach (var member in members)
             {
-                member.RemovePoolAttributes(source.GetAttributes());
+                member.RemoveAttributes(source.GetAttributes());
             }
         }
 
@@ -53,7 +49,7 @@ namespace AttributeSystem
             if (!members.Contains(member))
             {
                 members.Add(member);
-                member.AddPoolAttributes(GetAllAttributes());
+                member.AddAttributes(GetAllAttributes());
             }
         }
 
@@ -63,13 +59,13 @@ namespace AttributeSystem
             if (members.Contains(member))
             {
                 members.Remove(member);
-                member.RemovePoolAttributes(GetAllAttributes());
+                member.RemoveAttributes(GetAllAttributes());
             }
         }
 
-        private HashSet<AttributeInstance> GetAllAttributes()
+        private HashSet<EnhanceAttributeInstance> GetAllAttributes()
         {
-            return attributeSources?.SelectMany(source => source.GetAttributes()).ToHashSet() ?? new HashSet<AttributeInstance>();
+            return attributeSources?.SelectMany(source => source.GetAttributes()).ToHashSet() ?? new HashSet<EnhanceAttributeInstance>();
         }
     }
 }

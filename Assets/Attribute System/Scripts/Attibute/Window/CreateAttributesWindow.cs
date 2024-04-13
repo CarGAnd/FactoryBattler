@@ -115,7 +115,7 @@ namespace AttributeSystem
                 newSet.calculationGroup = calculationGroup;
 
             if (mainAttribute != null)
-                newSet.mainAttribute = mainAttribute as MainAttributeDefinition;
+                newSet.mainAttribute = mainAttribute as BaseAttributeDefinition;
 
             newSet.attributes = createdAttributes.ToList();
 
@@ -130,7 +130,7 @@ namespace AttributeSystem
             if (type == AttributeCalculationType.Base)
             {
                 path = Path.Combine(path, "Main/");
-                attribute = CreateInstance<MainAttributeDefinition>();
+                attribute = CreateInstance<BaseAttributeDefinition>();
             }
             else
             {

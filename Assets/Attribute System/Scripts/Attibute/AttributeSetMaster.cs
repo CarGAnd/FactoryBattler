@@ -38,8 +38,6 @@ namespace AttributeSystem
     {
         private static Dictionary<AttributeDefinition, List<AttributeSet>> attributeSetCache = new Dictionary<AttributeDefinition, List<AttributeSet>>();
         private static Dictionary<string, AttributeSet> mainAttributeSetCache = new Dictionary<string, AttributeSet>();
-
-        [SerializeField]
         private static List<AttributeSet> allAttributeSets;
 
         private static void BuildMainAttributeSetCache()
@@ -87,9 +85,9 @@ namespace AttributeSystem
             return relevantSets;
         }
 
-        internal static HashSet<string> FindMainAttributeNamesForRelevantSets(HashSet<AttributeInstance> attributeInstances)
+        internal static HashSet<BaseAttributeDefinition> FindMainAttributeNamesForRelevantSets(HashSet<EnhanceAttributeInstance> attributeInstances)
         {
-            HashSet<string> mainAttributeNames = new HashSet<string>();
+            HashSet<BaseAttributeDefinition> mainAttributeNames = new HashSet<BaseAttributeDefinition>();
             List<AttributeSet> relevantSets = new List<AttributeSet>();
 
             if (attributeInstances == null)
@@ -109,7 +107,7 @@ namespace AttributeSystem
 
             foreach (AttributeSet attributeSet in relevantSets)
             {
-                mainAttributeNames.Add(attributeSet.mainAttribute.name);
+                mainAttributeNames.Add(attributeSet.mainAttribute);
             }
 
             return mainAttributeNames;
@@ -117,6 +115,8 @@ namespace AttributeSystem
 
         internal static AttributeSet FindAttributeSetByName(string mainAttributeName)
         {
+            BuildMainAttributeSetCache();
+
             if (mainAttributeSetCache.TryGetValue(mainAttributeName, out var attributeSet))
             {
                 return attributeSet;

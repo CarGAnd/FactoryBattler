@@ -16,17 +16,7 @@ namespace AttributeSystem
     public class Buff : ScriptableObject, IAttributeSource
     {
         [SerializeField][TableList(AlwaysExpanded = true, DrawScrollView = false)]
-        private List<AttributeInstance> attributes;
-        public List<AttributeInstance> SourceAttributes => attributes;
-        public string Id => id;
-        private string id;
-
-        public Buff () {
-            CalculateNewID();
-        }
-
-        public void CalculateNewID() {
-            id = Guid.NewGuid().ToString();
-        }
+        private List<EnhanceAttributeInstance> attributes;
+        public List<EnhanceAttributeInstance> SourceAttributes => attributes;
     }
 }

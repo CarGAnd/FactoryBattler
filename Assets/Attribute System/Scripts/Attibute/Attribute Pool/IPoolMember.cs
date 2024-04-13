@@ -4,9 +4,11 @@ namespace AttributeSystem
 {
     public interface IPoolMember
     {
-        List<AttributeInstance> BaseAttributes { get; }
+        AttributeManager AttributeManager { get; }
+        List<BaseAttributeInstance> InherientBaseAttributes { get; }
+        List<EnhanceAttributeInstance> InherientEnhanceAttributes { get; }
         float GetCalculatedAttributeValue(string mainAttributeName);
-        void AddPoolAttributes(HashSet<AttributeInstance> poolAttributes);
-        void RemovePoolAttributes(HashSet<AttributeInstance> poolAttributes); 
+        void AddAttributes(HashSet<EnhanceAttributeInstance> poolAttributes);
+        void RemoveAttributes(HashSet<EnhanceAttributeInstance> poolAttributes); 
     }
 }

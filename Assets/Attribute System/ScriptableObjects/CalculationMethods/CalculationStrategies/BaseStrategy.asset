@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 958dacf9e61587346bbfe162a40baa25, type: 3}
   m_Name: BaseStrategy
   m_EditorClassIdentifier: 
-  attributeCalculationType: 0
+  attributeCalculationType: 10

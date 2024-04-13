@@ -45,49 +45,55 @@ namespace AttributeSystem
     public class PoolMember : IPoolMember
     {
         [SerializeField][TableList(AlwaysExpanded = true, DrawScrollView = false)][LabelText("PoolMember - Base Attributes")]
-        private List<AttributeInstance> baseAttributes;
-        public List<AttributeInstance> BaseAttributes { get {return baseAttributes; } private set {baseAttributes = value;} }
+        private List<BaseAttributeInstance> inherientbaseAttributes;
+
+        [SerializeField][TableList(AlwaysExpanded = true, DrawScrollView = false)][LabelText("PoolMember - Enhance Attributes")]
+        private List<EnhanceAttributeInstance> inherientEnhanceAttributes;
+        public List<BaseAttributeInstance> InherientBaseAttributes { get {return inherientbaseAttributes; } private set {inherientbaseAttributes = value;} }
+        public List<EnhanceAttributeInstance> InherientEnhanceAttributes { get {return inherientEnhanceAttributes; } private set {inherientEnhanceAttributes = value;} }
+        public AttributeManager AttributeManager => attributeManager;
         private AttributeManager attributeManager;
 
         private void InitializeAttributeManager() {
             if (attributeManager == null) {
                 attributeManager = new AttributeManager();
-                attributeManager.SetBaseAttributes(BaseAttributes);
+                attributeManager.SetBaseAttributes(InherientBaseAttributes, InherientEnhanceAttributes);
             }
         }
 
         public PoolMember(AttributeManager attributeManager) {
             this.attributeManager = attributeManager ?? throw new ArgumentNullException(nameof(attributeManager));
-            this.attributeManager.SetBaseAttributes(BaseAttributes);
+            this.attributeManager.SetBaseAttributes(InherientBaseAttributes, InherientEnhanceAttributes);
         }
 
-        public float GetCalculatedAttributeValue(string mainAttributeName) {
+        public float GetCalculatedAttributeValue(string mainAttributeName) 
+        {
             InitializeAttributeManager();
 
             if (mainAttributeName == null) {
                 throw new ArgumentNullException(nameof(mainAttributeName));
             }
-            return attributeManager.GetCalculatedAttributeValue(mainAttributeName);
+            return attributeManager.GetCalculatedBaseAttributeValue(mainAttributeName);
         }
 
-        public void AddPoolAttributes(HashSet<AttributeInstance> poolAttributes)
+        public void AddAttributes(HashSet<EnhanceAttributeInstance> poolAttributes)
         {
             InitializeAttributeManager();
 
             if (poolAttributes == null) {
                 throw new ArgumentNullException(nameof(poolAttributes));
             }
-            attributeManager.AddPoolAttributes(poolAttributes);
+            attributeManager.AddAttributes(poolAttributes);
         }
 
-        public void RemovePoolAttributes(HashSet<AttributeInstance> poolAttributes)
+        public void RemoveAttributes(HashSet<EnhanceAttributeInstance> poolAttributes)
         {
             InitializeAttributeManager();
 
             if (poolAttributes == null) {
                 throw new ArgumentNullException(nameof(poolAttributes));
             }
-            attributeManager.RemovePoolAttributes(poolAttributes);
+            attributeManager.RemoveAttributes(poolAttributes);
         }
     }
 }

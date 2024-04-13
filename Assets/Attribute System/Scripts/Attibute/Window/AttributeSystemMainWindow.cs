@@ -23,7 +23,7 @@ namespace AttributeSystem
             };
 
             tree.AddAllAssetsAtPath("Enhance Attributes", "Assets/Attribute System/ScriptableObjects/Attributes/Enhance", typeof(EnhanceAttributeDefinition), true).AddThumbnailIcons().SortMenuItemsByName();
-            tree.AddAllAssetsAtPath("Main Attributes", "Assets/Attribute System/ScriptableObjects/Attributes/Main", typeof(MainAttributeDefinition), true).AddThumbnailIcons().SortMenuItemsByName();
+            tree.AddAllAssetsAtPath("Main Attributes", "Assets/Attribute System/ScriptableObjects/Attributes/Main", typeof(BaseAttributeDefinition), true).AddThumbnailIcons().SortMenuItemsByName();
 
             return tree;
         }

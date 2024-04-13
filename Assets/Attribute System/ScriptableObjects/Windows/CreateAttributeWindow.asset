@@ -13,18 +13,24 @@ MonoBehaviour:
   m_Name: CreateAttributeWindow
   m_EditorClassIdentifier: 
   options:
-  - type: 0
+  - type: 10
     typeName: Base
     createType: 0
-  - type: 1
+  - type: 20
     typeName: Additive
     createType: 0
-  - type: 2
+  - type: 30
     typeName: Multiplicative
     createType: 0
-  - type: 3
+  - type: 40
     typeName: MultiplicativeMore
     createType: 0
+  - type: 50
+    typeName: Positive
+    createType: 0
+  - type: 60
+    typeName: Negative
+    createType: 0
   attributeName: Health
-  calculationGroup: {fileID: 11400000, guid: f3776d4d47f5ac2488a678b353392c6c, type: 2}
+  calculationGroup: {fileID: 11400000, guid: 1e11a59836689d949b4f42163347e401, type: 2}
   createAndAddToSet: 1

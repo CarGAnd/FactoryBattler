@@ -18,33 +18,35 @@
 
 using System;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace AttributeSystem
 {
     [Serializable]
-    public class AttributeInstance
+    public abstract class AttributeInstance
     {
         internal string Id;
 
-        [HideLabel][PropertyOrder(1)]
-        public AttributeDefinition definition;
+        [SerializeField][HideLabel][PropertyOrder(0)][TableColumnWidth(-300)]
+        protected float value;
 
-        [HideLabel][PropertyOrder(0)][TableColumnWidth(-300)]
-        public float value;
+        [HideLabel][PropertyOrder(1)]
+        public abstract AttributeDefinition definition {get;}
 
         public AttributeInstance() {
             CalculateNewID();
         }
 
-        public AttributeInstance(AttributeDefinition definition, float value)
+        public AttributeInstance(float value)
         {
             CalculateNewID();
-            this.definition = definition;
             this.value = value;
         }
 
         public void CalculateNewID() {
             Id = Guid.NewGuid().ToString();
         }
+
+        public abstract float GetValue();
     }
 }

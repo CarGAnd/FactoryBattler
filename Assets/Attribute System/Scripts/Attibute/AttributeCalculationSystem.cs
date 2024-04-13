@@ -44,10 +44,11 @@ namespace AttributeSystem
 {
     public static class AttributeCalculationSystem
     {
-        private static Dictionary<AttributeCalculationType, List<float>> InitializeValueDictionary()
+        private static Dictionary<AttributeCalculationType, List<float>> InitializeValueDictionary(AttributeSet set)
         {
             var dictionary = new Dictionary<AttributeCalculationType, List<float>>();
-            foreach (AttributeCalculationType type in Enum.GetValues(typeof(AttributeCalculationType)))
+
+            foreach (AttributeCalculationType type in set.calculationGroup.strategies.Select(strategy => strategy.AttributeCalculationType))
             {
                 dictionary[type] = new List<float>();
             }
@@ -70,23 +71,24 @@ namespace AttributeSystem
         {
             float finalValue = 0f;
 
-            Dictionary<AttributeCalculationType, List<float>> valuesByType = InitializeValueDictionary();
+            Dictionary<AttributeCalculationType, List<float>> valuesByType = InitializeValueDictionary(set);
+            Dictionary<AttributeCalculationType, float> previousCalculations = new Dictionary<AttributeCalculationType, float>();
 
             var relevantInstances = attributes.Where(instance => set.attributes.Contains(instance.definition) || set.mainAttribute == instance.definition);
 
             foreach (var instance in relevantInstances)
             {
-                valuesByType[instance.definition.calculationType].Add(instance.value);
+                valuesByType[instance.definition.calculationType].Add(instance.GetValue());
             }
 
             foreach (var strategy in set.calculationGroup.strategies)
             {
-                finalValue = strategy.Calculate(valuesByType[strategy.AttributeCalculationType], finalValue);
+                finalValue = strategy.Calculate(valuesByType[strategy.AttributeCalculationType], finalValue, ref previousCalculations);
             }
 
             float roundedValue = set.mainAttribute.ApplyRounding(finalValue);
 
-            UnityEngine.Debug.Log($"Value for {set.mainAttribute.name} is {roundedValue}.");
+            // UnityEngine.Debug.Log($"Value for {set.mainAttribute.name} is {roundedValue}.");
 
             return roundedValue;
         }
