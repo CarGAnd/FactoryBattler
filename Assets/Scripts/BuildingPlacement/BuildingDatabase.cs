@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class BuildingDatabase : ScriptableObject
 {
-    [SerializeField] private List<GridObjectSO> buildings;
+    [SerializeField] private GridObjectSO[] buildings;
 
     private Dictionary<string, GridObjectSO> database;
 

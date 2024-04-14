@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(SetupSaveLoad))]
-public class SetupSaverCustomEditor : Editor 
+public class SetupSaveLoadCustomEditor : Editor 
 {
     private SetupSaveLoad setupSaver;
 
