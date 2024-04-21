@@ -43,7 +43,7 @@ public class SetupSaveLoadCustomEditor : Editor
         List<string> saveFileNames = SaveFileManager.GetAvailableSaves();
 
         EditorGUILayout.LabelField("Load", EditorStyles.boldLabel);
-        EditorGUILayout.Popup("Save Name", selectedSaveNumber, saveFileNames.ToArray());
+        selectedSaveNumber = EditorGUILayout.Popup("Save Name", selectedSaveNumber, saveFileNames.ToArray());
 
         if(GUILayout.Button("Load from file")) {
             if(selectedSaveNumber < saveFileNames.Count) {
