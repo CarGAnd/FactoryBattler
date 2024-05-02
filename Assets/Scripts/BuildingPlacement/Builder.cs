@@ -1,16 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Builder : MonoBehaviour
+public class Builder : NetworkBehaviour
 {
     [SerializeField] private FactoryGrid grid;
     [SerializeField] private AssemblyLineSystem assemblyLineSystem;
+    [SerializeField] private BuildingDatabase buildingDatabase;
 
     private ModulePlacer modulePlacer;
 
     private void Awake() {
         this.modulePlacer = new ModulePlacer(grid);
+    }
+
+    [Rpc(SendTo.Server)]
+    public void TryPlaceBuildingServerRpc(FixedString128Bytes buildingId, Vector2Int pos, Facing rotation) {
+        GridObjectSO building = buildingDatabase.GetBuildingByID(buildingId.ToString());
+        IGridObject placedBuilding = TryPlaceBuilding(building, pos, rotation);
+        if(placedBuilding != null) {
+            TryPlaceBuildingClientRpc(buildingId, pos, rotation);
+        }
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void TryPlaceBuildingClientRpc(FixedString128Bytes buildingId, Vector2Int pos, Facing rotation) {
+        GridObjectSO building = buildingDatabase.GetBuildingByID(buildingId.ToString());
+        TryPlaceBuilding(building, pos, rotation);
     }
 
     public IGridObject TryPlaceBuilding(GridObjectSO building, Vector2Int position, Facing rotation) {

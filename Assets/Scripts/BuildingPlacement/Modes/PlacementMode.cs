@@ -85,13 +85,13 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
         moduleRotated?.Invoke(facing);
     }
 
-    public IGridObject TryPlaceModule(GridObjectSO gridObject, Vector3 worldPos, Facing facing) {
+    public void TryPlaceModule(GridObjectSO gridObject, Vector3 worldPos, Facing facing) {
         Vector2Int gridPosition = builder.GetModulePlacementPosition(gridObject, worldPos, facing);
-        return TryPlaceModule(gridObject, gridPosition, facing);
+        TryPlaceModule(gridObject, gridPosition, facing);
     }
 
-    public IGridObject TryPlaceModule(GridObjectSO gridObject, Vector2Int gridPos, Facing facing) {
-        return builder.TryPlaceBuilding(gridObject, gridPos, facing);
+    public void TryPlaceModule(GridObjectSO gridObject, Vector2Int gridPos, Facing facing) {
+        builder.TryPlaceBuildingServerRpc(gridObject.ID, gridPos, facing);
     }
 
     public void EnterMode() {

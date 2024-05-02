@@ -1,7 +1,8 @@
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerModeManager : MonoBehaviour
+public class PlayerModeManager : NetworkBehaviour
 {
     [Header("Systems")]
     [SerializeField] private Builder builder;
@@ -33,6 +34,8 @@ public class PlayerModeManager : MonoBehaviour
         PlacementMode.ChangeGrid(grid, builder);
         SelectionMode.Initialize(grid);
         DeleteMode.Initialize(grid, this);
+        this.builder = builder;
+        this.grid = grid;
     }
 
     private void OnEnable() {
@@ -45,7 +48,7 @@ public class PlayerModeManager : MonoBehaviour
     }
 
     private void OnNewBuildingSelected(GridObjectSO newBuilding) {
-        if(newBuilding == null) {
+        if(newBuilding == null || !IsLocalPlayer) {
             GoToSelectionMode();
         }
         else {
@@ -54,6 +57,9 @@ public class PlayerModeManager : MonoBehaviour
     }
 
     private void Update() {
+        if(grid == null || !IsLocalPlayer) {
+            return;
+        }
         Vector3 mousePositionOnGrid = mouseInput.GetMousePosOnGrid(grid);
         currentMode.UpdateInput(mouseInput, mousePositionOnGrid);
         if (Input.GetKeyDown(KeyCode.Escape)) {

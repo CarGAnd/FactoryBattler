@@ -22,7 +22,7 @@ public class PlaceAsYouGo : IPlacementStrategy {
     }
 
     public void UpdateInput(MouseInput mouseInput) {
-        Vector3 mousePosOnGrid = mouseInput.GetMousePosOnGrid(grid);
+        /*Vector3 mousePosOnGrid = mouseInput.GetMousePosOnGrid(grid);
         if (mouseInput.PlaceModuleStarted()) {
             isDragging = true;
             IGridObject placedObject = placementMode.TryPlaceModule(gridObject, mousePosOnGrid, placementMode.CurrentFacing);
@@ -48,7 +48,7 @@ public class PlaceAsYouGo : IPlacementStrategy {
                 lastObjectWasPlaced = placedObject != null;
             }
         }
-        placementMode.UpdateRotationInput(mouseInput);
+        placementMode.UpdateRotationInput(mouseInput);*/
     }
 
     private Facing FacingFromDirection(Vector2Int direction) {
