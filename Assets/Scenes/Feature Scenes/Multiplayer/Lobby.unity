@@ -448,6 +448,7 @@ GameObject:
   - component: {fileID: 710740393}
   - component: {fileID: 710740391}
   - component: {fileID: 710740394}
+  - component: {fileID: 710740395}
   m_Layer: 0
   m_Name: LobbyManager
   m_TagString: Untagged
@@ -467,6 +468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a761ec005b675f34b9089a7ce4ec20e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lobby: {fileID: 710740395}
 --- !u!4 &710740392
 Transform:
   m_ObjectHideFlags: 0
@@ -516,6 +518,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 4970881398481330147, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+--- !u!114 &710740395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710740390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e921009217df57a4db6d131ee207361e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &840130440
 GameObject:
   m_ObjectHideFlags: 0

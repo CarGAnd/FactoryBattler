@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class LobbyManager : NetworkBehaviour
 {
-    private Lobby lobby;
+    [SerializeField] private Lobby lobby;
 
     private void Start() {
         DontDestroyOnLoad(this);
@@ -21,7 +21,7 @@ public class LobbyManager : NetworkBehaviour
     }
 
     private void OnClientConnected(ulong clientId) {
-        //First send the existing players to the player that just connected
+        
         RpcParams clientParams = new RpcParams
         {
             Send = new RpcSendParams
@@ -29,15 +29,12 @@ public class LobbyManager : NetworkBehaviour
                 Target = RpcTarget.Single(clientId, RpcTargetUse.Temp)
             }
         };
-        SendLobbyInfoClientRpc(lobby.GetConnectedClients().ToArray(), clientParams);
 
-        ClientInfo newClientInfo = new ClientInfo(clientId);
-        
+        ClientInfo newClientInfo = new ClientInfo();
+        newClientInfo.clientId = clientId;
+
         //Add new player on the server
         lobby.AddPlayer(newClientInfo);
-
-        //Then add the player that just connected on the clients
-        PlayerJoinedLobbyClientRpc(newClientInfo);
 
         //Get and update the information (name etc.) for the new player
         GetPlayerInfoClientRpc(clientParams);
@@ -60,7 +57,6 @@ public class LobbyManager : NetworkBehaviour
 
     private void OnServerStarted() {
         Debug.Log("Started server on port " + NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Port);
-        lobby = new Lobby();
     }
 
     [Rpc(SendTo.Server)]
@@ -95,30 +91,6 @@ public class LobbyManager : NetworkBehaviour
             clientName = "Player" + NetworkManager.Singleton.LocalClientId
         };
         SetClientInfoServerRpc(clientInfo);
-    }
-
-    [Rpc(SendTo.NotServer, AllowTargetOverride = true)]
-    public void SendLobbyInfoClientRpc(ClientInfo[] clientsInLobby, RpcParams clientRpcParams = default) {
-        lobby = new Lobby();
-        foreach(ClientInfo ci in clientsInLobby) {
-            lobby.AddPlayer(ci);
-        }
-        Debug.Log("Received lobby with " + clientsInLobby.Length + " players");
-        foreach(ClientInfo ci in clientsInLobby) {
-            Debug.Log(ci);
-        }
-    }
-
-    [Rpc(SendTo.NotServer)]
-    public void PlayerJoinedLobbyClientRpc(ClientInfo newClientInfo) {
-        lobby.AddPlayer(newClientInfo);
-
-        Debug.Log("New player joined: " + newClientInfo.clientId);
-    }
-
-    [Rpc(SendTo.NotServer)]
-    public void PlayerLeftLobbyClientRpc() {
-
     }
 
     [Rpc(SendTo.NotServer)]

@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using System;
 
-public class Lobby
+public class Lobby : NetworkBehaviour
 {
     public ulong LobbyOwnerId { get; private set; }
-    private List<ClientInfo> connectedClients;
-    
-    public Lobby() {
-        connectedClients = new List<ClientInfo>();
+    private NetworkList<ClientInfo> connectedClients;
+
+    private void Awake() {
+        connectedClients = new NetworkList<ClientInfo>();
     }
 
     public void AddPlayer(ClientInfo clientInfo) {
@@ -18,7 +19,6 @@ public class Lobby
             LobbyOwnerId = clientInfo.clientId;
         }
         connectedClients.Add(clientInfo);
-        Debug.Log(connectedClients.Count);
     }
 
     public void RemovePlayer(ulong clientId) {
@@ -31,7 +31,7 @@ public class Lobby
         connectedClients.RemoveAt(playerIndex);
     }
 
-    public List<ClientInfo> GetConnectedClients() {
+    public NetworkList<ClientInfo> GetConnectedClients() {
         return connectedClients;
     }
 
@@ -51,16 +51,12 @@ public class Lobby
 }
 
 [System.Serializable]
-public class ClientInfo : INetworkSerializable {
+public struct ClientInfo : INetworkSerializable, IEquatable<ClientInfo> {
     public ulong clientId;
-    public FixedString128Bytes clientName;
+    public FixedString128Bytes clientName; //Normal strings are not supported by unity netcode so we use this instead
 
-    public ClientInfo(ulong clientId) {
-        this.clientId = clientId;
-    }
-
-    public ClientInfo() {
-
+    public bool Equals(ClientInfo other) {
+        return clientId == other.clientId;
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter {

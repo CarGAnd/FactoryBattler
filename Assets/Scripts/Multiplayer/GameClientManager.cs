@@ -12,7 +12,7 @@ public class GameClientManager : NetworkBehaviour
         DontDestroyOnLoad(this);
         players = new List<PlayerInfo>();
         FactoryGrid[] grids = FindObjectsOfType<FactoryGrid>();
-        List<ClientInfo> clients = playerLobby.GetConnectedClients();
+        NetworkList<ClientInfo> clients = playerLobby.GetConnectedClients();
         for(int i = 0; i < clients.Count; i++) {
             PlayerInfo pInfo = new PlayerInfo();
             pInfo.clientInfo = clients[i];
