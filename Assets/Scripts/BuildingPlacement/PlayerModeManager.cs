@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerModeManager : NetworkBehaviour
 {
     [Header("Systems")]
-    [SerializeField] private Builder builder;
+    [SerializeField] private IBuilder builder;
     [SerializeField] private FactoryGrid grid;
 
     [Header("Input")]
@@ -30,7 +30,7 @@ public class PlayerModeManager : NetworkBehaviour
         currentMode.EnterMode();
     }
 
-    public void UpdateGridReference(FactoryGrid grid, Builder builder) {
+    public void UpdateGridReference(FactoryGrid grid, IBuilder builder) {
         PlacementMode.ChangeGrid(grid, builder);
         SelectionMode.Initialize(grid);
         DeleteMode.Initialize(grid, this);

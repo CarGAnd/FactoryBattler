@@ -38,7 +38,7 @@ public class GameClientManager : NetworkBehaviour
         playerObject.TryGet(out NetworkObject playerNetworkObject);
         PlayerModeManager playerModeManager = playerNetworkObject.GetComponent<PlayerModeManager>();
         FactoryGrid grid = gridNetworkObject.GetComponentInChildren<FactoryGrid>();
-        Builder builder = gridNetworkObject.GetComponentInChildren<Builder>();
+        NetworkBuilder builder = gridNetworkObject.GetComponentInChildren<NetworkBuilder>();
         playerModeManager.UpdateGridReference(grid, builder);
     }
 }

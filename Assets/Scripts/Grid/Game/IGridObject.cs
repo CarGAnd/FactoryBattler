@@ -10,6 +10,9 @@ public interface IGridObject : ISaveable {
     
     // Destroy the gridObject and any associated prefab
     void DestroyObject();
+
+    //Get the associated gameObject
+    GameObject GetGameObject();
 }
 
 public interface IGridInteractable : IGridObject {

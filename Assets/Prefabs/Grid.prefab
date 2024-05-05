@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7657162187346753393}
   - component: {fileID: 8386325083140590886}
   - component: {fileID: 620589185295816782}
+  - component: {fileID: 4651456616025736579}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -87,6 +88,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid: {fileID: 7657162187346753393}
   assemblyLineSystem: {fileID: 976620983356662548}
+--- !u!114 &4651456616025736579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929381512884961409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b534c365d3103545947f50df26e480c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  builder: {fileID: 620589185295816782}
   buildingDatabase: {fileID: 11400000, guid: c373f45effdb5b34fac13fd84d877636, type: 2}
 --- !u!1 &1168582064399871535
 GameObject:
@@ -306,7 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1931422442
+  GlobalObjectIdHash: 2519270235
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1

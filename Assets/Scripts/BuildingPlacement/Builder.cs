@@ -4,31 +4,15 @@ using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Builder : NetworkBehaviour
+public class Builder : MonoBehaviour, IBuilder
 {
     [SerializeField] private FactoryGrid grid;
     [SerializeField] private AssemblyLineSystem assemblyLineSystem;
-    [SerializeField] private BuildingDatabase buildingDatabase;
 
     private ModulePlacer modulePlacer;
 
     private void Awake() {
         this.modulePlacer = new ModulePlacer(grid);
-    }
-
-    [Rpc(SendTo.Server)]
-    public void TryPlaceBuildingServerRpc(FixedString128Bytes buildingId, Vector2Int pos, Facing rotation) {
-        GridObjectSO building = buildingDatabase.GetBuildingByID(buildingId.ToString());
-        IGridObject placedBuilding = TryPlaceBuilding(building, pos, rotation);
-        if(placedBuilding != null) {
-            TryPlaceBuildingClientRpc(buildingId, pos, rotation);
-        }
-    }
-
-    [Rpc(SendTo.NotServer)]
-    public void TryPlaceBuildingClientRpc(FixedString128Bytes buildingId, Vector2Int pos, Facing rotation) {
-        GridObjectSO building = buildingDatabase.GetBuildingByID(buildingId.ToString());
-        TryPlaceBuilding(building, pos, rotation);
     }
 
     public IGridObject TryPlaceBuilding(GridObjectSO building, Vector2Int position, Facing rotation) {
@@ -41,14 +25,27 @@ public class Builder : NetworkBehaviour
         return newBuilding;
     }
 
-    public Vector2Int GetModulePlacementPosition(GridObjectSO moduleData, Vector3 mouseHitPosition, Facing facing) {
+    public Vector2Int GetBuildingPlacementPosition(GridObjectSO moduleData, Vector3 mouseHitPosition, Facing facing) {
         return modulePlacer.GetModulePlacementPosition(moduleData, mouseHitPosition, facing);    
     }
 
-    private void SetupBuilding(IGridObject building, Vector2Int gridPosition) {
+    public void SetupBuilding(IGridObject building, Vector2Int gridPosition) {
         if(building is IAssemblyLineUser) {
             ((IAssemblyLineUser)building).ConnectToAssemblyLine(assemblyLineSystem);
         }
         building.OnPlacedOnGrid(gridPosition, grid);
     }
+
+    public List<IGridObject> GetAllPlacedBuildings() {
+        return grid.GetAllPlacedObjects();
+    }
+
+    void IBuilder.TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation) {
+        TryPlaceBuilding(buildingData, coord, rotation);
+    }
+}
+
+public interface IBuilder {
+    public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation);
+    public Vector2Int GetBuildingPlacementPosition(GridObjectSO buildingData, Vector3 worldPos, Facing rotation);
 }

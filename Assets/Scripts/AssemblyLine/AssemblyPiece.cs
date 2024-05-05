@@ -104,6 +104,10 @@ public abstract class AssemblyPiece : IGridInteractable, ITransportable, IAssemb
         RemoveFromGrid(grid);
         MonoBehaviour.Destroy(gameObject);
     }
+
+    public GameObject GetGameObject() {
+        return gameObject;
+    }
 ///////////////////////////// IGridInteractable /////////////////////////////
     public bool IsPlaced()
     {

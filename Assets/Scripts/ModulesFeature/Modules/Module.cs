@@ -64,4 +64,8 @@ public abstract class Module : MonoBehaviour, IGridObject, IAssemblyLineUser
     public void Deserialize(ObjectPlacementData data) {
     
     }
+
+    public GameObject GetGameObject() {
+        return gameObject;
+    }
 }

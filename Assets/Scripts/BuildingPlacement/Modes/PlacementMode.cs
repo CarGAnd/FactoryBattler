@@ -16,10 +16,10 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
 
     private PlayerModeManager playerModeManager;
     private IPlacementStrategy placementHandler;
-    private Builder builder;
+    private IBuilder builder;
     private GridObjectSO currentBuilding;
 
-    public void Initialize(FactoryGrid grid, Builder builder, PlayerModeManager playerModeManager){
+    public void Initialize(FactoryGrid grid, IBuilder builder, PlayerModeManager playerModeManager){
         this.Grid = grid;
         this.builder = builder;
         this.playerModeManager = playerModeManager;
@@ -27,7 +27,7 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
         placementHandler = new NoPlacement();
     }
 
-    public void ChangeGrid(FactoryGrid grid, Builder builder) {
+    public void ChangeGrid(FactoryGrid grid, IBuilder builder) {
         this.Grid = grid;
         this.builder = builder;
         if(currentBuilding == null) {
@@ -86,12 +86,12 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
     }
 
     public void TryPlaceModule(GridObjectSO gridObject, Vector3 worldPos, Facing facing) {
-        Vector2Int gridPosition = builder.GetModulePlacementPosition(gridObject, worldPos, facing);
+        Vector2Int gridPosition = builder.GetBuildingPlacementPosition(gridObject, worldPos, facing);
         TryPlaceModule(gridObject, gridPosition, facing);
     }
 
     public void TryPlaceModule(GridObjectSO gridObject, Vector2Int gridPos, Facing facing) {
-        builder.TryPlaceBuildingServerRpc(gridObject.ID, gridPos, facing);
+        builder.TryPlaceBuilding(gridObject, gridPos, facing);
     }
 
     public void EnterMode() {
