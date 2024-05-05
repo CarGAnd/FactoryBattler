@@ -88,9 +88,9 @@ GameObject:
   - component: {fileID: 4801631025868026570}
   - component: {fileID: 3058124439116001844}
   - component: {fileID: 6632130724307483496}
+  - component: {fileID: -6389550830256595991}
   - component: {fileID: 8722686548207618740}
   - component: {fileID: 7207505900094866942}
-  - component: {fileID: -6389550830256595991}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -156,6 +156,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 3058124439116001844}
+--- !u!114 &-6389550830256595991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4970881398481330147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 538940955
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &8722686548207618740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,27 +213,6 @@ MonoBehaviour:
       m_Calls: []
   placeableObjects:
   - {fileID: 11400000, guid: ca9ce8b43926b2641b9eb94164262b88, type: 2}
---- !u!114 &-6389550830256595991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4970881398481330147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &7136280564522372392
 GameObject:
   m_ObjectHideFlags: 0

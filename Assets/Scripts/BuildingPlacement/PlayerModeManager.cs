@@ -48,7 +48,7 @@ public class PlayerModeManager : NetworkBehaviour
     }
 
     private void OnNewBuildingSelected(GridObjectSO newBuilding) {
-        if(newBuilding == null || !IsLocalPlayer) {
+        if(newBuilding == null || !IsOwner) {
             GoToSelectionMode();
         }
         else {
@@ -57,7 +57,7 @@ public class PlayerModeManager : NetworkBehaviour
     }
 
     private void Update() {
-        if(grid == null || !IsLocalPlayer) {
+        if(grid == null || !IsOwner) {
             return;
         }
         Vector3 mousePositionOnGrid = mouseInput.GetMousePosOnGrid(grid);

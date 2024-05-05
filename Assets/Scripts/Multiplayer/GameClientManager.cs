@@ -12,12 +12,15 @@ public class GameClientManager : NetworkBehaviour
         DontDestroyOnLoad(this);
         players = new List<PlayerInfo>();
         FactoryGrid[] grids = FindObjectsOfType<FactoryGrid>();
-        NetworkList<ClientInfo> clients = playerLobby.GetConnectedClients();
+        NetworkList<LobbyPlayerInfo> clients = playerLobby.GetConnectedClients();
         for(int i = 0; i < clients.Count; i++) {
+            if (clients[i].isSpectator) {
+                continue;
+            }
             PlayerInfo pInfo = new PlayerInfo();
             pInfo.clientInfo = clients[i];
             pInfo.playerPrefab = Instantiate(playerPrefab);
-            pInfo.playerPrefab.GetComponent<NetworkObject>().SpawnAsPlayerObject(clients[i].clientId, true);
+            pInfo.playerPrefab.GetComponent<NetworkObject>().SpawnWithOwnership(clients[i].clientId);
             pInfo.playerGrid = grids[i].transform.root.gameObject;
             players.Add(pInfo);
             AssignGridToPlayerClientRpc(pInfo.playerGrid.GetComponent<NetworkObject>(), pInfo.playerPrefab.GetComponent<NetworkObject>());
@@ -42,7 +45,7 @@ public class GameClientManager : NetworkBehaviour
 
 public class PlayerInfo {
     
-    public ClientInfo clientInfo;
+    public LobbyPlayerInfo clientInfo;
     public GameObject playerPrefab;
     public GameObject playerGrid;
 

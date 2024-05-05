@@ -30,7 +30,7 @@ public class LobbyManager : NetworkBehaviour
             }
         };
 
-        ClientInfo newClientInfo = new ClientInfo();
+        LobbyPlayerInfo newClientInfo = new LobbyPlayerInfo();
         newClientInfo.clientId = clientId;
 
         //Add new player on the server
@@ -47,7 +47,7 @@ public class LobbyManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    public void SetClientInfoServerRpc(ClientInfo newClientInfo, RpcParams rpcParams = default) {
+    public void SetClientInfoServerRpc(LobbyPlayerInfo newClientInfo, RpcParams rpcParams = default) {
         ulong sender = rpcParams.Receive.SenderClientId;
         newClientInfo.clientId = sender;
         lobby.SetClientInfo(sender, newClientInfo);
@@ -63,6 +63,10 @@ public class LobbyManager : NetworkBehaviour
     public void StartGameServerRpc(RpcParams serverParams = default) {
         if(serverParams.Receive.SenderClientId != lobby.LobbyOwnerId) {
             Debug.Log("Only the owner can start the game");
+            return;
+        }
+        if (!lobby.AllPlayersAreReady()) {
+            Debug.Log("Some players are not ready");
             return;
         }
 
@@ -86,18 +90,31 @@ public class LobbyManager : NetworkBehaviour
     #region Client
     [Rpc(SendTo.NotServer, AllowTargetOverride = true)]
     public void GetPlayerInfoClientRpc(RpcParams clientParams = default) {
-        ClientInfo clientInfo = new ClientInfo()
+        LobbyPlayerInfo clientInfo = new LobbyPlayerInfo()
         {
-            clientName = "Player" + NetworkManager.Singleton.LocalClientId
+            playerName = "Player" + NetworkManager.Singleton.LocalClientId
         };
         SetClientInfoServerRpc(clientInfo);
     }
 
     [Rpc(SendTo.NotServer)]
-    public void SetClientInfoClientRpc(ulong playerId, ClientInfo clientInfo) {
+    public void SetClientInfoClientRpc(ulong playerId, LobbyPlayerInfo clientInfo) {
         clientInfo.clientId = playerId;
         lobby.SetClientInfo(playerId, clientInfo);
     }
+
+    public void ToggleReadyState() {
+        LobbyPlayerInfo playerInfo = lobby.GetPlayerInfo(NetworkManager.LocalClientId);
+        playerInfo.isReady = !playerInfo.isReady;
+        SetClientInfoServerRpc(playerInfo);
+    }
+
+    public void ToggleSpectatorState() {
+        LobbyPlayerInfo playerInfo = lobby.GetPlayerInfo(NetworkManager.LocalClientId);
+        playerInfo.isSpectator = !playerInfo.isSpectator;
+        SetClientInfoServerRpc(playerInfo);
+    }
+
     #endregion
 
 }
