@@ -45,7 +45,6 @@ public class Lobby : NetworkBehaviour
         if(playerSlots.Count >= maxPlayerCount) {
             clientInfo.isSpectator = true;
         }
-        Debug.Log(clientInfo);
         playerSlots.Add(clientInfo);
     }
 

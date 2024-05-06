@@ -2,29 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameClientManager : NetworkBehaviour
 {
     private List<PlayerGameInfo> players;
     [SerializeField] private GameObject playerPrefab;
 
-    public void Initialize(Lobby playerLobby) {
-        DontDestroyOnLoad(this);
+    public override void OnNetworkSpawn() {
+        if (IsServer) {
+            NetworkManager.SceneManager.OnLoadEventCompleted += InitOnLoadComplete;
+        }
+    }
+
+    public override void OnNetworkDespawn() {
+        if (IsServer) {
+            NetworkManager.SceneManager.OnLoadEventCompleted -= InitOnLoadComplete;
+        }
+    }
+
+    private void InitOnLoadComplete(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut) {
+        Initialize();
+    }
+
+    public void Initialize() {
         players = new List<PlayerGameInfo>();
         FactoryGrid[] grids = FindObjectsOfType<FactoryGrid>();
-        NetworkList<LobbyPlayerInfo> clients = playerLobby.GetConnectedClients();
-        for(int i = 0; i < clients.Count; i++) {
-            if (clients[i].isSpectator) {
+        int gridCounter = 0;
+        foreach(NetworkClient nClient in NetworkManager.ConnectedClientsList) {
+            PlayerGameInfo playerGameInfo = nClient.PlayerObject.GetComponent<PlayerGameInfo>();
+            //Spectators do not get a grid assigned
+            if (playerGameInfo.clientInfo.isSpectator) {
                 continue;
             }
-            PlayerGameInfo pInfo = NetworkManager.ConnectedClients[clients[i].clientId].PlayerObject.gameObject.AddComponent<PlayerGameInfo>();
-            pInfo.clientInfo = clients[i];
-            pInfo.playerObject = Instantiate(playerPrefab);
-            pInfo.playerObject.GetComponent<NetworkObject>().SpawnWithOwnership(clients[i].clientId);
-            pInfo.playerGrid = grids[i].transform.root.gameObject;
-            players.Add(pInfo);
-            AssignGridToPlayerClientRpc(pInfo.playerGrid.GetComponent<NetworkObject>(), pInfo.playerObject.GetComponent<NetworkObject>());
-            AssignGridToPlayer(pInfo.playerGrid.GetComponent<NetworkObject>(), pInfo.playerObject.GetComponent<NetworkObject>());
+            playerGameInfo.playerObject = Instantiate(playerPrefab);
+            playerGameInfo.playerObject.GetComponent<NetworkObject>().SpawnWithOwnership(nClient.ClientId);
+            playerGameInfo.playerGrid = grids[gridCounter].transform.root.gameObject;
+            players.Add(playerGameInfo);
+            AssignGridToPlayerClientRpc(playerGameInfo.playerGrid.GetComponent<NetworkObject>(), playerGameInfo.playerObject.GetComponent<NetworkObject>());
+            AssignGridToPlayer(playerGameInfo.playerGrid.GetComponent<NetworkObject>(), playerGameInfo.playerObject.GetComponent<NetworkObject>());
+            gridCounter += 1;
         }
     }
 

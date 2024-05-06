@@ -9,10 +9,6 @@ public class LobbyManager : NetworkBehaviour
 {
     [SerializeField] private Lobby lobby;
 
-    private void Start() {
-        DontDestroyOnLoad(this);
-    }
-
     #region Server
     public void StartServer() {
         NetworkManager.Singleton.OnServerStarted += OnServerStarted;
@@ -21,6 +17,7 @@ public class LobbyManager : NetworkBehaviour
     }
 
     private void OnClientConnected(ulong clientId) {
+        Debug.Log("New player connected with id " + clientId);
         
         RpcParams clientParams = new RpcParams
         {
@@ -38,8 +35,6 @@ public class LobbyManager : NetworkBehaviour
 
         //Get and update the information (name etc.) for the new player
         GetPlayerInfoClientRpc(clientParams);
-
-        Debug.Log("Added player with id " + clientId);
     }
 
     private void OnClientDisconnected(ulong clientId) {
@@ -51,7 +46,7 @@ public class LobbyManager : NetworkBehaviour
         ulong sender = rpcParams.Receive.SenderClientId;
         newClientInfo.clientId = sender;
         lobby.SetClientInfo(sender, newClientInfo);
-        Debug.Log("changed info for player " + sender);
+        Debug.Log("changed info for player with id " + sender);
         Debug.Log(newClientInfo);
     }
 
@@ -69,19 +64,17 @@ public class LobbyManager : NetworkBehaviour
             Debug.Log("Some players are not ready");
             return;
         }
+        
+        foreach(NetworkClient nClient in NetworkManager.ConnectedClientsList) {
+            PlayerGameInfo pInfo = nClient.PlayerObject.gameObject.AddComponent<PlayerGameInfo>();
+            pInfo.clientInfo = lobby.GetPlayerInfo(nClient.ClientId);
+        }
 
-        NetworkManager.SceneManager.OnLoadEventCompleted += OnGameSceneLoadComplete;
         NetworkManager.SceneManager.LoadScene("Combat", LoadSceneMode.Single);
     }
 
     public void StartGame() {
         StartGameServerRpc();
-    }
-
-    private void OnGameSceneLoadComplete(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut) {
-        GameClientManager gameClientManager = GetComponent<GameClientManager>();
-        gameClientManager.Initialize(lobby);
-        NetworkManager.SceneManager.OnLoadEventCompleted -= OnGameSceneLoadComplete;
     }
 
     #endregion

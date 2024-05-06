@@ -927,7 +927,6 @@ GameObject:
   - component: {fileID: 710740392}
   - component: {fileID: 710740393}
   - component: {fileID: 710740391}
-  - component: {fileID: 710740394}
   - component: {fileID: 710740395}
   m_Layer: 0
   m_Name: LobbyManager
@@ -985,19 +984,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &710740394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 710740390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22e7a9a086f42a741a0eae02767a69d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 4970881398481330147, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
 --- !u!114 &710740395
 MonoBehaviour:
   m_ObjectHideFlags: 0
