@@ -20,18 +20,38 @@ public class LobbyClientVisuals : MonoBehaviour
     }
 
     private void OnDestroy() {
+        if(NetworkManager.Singleton != null) {
+            NetworkManager.Singleton.OnConnectionEvent -= OnConnectionEvent;
+        }
         lobby.playerListChanged.RemoveListener(OnPlayerListChanged);
     }
 
     private void OnConnectionEvent(NetworkManager nManager, ConnectionEventData connectionData) {
-        if(connectionData.EventType == ConnectionEvent.ClientConnected) {
-            startPanel.SetActive(false);
-            lobbyPanel.SetActive(true);
+        //UI code should only run on clients
+        if (!nManager.IsClient) {
+            return;
+        }
+        //Since the host is both a client and a server, it will get ClientConnected/Disconnected events for every client that connects.
+        //We only want to run this code when we are the ones that are connecting/disconnecting, so we check the clientId.
+        //We dont want to disable the lobby UI on the host if we are not the ones that disconnected.
+        if(connectionData.ClientId != nManager.LocalClientId) {
+            return;
+        }
+
+        switch (connectionData.EventType) {
+            case ConnectionEvent.ClientConnected:
+                startPanel.SetActive(false);
+                lobbyPanel.SetActive(true);
+                break;
+            case ConnectionEvent.ClientDisconnected:
+                startPanel.SetActive(true);
+                lobbyPanel.SetActive(false);
+                break;
         }
     }
 
     private void OnPlayerListChanged(NetworkListEvent<LobbyPlayerInfo> changeEventInfo) {
-        switch (changeEventInfo.Type) {
+        /*switch (changeEventInfo.Type) {
             case NetworkListEvent<LobbyPlayerInfo>.EventType.Add:
                 break;
             case NetworkListEvent<LobbyPlayerInfo>.EventType.Insert:
@@ -48,18 +68,18 @@ public class LobbyClientVisuals : MonoBehaviour
                 break;
             default:
                 break;
-        }
+        }*/
         //TODO: Right now we just set all values again when something changes. Ideally we should make more focused changes to the UI depending on the change.
         int currentPlayerCount = lobbyPlayerList.transform.childCount;
-        while(currentPlayerCount < lobby.GetNumClientsConnected()) {
+        int playersToSpawn = lobby.GetNumClientsConnected() - currentPlayerCount;
+        int playersToRemove = -playersToSpawn;
+        for(int i = 0; i < playersToSpawn; i++) {
             Instantiate(lobbyPlayerPrefab, lobbyPlayerList.transform);
-            currentPlayerCount = lobbyPlayerList.transform.childCount;
         }
-        while(currentPlayerCount > lobbyPlayerList.transform.childCount) {
-            Destroy(lobbyPlayerList.transform.GetChild(lobbyPlayerList.transform.childCount - 1));
-            currentPlayerCount = lobbyPlayerList.transform.childCount;
+        for(int i = 0; i < playersToRemove; i++) {
+            Destroy(lobbyPlayerList.transform.GetChild(lobbyPlayerList.transform.childCount - 1).gameObject);
         }
-        for(int i = 0; i < currentPlayerCount; i++) {
+        for(int i = 0; i < lobby.GetNumClientsConnected(); i++) {
             LobbyPlayerInfo playerInfo = lobby.GetPlayerInfo(i);
             GameObject lobbyPlayerObject = lobbyPlayerList.transform.GetChild(i).gameObject;
             LobbyPlayerVisuals playerVisuals = lobbyPlayerObject.GetComponent<LobbyPlayerVisuals>();

@@ -7,30 +7,32 @@ using UnityEngine;
 public class GridConnector : NetworkBehaviour
 {
     private NetworkBuilder networkBuilder;
-    private ulong clientId;
     private Vector2Int position;
     private FixedString128Bytes buildingId;
     private Facing rotation;
 
-    public void Init(NetworkBuilder nBuilder, ulong clientId, Vector2Int position, FixedString128Bytes buildingId, Facing rotation) {
+    public void Init(NetworkBuilder nBuilder, Vector2Int position, FixedString128Bytes buildingId, Facing rotation) {
         this.networkBuilder = nBuilder;
-        this.clientId = clientId;
         this.position = position;
         this.buildingId = buildingId;
         this.rotation = rotation;
     }
 
     public override void OnNetworkSpawn() {
-        if (IsLocalPlayer) {
-            RpcParams sendParams = new RpcParams
-            {
-                Send = new RpcSendParams
-                {
-                    Target = RpcTarget.Single(clientId, RpcTargetUse.Temp)
-                }
-            };
-            networkBuilder.ConnectExistingBuildingClientRpc(GetComponent<NetworkObject>(), buildingId, position, rotation, sendParams);
-            Debug.Log("Connected");
+        if (!IsServer) {
+            RequestBuildingInfoServerRpc(GetComponent<NetworkObject>());
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void RequestBuildingInfoServerRpc(NetworkObjectReference nObject, RpcParams rpcParams = default) {
+        RpcParams sendParams = new RpcParams
+        {
+            Send = new RpcSendParams
+            {
+                Target = RpcTarget.Single(rpcParams.Receive.SenderClientId, RpcTargetUse.Temp)
+            }
+        };
+        networkBuilder.ConnectExistingBuildingClientRpc(nObject, buildingId, position, rotation, sendParams);
     }
 }

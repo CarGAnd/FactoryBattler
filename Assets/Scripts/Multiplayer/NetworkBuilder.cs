@@ -35,6 +35,7 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
             nObject.SpawnWithObservers = false;
             nObject.Spawn();
             nObject.NetworkShow(rpcParams.Receive.SenderClientId);
+            placedObject.GetComponent<GridConnector>().Init(this, pos, buildingId, rotation);
         }
     }
 
@@ -42,8 +43,9 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
     public void ConnectExistingBuildingClientRpc(NetworkObjectReference networkReference, FixedString128Bytes buildingId, Vector2Int pos, Facing rotation, RpcParams rpcParams = default) {
         networkReference.TryGet(out NetworkObject nObject);
         GameObject gObject = nObject.gameObject;
+        GridObjectSO buildingData = buildingDatabase.GetBuildingByID(buildingId.ToString());
         if(gObject.TryGetComponent<IGridObject>(out IGridObject gridObject)) {
-            builder.SetupBuilding(gridObject, pos);
+            builder.ConnectExistingBuildingToGrid(buildingData, gridObject, pos, rotation);
         }
     }
 

@@ -5,26 +5,26 @@ using UnityEngine;
 
 public class GameClientManager : NetworkBehaviour
 {
-    private List<PlayerInfo> players;
+    private List<PlayerGameInfo> players;
     [SerializeField] private GameObject playerPrefab;
 
     public void Initialize(Lobby playerLobby) {
         DontDestroyOnLoad(this);
-        players = new List<PlayerInfo>();
+        players = new List<PlayerGameInfo>();
         FactoryGrid[] grids = FindObjectsOfType<FactoryGrid>();
         NetworkList<LobbyPlayerInfo> clients = playerLobby.GetConnectedClients();
         for(int i = 0; i < clients.Count; i++) {
             if (clients[i].isSpectator) {
                 continue;
             }
-            PlayerInfo pInfo = new PlayerInfo();
+            PlayerGameInfo pInfo = NetworkManager.ConnectedClients[clients[i].clientId].PlayerObject.gameObject.AddComponent<PlayerGameInfo>();
             pInfo.clientInfo = clients[i];
-            pInfo.playerPrefab = Instantiate(playerPrefab);
-            pInfo.playerPrefab.GetComponent<NetworkObject>().SpawnWithOwnership(clients[i].clientId);
+            pInfo.playerObject = Instantiate(playerPrefab);
+            pInfo.playerObject.GetComponent<NetworkObject>().SpawnWithOwnership(clients[i].clientId);
             pInfo.playerGrid = grids[i].transform.root.gameObject;
             players.Add(pInfo);
-            AssignGridToPlayerClientRpc(pInfo.playerGrid.GetComponent<NetworkObject>(), pInfo.playerPrefab.GetComponent<NetworkObject>());
-            AssignGridToPlayer(pInfo.playerGrid.GetComponent<NetworkObject>(), pInfo.playerPrefab.GetComponent<NetworkObject>());
+            AssignGridToPlayerClientRpc(pInfo.playerGrid.GetComponent<NetworkObject>(), pInfo.playerObject.GetComponent<NetworkObject>());
+            AssignGridToPlayer(pInfo.playerGrid.GetComponent<NetworkObject>(), pInfo.playerObject.GetComponent<NetworkObject>());
         }
     }
 
@@ -40,16 +40,5 @@ public class GameClientManager : NetworkBehaviour
         FactoryGrid grid = gridNetworkObject.GetComponentInChildren<FactoryGrid>();
         NetworkBuilder builder = gridNetworkObject.GetComponentInChildren<NetworkBuilder>();
         playerModeManager.UpdateGridReference(grid, builder);
-    }
-}
-
-public class PlayerInfo {
-    
-    public LobbyPlayerInfo clientInfo;
-    public GameObject playerPrefab;
-    public GameObject playerGrid;
-
-    public PlayerInfo() {
-
     }
 }

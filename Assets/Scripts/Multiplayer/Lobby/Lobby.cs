@@ -157,8 +157,8 @@ public struct LobbyPlayerInfo : INetworkSerializable, IEquatable<LobbyPlayerInfo
 
     public override string ToString() {
         return String.Format("Id : {0} \n" +
-            "name : {1} \n" +
-            "isReady : {2} \n" +
-            "isSpectator : {3}", clientId, playerName, isReady, isSpectator);
+                             "name : {1} \n" +
+                             "isReady : {2} \n" +
+                             "isSpectator : {3}", clientId, playerName, isReady, isSpectator);
     }
 }

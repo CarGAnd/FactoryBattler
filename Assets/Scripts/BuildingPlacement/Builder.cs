@@ -36,6 +36,10 @@ public class Builder : MonoBehaviour, IBuilder
         building.OnPlacedOnGrid(gridPosition, grid);
     }
 
+    public void ConnectExistingBuildingToGrid(GridObjectSO buildingData, IGridObject gridObject, Vector2Int gridPos, Facing rotation) {
+        modulePlacer.PlaceExistingBuilding(gridObject, gridPos, buildingData.GetLayoutShape(rotation));
+    }
+
     public List<IGridObject> GetAllPlacedBuildings() {
         return grid.GetAllPlacedObjects();
     }
