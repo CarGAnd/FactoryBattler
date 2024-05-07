@@ -10,6 +10,6 @@ public interface IDamagable {
         if (damage < 0)
             throw new ArgumentException("Damage cannot be a negative number");
             
-        AttributeManager.AddAttributeByName("HealthNegative", damage);
+        AttributeManager.AddAttributeByName(AttributeKeys.HealthNegative, damage);
     }
 }

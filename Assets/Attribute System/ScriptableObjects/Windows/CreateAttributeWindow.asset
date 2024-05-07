@@ -27,10 +27,10 @@ MonoBehaviour:
     createType: 0
   - type: 50
     typeName: Positive
-    createType: 0
+    createType: 1
   - type: 60
     typeName: Negative
-    createType: 0
-  attributeName: Health
+    createType: 1
+  attributeName: Wisdom
   calculationGroup: {fileID: 11400000, guid: 1e11a59836689d949b4f42163347e401, type: 2}
   createAndAddToSet: 1

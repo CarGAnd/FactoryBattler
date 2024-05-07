@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   calculationType: 10
   roundingStrategy:
-    rid: 6776449717177417741
+    rid: 8303100765828022273
+  isAllowedDirty: 1
   references:
     version: 2
     RefIds:
-    - rid: 6776449717177417741
+    - rid: 8303100765828022273
       type: {class: RoundUpStrategy, ns: AttributeSystem, asm: Assembly-CSharp}
       data: 

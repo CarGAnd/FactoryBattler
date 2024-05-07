@@ -5,6 +5,6 @@ public interface IKillable {
     bool IsDead {get;}
     void OnDeath(float health);
     void Initialize() {
-        AttributeManager.GetBaseAttributeInstance("HealthBase").ValueChangedTo.AddListener(OnDeath);
+        AttributeManager.GetBaseAttributeInstance(AttributeKeys.HealthBase).ValueChangedTo.AddListener(OnDeath);
     }
 }

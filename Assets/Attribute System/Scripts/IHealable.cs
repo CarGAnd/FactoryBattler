@@ -10,6 +10,6 @@ public interface IHealable {
         if (healing < 0)
             throw new ArgumentException("Healing cannot be a negative number");
 
-        AttributeManager.AddAttributeByName("HealthPositive", healing);
+        AttributeManager.AddAttributeByName(AttributeKeys.HealthPositive, healing);
     }
 }
