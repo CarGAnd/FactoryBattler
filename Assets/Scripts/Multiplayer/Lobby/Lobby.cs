@@ -38,6 +38,10 @@ public class Lobby : NetworkBehaviour
         playerSlots.OnListChanged -= OnPlayerSlotsChanged;
     }
 
+    public override void OnDestroy() {
+        playerSlots.Dispose();
+    }
+
     public void AddPlayer(LobbyPlayerInfo clientInfo) {
         if(playerSlots.Count == 0) {
             LobbyOwnerId = clientInfo.clientId;

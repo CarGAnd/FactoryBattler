@@ -10,18 +10,6 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
     [SerializeField] private Builder builder;
     [SerializeField] private BuildingDatabase buildingDatabase;
  
-    public override void OnNetworkSpawn() {
-        if (IsServer) {
-            Debug.Log("reveal in 10");
-            StartCoroutine(StartReveal());
-        }
-    }
-
-    public IEnumerator StartReveal() {
-        yield return new WaitForSeconds(10f);
-        RevealBoardToAll();
-    }
-
     [Rpc(SendTo.Server)]
     public void TryPlaceBuildingServerRpc(FixedString128Bytes buildingId, Vector2Int pos, Facing rotation, RpcParams rpcParams = default) {
         GridObjectSO building = buildingDatabase.GetBuildingByID(buildingId.ToString());
