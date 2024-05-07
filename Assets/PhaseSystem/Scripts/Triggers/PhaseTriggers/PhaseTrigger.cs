@@ -29,7 +29,7 @@ namespace PhaseSystem
         {
             foreach (ITriggerCondition condition in triggerConditions)
             {
-                condition.Reset();
+                condition.Initialize();
                 condition.ConditionMet.AddListener(OnTriggered);
             }
         }
