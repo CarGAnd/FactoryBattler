@@ -19,11 +19,7 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
 
     public IEnumerator StartReveal() {
         yield return new WaitForSeconds(10f);
-        List<ulong> clientList = new List<ulong>();
-        foreach(ulong clientId in NetworkManager.ConnectedClientsIds) {
-            clientList.Add(clientId);
-        }
-        RevealBoard(clientList);
+        RevealBoardToAll();
     }
 
     [Rpc(SendTo.Server)]
@@ -64,7 +60,15 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
         Debug.Log("Revealed board");
     }
 
-    public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation, IPlayer owner) {
+    public void RevealBoardToAll() {
+        List<ulong> clientList = new List<ulong>();
+        foreach(ulong clientId in NetworkManager.ConnectedClientsIds) {
+            clientList.Add(clientId);
+        }
+        RevealBoard(clientList);
+    }
+
+    public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation) {
         TryPlaceBuildingServerRpc(buildingData.ID, coord, rotation);
     }
 

@@ -64,6 +64,8 @@ public class LobbyManager : NetworkBehaviour
             Debug.Log("Some players are not ready");
             return;
         }
+
+        AssignPlayerInfoClientRpc();
         
         foreach(NetworkClient nClient in NetworkManager.ConnectedClientsList) {
             PlayerGameInfo pInfo = nClient.PlayerObject.gameObject.AddComponent<PlayerGameInfo>();
@@ -94,6 +96,12 @@ public class LobbyManager : NetworkBehaviour
     public void SetClientInfoClientRpc(ulong playerId, LobbyPlayerInfo clientInfo) {
         clientInfo.clientId = playerId;
         lobby.SetClientInfo(playerId, clientInfo);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void AssignPlayerInfoClientRpc() {
+        PlayerGameInfo playerGameInfo = NetworkManager.LocalClient.PlayerObject.gameObject.AddComponent<PlayerGameInfo>();
+        playerGameInfo.clientInfo = lobby.GetPlayerInfo(NetworkManager.LocalClientId);
     }
 
     public void ToggleReadyState() {

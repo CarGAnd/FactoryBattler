@@ -39,28 +39,37 @@ public class GameClientManager : NetworkBehaviour
             playerGameInfo.playerObject = Instantiate(playerPrefab);
             playerGameInfo.playerObject.GetComponent<NetworkObject>().SpawnWithOwnership(nClient.ClientId);
             playerGameInfo.playerGrid = grids[gridCounter].transform.root.gameObject;
-            playerGameInfo.player = new BasePlayer(playerGameInfo.clientInfo.playerName.ToString(), new WinLossScoreHolderStrategy(), nClient.ClientId);
             players.Add(playerGameInfo);
-            AssignGridToPlayerClientRpc(playerGameInfo.playerGrid.GetComponent<NetworkObject>(), playerGameInfo.playerObject.GetComponent<NetworkObject>(), nClient.ClientId);
+
+            RpcParams sendParams = new RpcParams
+            {
+                Send = new RpcSendParams
+                {
+                    Target = RpcTarget.Single(nClient.ClientId, RpcTargetUse.Temp)
+                }
+            };
+
+            AssignGridToPlayerClientRpc(playerGameInfo.playerGrid.GetComponent<NetworkObject>(), playerGameInfo.playerObject.GetComponent<NetworkObject>(), sendParams);
             AssignGridToPlayer(playerGameInfo.playerGrid.GetComponent<NetworkObject>(), playerGameInfo.playerObject.GetComponent<NetworkObject>(), nClient.ClientId);
             gridCounter += 1;
         }
     }
 
-    [Rpc(SendTo.NotServer)]
-    private void AssignGridToPlayerClientRpc(NetworkObjectReference gridObject, NetworkObjectReference playerObject, ulong playerId) {
-        AssignGridToPlayer(gridObject, playerObject, playerId);    
+    [Rpc(SendTo.SpecifiedInParams)]
+    private void AssignGridToPlayerClientRpc(NetworkObjectReference gridObject, NetworkObjectReference playerObject, RpcParams rpcParams = default) {
+        AssignGridToPlayer(gridObject, playerObject, NetworkManager.LocalClientId);    
     }
     
     private void AssignGridToPlayer(NetworkObjectReference gridObject, NetworkObjectReference playerObject, ulong playerId) {
         gridObject.TryGet(out NetworkObject gridNetworkObject);
         playerObject.TryGet(out NetworkObject playerNetworkObject);
+        PlayerGameInfo playerGameInfo = NetworkManager.LocalClient.PlayerObject.GetComponent<PlayerGameInfo>();
+        playerGameInfo.player = new BasePlayer(playerGameInfo.clientInfo.playerName.ToString(), new WinLossScoreHolderStrategy(), playerId);
         PlayerModeManager playerModeManager = playerNetworkObject.GetComponent<PlayerModeManager>();
         FactoryGrid grid = gridNetworkObject.GetComponentInChildren<FactoryGrid>();
         NetworkBuilder builder = gridNetworkObject.GetComponentInChildren<NetworkBuilder>();
-        IPlayer player = NetworkManager.ConnectedClients[playerId].PlayerObject.GetComponent<PlayerGameInfo>().player;
-        gridNetworkObject.GetComponentInChildren<Builder>().Owner = player;
-        playerModeManager.Owner = player;
+        gridNetworkObject.GetComponentInChildren<Builder>().Owner = playerGameInfo.player;
+        playerModeManager.Owner = playerGameInfo.player;
         playerModeManager.UpdateGridReference(grid, builder);
     }
 }

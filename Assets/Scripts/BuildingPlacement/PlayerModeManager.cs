@@ -46,6 +46,13 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
         currentMode.EnterMode();
     }
 
+    public void DisableControls() {
+        playerControls.Disable();
+    }
+
+    public void EnableControls() {
+        playerControls.Enable();
+    }
 
     public void UpdateGridReference(FactoryGrid grid, IBuilder builder) {
         placementMode.ChangeGrid(grid, builder);

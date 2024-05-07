@@ -148,7 +148,9 @@ MonoBehaviour:
     selectedObjectChanged:
       m_PersistentCalls:
         m_Calls: []
-    placeableObjects: []
+    placeableObjects:
+    - {fileID: 11400000, guid: ca9ce8b43926b2641b9eb94164262b88, type: 2}
+    - {fileID: 11400000, guid: 0adc0f716960c5d4f8baa17aeff38213, type: 2}
   placementMode: {fileID: 7382449636991581023}
   owner:
     rid: -2

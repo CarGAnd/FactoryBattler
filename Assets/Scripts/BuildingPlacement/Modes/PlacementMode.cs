@@ -92,7 +92,7 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
     }
     
     public void TryPlaceModule(GridObjectSO gridObject, Vector2Int gridPos, Facing facing) {
-        builder.TryPlaceBuilding(gridObject, gridPos, facing, playerModeManager.Owner);
+        builder.TryPlaceBuilding(gridObject, gridPos, facing);
     }
 
     public void EnterMode() {

@@ -10,10 +10,10 @@ public class Builder : MonoBehaviour, IBuilder, IPlayerOwned
 {
     [SerializeField] private FactoryGrid grid;
     [SerializeField] private AssemblyLineSystem assemblyLineSystem;
+    public IPlayer Owner { get => owner; set => owner = value; }
 
+    private IPlayer owner;
     private ModulePlacer modulePlacer;
-
-    public IPlayer Owner { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     private void Awake() {
         this.modulePlacer = new ModulePlacer(grid);
@@ -32,7 +32,6 @@ public class Builder : MonoBehaviour, IBuilder, IPlayerOwned
     public Vector2Int GetBuildingPlacementPosition(GridObjectSO moduleData, Vector3 mouseHitPosition, Facing facing) {
         return modulePlacer.GetModulePlacementPosition(moduleData, mouseHitPosition, facing);    
     }
-
 
     private void SetupBuilding(IGridObject building, Vector2Int gridPosition) {
         if(building is IAssemblyLineUser assemblyLineUser) {
@@ -53,12 +52,12 @@ public class Builder : MonoBehaviour, IBuilder, IPlayerOwned
         return grid.GetAllPlacedObjects();
     }
 
-    void IBuilder.TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation, IPlayer owner) {
+    void IBuilder.TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation) {
         TryPlaceBuilding(buildingData, coord, rotation);
     }
 }
 
 public interface IBuilder {
-    public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation, IPlayer owner);
+    public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation);
     public Vector2Int GetBuildingPlacementPosition(GridObjectSO buildingData, Vector3 worldPos, Facing rotation);
 }
