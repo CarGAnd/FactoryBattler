@@ -14,7 +14,7 @@ public class AssemblyLineSystem : MonoBehaviour
     public List<AssemblyLine> AssemblyLines { get => assemblyLines; }
     private AssemblyLineManager assemblyLineManager;
 
-    //To Be Removed -- It's part of debugging
+    // To Be Removed -- It's part of debugging
     public GameObject travelingObjectPrefab;
 
     private void Awake()
@@ -71,7 +71,7 @@ public class AssemblyLineSystem : MonoBehaviour
             SpawnAtAllConnectingLines(connectingLine, visitedLines);
         }
 
-        SpawnTravelingPieceAtPiece(line.GetStartPiece());
+        //SpawnTravelingPieceAtPiece(line.GetStartPiece());
     }
 
     private void SpawnTravelingPieceAtPiece(ITransportable piece)

@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using PlayerSystem;
 using UnityEngine;
 
 public class Builder : MonoBehaviour
@@ -13,12 +12,12 @@ public class Builder : MonoBehaviour
         this.modulePlacer = new ModulePlacer(grid);
     }
 
-    public IGridObject TryPlaceBuilding(GridObjectSO building, Vector2Int position, Facing rotation) {
+    public IGridObject TryPlaceBuilding(GridObjectSO building, Vector2Int position, Facing rotation, IPlayer owner) {
         IGridObject newBuilding = null;
         
         if(modulePlacer.CanPlaceModule(building, position, rotation)) {
             newBuilding = modulePlacer.PlaceModule(building, position, rotation);
-            SetupBuilding(newBuilding, position);
+            SetupBuilding(newBuilding, position, owner);
         }
         return newBuilding;
     }
@@ -27,10 +26,14 @@ public class Builder : MonoBehaviour
         return modulePlacer.GetModulePlacementPosition(moduleData, mouseHitPosition, facing);    
     }
 
-    private void SetupBuilding(IGridObject building, Vector2Int gridPosition) {
-        if(building is IAssemblyLineUser) {
-            ((IAssemblyLineUser)building).ConnectToAssemblyLine(assemblyLineSystem);
+    private void SetupBuilding(IGridObject building, Vector2Int gridPosition, IPlayer owner) {
+        if(building is IAssemblyLineUser assemblyLineUser) {
+            assemblyLineUser.ConnectToAssemblyLine(assemblyLineSystem);
         }
+        if (building is IPlayerOwned playerOwned) {
+            playerOwned.SetOwner(owner);
+        }
+        // if (building is IPlayerOwned)
         building.OnPlacedOnGrid(gridPosition, grid);
     }
 }

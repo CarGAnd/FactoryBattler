@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class DeleteMode : MonoBehaviour, IMouseMode {
+public class DeleteMode : IMouseMode {
 
     [HideInInspector] public UnityEvent enterDeleteMode;
     [HideInInspector] public UnityEvent exitDeleteMode;
@@ -11,7 +11,7 @@ public class DeleteMode : MonoBehaviour, IMouseMode {
     private FactoryGrid grid;
     private PlayerModeManager playerModeManager;
 
-    public void Initialize(FactoryGrid grid, PlayerModeManager playerModeManager) {
+    public DeleteMode(FactoryGrid grid, PlayerModeManager playerModeManager) {
         this.grid = grid;
         this.playerModeManager = playerModeManager;
     }

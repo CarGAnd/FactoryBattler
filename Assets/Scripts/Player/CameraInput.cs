@@ -2,11 +2,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 //This class is not fully developed yet, but serves as a placeholder to implement the camera system. will definitely be revised
-public class CameraInput : MonoBehaviour
+public class CameraInput
 {
-    [SerializeField] private Player playerInput;
-    
     private PlayerControls playerControls;
+
+    public CameraInput (PlayerControls playerControls) {
+        this.playerControls = playerControls;
+        playerControls.Camera.Enable();
+    }
 
     public Vector3 GetMovementInput()
     {
@@ -18,11 +21,6 @@ public class CameraInput : MonoBehaviour
         return totalInput;
     }
 
-    private void Start() {
-        this.playerControls = playerInput.PlayerControls;
-        playerControls.Camera.Enable();
-    }
-
     public float GetZoomInput()
     {
         float delta = playerControls.Camera.Zoom.ReadValue<float>();
@@ -31,7 +29,7 @@ public class CameraInput : MonoBehaviour
 
     private Vector2 GetMouseMovement() {
         if (!MouseIsInsideGameWindow()) {
-            return Vector3.zero;
+            return Vector3.zero; 
         }
 
         //How much of the screen is considered the border on each side (percentage)

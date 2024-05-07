@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using PlayerSystem;
 using UnityEngine;
 
 public class SetupSaveLoad : MonoBehaviour
@@ -7,6 +8,7 @@ public class SetupSaveLoad : MonoBehaviour
     [SerializeField] private FactoryGrid grid;
     [SerializeField] private Builder builder;
     [SerializeField] private GridLoader gridLoader;
+    [SerializeReference] private IPlayer owner;
 
     public void SaveSetupToFile(string saveName) {
         string jsonData = gridLoader.SaveGrid(grid);
@@ -20,12 +22,12 @@ public class SetupSaveLoad : MonoBehaviour
 
     public void LoadFromFile(string saveName) {
         string jsonData = SaveFileManager.LoadData(saveName);
-        gridLoader.LoadDataToGrid(grid, builder, jsonData);
+        gridLoader.LoadDataToGrid(grid, builder, jsonData, owner);
     }
 
     public void LoadFromClipBoard() {
         string jsonData = GUIUtility.systemCopyBuffer;
-        gridLoader.LoadDataToGrid(grid, builder, jsonData);
+        gridLoader.LoadDataToGrid(grid, builder, jsonData, owner);
     }
 
     public void LoadFileToClipBoard(string saveName) {

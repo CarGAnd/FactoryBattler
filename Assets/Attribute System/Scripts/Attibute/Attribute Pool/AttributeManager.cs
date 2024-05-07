@@ -48,6 +48,19 @@ namespace AttributeSystem
 
         internal void SetBaseAttributes(List<BaseAttributeInstance> inherientBaseAttributes, List<EnhanceAttributeInstance> inherientEnhanceAttributes)
         {
+            if (inherientBaseAttributes == null && inherientEnhanceAttributes == null)
+                return;
+            
+            if (inherientBaseAttributes != null && inherientEnhanceAttributes == null) {
+                inherientAttributes = inherientBaseAttributes.ToHashSet<AttributeInstance>();
+                return;
+            }
+
+            if (inherientEnhanceAttributes != null && inherientBaseAttributes == null) {
+                inherientAttributes = inherientEnhanceAttributes.ToHashSet<AttributeInstance>();
+                return;
+            }
+
             inherientAttributes = inherientBaseAttributes.ToHashSet<AttributeInstance>();
             inherientAttributes.UnionWith(inherientEnhanceAttributes.ToHashSet<AttributeInstance>());
         }

@@ -61,6 +61,11 @@ namespace AttributeSystem
             }
         }
 
+        public PoolMember() {
+            attributeManager = new AttributeManager();
+            attributeManager.SetBaseAttributes(InherientBaseAttributes, InherientEnhanceAttributes);
+        }
+
         public PoolMember(AttributeManager attributeManager) {
             this.attributeManager = attributeManager ?? throw new ArgumentNullException(nameof(attributeManager));
             this.attributeManager.SetBaseAttributes(InherientBaseAttributes, InherientEnhanceAttributes);
