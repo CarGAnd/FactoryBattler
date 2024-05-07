@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatMode : MonoBehaviour, IMouseMode {
+public class CombatMode : IMouseMode {
+
+    public CombatMode() {
+        
+    }
     
     public void EnterMode() {
     

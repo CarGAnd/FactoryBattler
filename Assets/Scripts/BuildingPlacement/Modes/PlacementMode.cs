@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PlayerSystem;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -89,9 +90,9 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
         Vector2Int gridPosition = builder.GetBuildingPlacementPosition(gridObject, worldPos, facing);
         TryPlaceModule(gridObject, gridPosition, facing);
     }
-
+    
     public void TryPlaceModule(GridObjectSO gridObject, Vector2Int gridPos, Facing facing) {
-        builder.TryPlaceBuilding(gridObject, gridPos, facing);
+        builder.TryPlaceBuilding(gridObject, gridPos, facing, playerModeManager.Owner);
     }
 
     public void EnterMode() {

@@ -1,3 +1,4 @@
+using PlayerSystem;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
@@ -63,7 +64,7 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
         Debug.Log("Revealed board");
     }
 
-    public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation) {
+    public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation, IPlayer owner) {
         TryPlaceBuildingServerRpc(buildingData.ID, coord, rotation);
     }
 

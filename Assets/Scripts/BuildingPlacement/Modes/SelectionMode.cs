@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class SelectionMode : MonoBehaviour, IMouseMode {
+public class SelectionMode : IMouseMode {
 
     [HideInInspector] public UnityEvent enterSelectionMode;
     [HideInInspector] public UnityEvent exitSelectionMode;
@@ -9,7 +9,9 @@ public class SelectionMode : MonoBehaviour, IMouseMode {
     public Vector3 LastMouseGridPosition { get; private set; }
     private FactoryGrid grid;
 
-    public void Initialize(FactoryGrid grid) {
+    public SelectionMode(FactoryGrid grid) {
+        enterSelectionMode = new UnityEvent();
+        exitSelectionMode = new UnityEvent();
         this.grid = grid;
     }
 

@@ -58210,11 +58210,57 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 581478105}
     - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: owner
+      value: 8303100765828022272
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
       propertyPath: builder
       value: 
       objectReference: {fileID: 581478109}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: managedReferences[8303100765828022272]
+      value: Assembly-CSharp PlayerSystem.BasePlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: managedReferences[8303100765828022272].id
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: managedReferences[8303100765828022272].name
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: buildingSelector.placeableObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: managedReferences[8303100765828022272].isDead
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: buildingSelector.placeableObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: ca9ce8b43926b2641b9eb94164262b88, type: 2}
+    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: managedReferences[8303100765828022272].factoryGrid
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: managedReferences[8303100765828022272].playerModeManager
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: managedReferences[8303100765828022272].inherientbaseAttributes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: managedReferences[8303100765828022272].inherientEnhanceAttributes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4801631025868026570, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 7136280564522372392, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}

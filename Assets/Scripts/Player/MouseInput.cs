@@ -2,24 +2,16 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class MouseInput : MonoBehaviour {
-    
-    [SerializeField] private Player playerInput;
-    [SerializeField] private Camera cam;
-
+public class MouseInput {
     private PlayerControls playerControls;
-    
-    void Awake() {
-        cam = Camera.main;
-    }
 
-    private void Start() {
-        this.playerControls = playerInput.PlayerControls;
+    public MouseInput(PlayerControls playerControls) {
+        this.playerControls = playerControls;
         playerControls.Modules.Enable();
     }
 
     public Vector3 GetMousePosOnGrid(FactoryGrid grid) {
-        Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         Vector3 worldPosition = grid.RaycastGridPlane(ray);
         return worldPosition;
     }

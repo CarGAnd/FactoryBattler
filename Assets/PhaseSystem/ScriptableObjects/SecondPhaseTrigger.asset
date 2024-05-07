@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dd3a2663479dc94c88939473c00c24b, type: 3}
+  m_Name: SecondPhaseTrigger
+  m_EditorClassIdentifier: 
+  triggerName: SecondPhaseTrigger
+  triggerConditions:
+  - rid: 6776449942874226704
+  triggerStrategy:
+    rid: 6776449963611914246
+  references:
+    version: 2
+    RefIds:
+    - rid: 6776449942874226704
+      type: {class: TestButtonCondition, ns: PhaseSystem, asm: Assembly-CSharp}
+      data: 
+    - rid: 6776449963611914246
+      type: {class: AllTrueTriggerStrategy, ns: PhaseSystem, asm: Assembly-CSharp}
+      data: 

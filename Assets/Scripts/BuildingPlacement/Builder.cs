@@ -2,14 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Netcode;
+
+using PlayerSystem;
 using UnityEngine;
 
-public class Builder : MonoBehaviour, IBuilder
+public class Builder : MonoBehaviour, IBuilder, IPlayerOwned
 {
     [SerializeField] private FactoryGrid grid;
     [SerializeField] private AssemblyLineSystem assemblyLineSystem;
 
     private ModulePlacer modulePlacer;
+
+    public IPlayer Owner { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     private void Awake() {
         this.modulePlacer = new ModulePlacer(grid);
@@ -29,10 +33,15 @@ public class Builder : MonoBehaviour, IBuilder
         return modulePlacer.GetModulePlacementPosition(moduleData, mouseHitPosition, facing);    
     }
 
-    public void SetupBuilding(IGridObject building, Vector2Int gridPosition) {
-        if(building is IAssemblyLineUser) {
-            ((IAssemblyLineUser)building).ConnectToAssemblyLine(assemblyLineSystem);
+
+    private void SetupBuilding(IGridObject building, Vector2Int gridPosition) {
+        if(building is IAssemblyLineUser assemblyLineUser) {
+            assemblyLineUser.ConnectToAssemblyLine(assemblyLineSystem);
         }
+        if (building is IPlayerOwned playerOwned) {
+            playerOwned.SetOwner(Owner);
+        }
+        
         building.OnPlacedOnGrid(gridPosition, grid);
     }
 
@@ -44,12 +53,12 @@ public class Builder : MonoBehaviour, IBuilder
         return grid.GetAllPlacedObjects();
     }
 
-    void IBuilder.TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation) {
+    void IBuilder.TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation, IPlayer owner) {
         TryPlaceBuilding(buildingData, coord, rotation);
     }
 }
 
 public interface IBuilder {
-    public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation);
+    public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation, IPlayer owner);
     public Vector2Int GetBuildingPlacementPosition(GridObjectSO buildingData, Vector3 worldPos, Facing rotation);
 }

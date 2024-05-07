@@ -1,9 +1,11 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BuildingSelector : MonoBehaviour
+[Serializable][InlineProperty]
+public class BuildingSelector
 {
     [HideInInspector] public UnityEvent<GridObjectSO> selectedObjectChanged;
 
@@ -11,12 +13,16 @@ public class BuildingSelector : MonoBehaviour
 
     public GridObjectSO SelectedObject { get; private set; }
 
+    public BuildingSelector() {
+        selectedObjectChanged = new UnityEvent<GridObjectSO>();
+    }
+
     public void SetObjectSelection(GridObjectSO newSelectedObject) {
         SelectedObject = newSelectedObject;
         selectedObjectChanged?.Invoke(newSelectedObject);
     }
 
-    private void Update() {
+    public void Update() {
         int keyPressed = GetNumberKeyPressed();
         if(keyPressed >= 0) {
             if(keyPressed < placeableObjects.Count) {

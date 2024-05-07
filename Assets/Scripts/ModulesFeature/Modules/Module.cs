@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using PlayerSystem;
 using UnityEngine;
 
 [RequireComponent(typeof(ModuleInputOutput))]
-public abstract class Module : MonoBehaviour, IGridObject, IAssemblyLineUser
+public abstract class Module : MonoBehaviour, IGridObject, IAssemblyLineUser, IPlayerOwned
 {
     private ModuleInputOutput inputOutput;
     private ModuleSO moduleSettings;
     private Vector2Int gridPosition;
     private FactoryGrid grid;
+    private IPlayer owner;
+    public IPlayer Owner { get => owner; set => owner = value; }
 
     private void Awake() {
         inputOutput = GetComponent<ModuleInputOutput>();
