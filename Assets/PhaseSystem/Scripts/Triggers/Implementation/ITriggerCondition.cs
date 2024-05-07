@@ -5,6 +5,7 @@ namespace PhaseSystem {
     {
         UnityEvent ConditionMet { get; }
         bool IsTrue { get; }
+        void Initialize();
         void FixedUpdate();
         void Update();
         void Reset();

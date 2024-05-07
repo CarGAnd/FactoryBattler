@@ -549,6 +549,78 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &982045867
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 982045869}
+  - component: {fileID: 982045868}
+  - component: {fileID: 982045870}
+  m_Layer: 0
+  m_Name: PhaseController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &982045868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982045867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eb3c23f288453848a3370332a4265df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  phaseMachine:
+    states:
+    - rid: 7605306707952009216
+    - rid: 7605306707952009219
+  references:
+    version: 2
+    RefIds:
+    - rid: 7605306707952009216
+      type: {class: DefaultPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
+      data:
+        endTrigger: {fileID: 11400000, guid: 1e9c9bb1cec27644fbb33cb47954d83e, type: 2}
+    - rid: 7605306707952009219
+      type: {class: DefaultPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
+      data:
+        endTrigger: {fileID: 11400000, guid: a8b51052c525e0d4787f4efb548b4b9c, type: 2}
+--- !u!4 &982045869
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982045867}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.1370034, y: 4.317791, z: 5.9335175}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &982045870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982045867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dee5f3ae94faf8f4dada0987cdba2f5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1480064614
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,3 +837,4 @@ SceneRoots:
   - {fileID: 4744333284971871683}
   - {fileID: 566888377}
   - {fileID: 556950300}
+  - {fileID: 982045869}

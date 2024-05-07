@@ -6,6 +6,7 @@ namespace PhaseSystem {
     public abstract class TriggerCondition : ITriggerCondition
     {
         public UnityEvent ConditionMet => conditionMet;
+        public virtual void Initialize() { IsTrue = false; }
         public bool IsTrue { get { return isTrue; } internal set { isTrue = value; if (value) ConditionMet?.Invoke(); } }
         internal bool isTrue = false;
         internal UnityEvent conditionMet = new UnityEvent();
