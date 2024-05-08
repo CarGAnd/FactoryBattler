@@ -30,14 +30,12 @@ namespace AttributeSystem {
 
         private static bool IsRelevantPath(string assetPath)
         {
-            // Normalize the asset path
             string normalizedPath = assetPath.Replace("\\", "/").Trim();
             return normalizedPath.StartsWith(AttributesPath, System.StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsScriptableObject(string assetPath)
         {
-            Debug.Log($"Path checked: {assetPath}");
             var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
             return asset is ScriptableObject;
         }
@@ -45,27 +43,53 @@ namespace AttributeSystem {
         private static void GenerateAttributeKeys()
         {
             StringBuilder builder = new StringBuilder();
-            builder.AppendLine("// !IMPORTANT: This file is auto-generated. Modifications are not saved.");
-            builder.AppendLine("public static class AttributeKeys");
-            builder.AppendLine("{");
-
-            var attributes = AssetDatabase.FindAssets("t:ScriptableObject", new[] { AttributesPath })
+            IOrderedEnumerable<string> attributes = AssetDatabase.FindAssets("t:ScriptableObject", new[] { AttributesPath })
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .Select(Path.GetFileNameWithoutExtension)
                 .Distinct()
                 .OrderBy(name => name);
 
-            foreach (var attr in attributes)
-            {
-                builder.AppendLine($"    public const string {attr} = \"{attr}\";");
-            }
-
-            builder.AppendLine("}");
+            AddNameSpaceAndClassToBuilder(ref builder);
+            AddConstAttributeStringsToBuilder(attributes, ref builder);
+            AddGetAllAttributeKeysMethodToBuilder(attributes, ref builder);
+            CloseNamespaceAndClassForBuilder(ref builder);
 
             File.WriteAllText(OutputFile, builder.ToString());
             AssetDatabase.Refresh();
 
             Debug.Log("AttributeKeys generated at " + OutputFile);
+        }
+
+        private static void AddNameSpaceAndClassToBuilder(ref StringBuilder builder) {
+            builder.AppendLine("// !IMPORTANT: This file is auto-generated. Modifications are not saved.");
+            builder.AppendLine("namespace AttributeSystem {");
+            builder.AppendLine("    public static class AttributeKeys");
+            builder.AppendLine("    {");
+        }
+
+        private static void AddConstAttributeStringsToBuilder(IOrderedEnumerable<string> attributes, ref StringBuilder builder) {
+            foreach (var attr in attributes)
+            {
+                builder.AppendLine($"        public const string {attr} = \"{attr}\";");
+            }
+        }
+
+        private static void AddGetAllAttributeKeysMethodToBuilder(IOrderedEnumerable<string> attributes, ref StringBuilder builder) {
+            builder.AppendLine("        public static string[] GetAllAttributeKeys() {");
+            builder.AppendLine("            return new string[] {");
+
+            foreach (var attr in attributes)
+            {
+                builder.AppendLine($"                {attr},");
+            }
+
+            builder.AppendLine("            };");
+            builder.AppendLine("        }");
+        }
+
+        private static void CloseNamespaceAndClassForBuilder(ref StringBuilder builder) {
+            builder.AppendLine("    }");
+            builder.AppendLine("}");
         }
     }
 }
