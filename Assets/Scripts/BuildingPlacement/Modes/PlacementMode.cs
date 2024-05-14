@@ -3,33 +3,35 @@ using PlayerSystem;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlacementMode : MonoBehaviour, IMouseMode {
+public class PlacementMode : IPlayerMode {
 
     [HideInInspector] public UnityEvent<Facing> moduleRotated;
     [HideInInspector] public UnityEvent<GridObjectSO> moduleChanged;
-    [HideInInspector] public UnityEvent enterPlacementMode;
-    [HideInInspector] public UnityEvent exitPlacementMode;
     [HideInInspector] public UnityEvent<FactoryGrid> gridSwitched;
 
     public Facing CurrentFacing { get; private set; }
     public Vector3 CurrentMouseWorldPos { get; private set; }
-    public FactoryGrid Grid { get; private set; }
-
+    
+    private FactoryGrid grid;
     private PlayerModeManager playerModeManager;
     private IPlacementStrategy placementHandler;
     private IBuilder builder;
     private GridObjectSO currentBuilding;
 
-    public void Initialize(FactoryGrid grid, IBuilder builder, PlayerModeManager playerModeManager){
-        this.Grid = grid;
+    public PlacementMode(FactoryGrid grid, IBuilder builder, PlayerModeManager playerModeManager){
+        this.grid = grid;
         this.builder = builder;
         this.playerModeManager = playerModeManager;
         SetModuleRotation(Facing.West);
         placementHandler = new NoPlacement();
+
+        moduleRotated = new UnityEvent<Facing>();
+        moduleChanged = new UnityEvent<GridObjectSO>();
+        gridSwitched = new UnityEvent<FactoryGrid>();
     }
 
     public void ChangeGrid(FactoryGrid grid, IBuilder builder) {
-        this.Grid = grid;
+        this.grid = grid;
         this.builder = builder;
         if(currentBuilding == null) {
             placementHandler = new NoPlacement();
@@ -66,7 +68,7 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
             placementHandler = new NoPlacement();
         }
         else {
-            placementHandler = newBuilding.GetPlacementHandler(Grid, this);
+            placementHandler = newBuilding.GetPlacementHandler(grid, this);
         }
         currentBuilding = newBuilding;
         moduleChanged?.Invoke(newBuilding);
@@ -96,11 +98,9 @@ public class PlacementMode : MonoBehaviour, IMouseMode {
     }
 
     public void EnterMode() {
-        enterPlacementMode.Invoke();
     }
 
     public void ExitMode() {
-        exitPlacementMode.Invoke();
     }
 }
 

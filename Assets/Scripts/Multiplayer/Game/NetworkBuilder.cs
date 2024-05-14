@@ -9,7 +9,9 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
 {
     [SerializeField] private Builder builder;
     [SerializeField] private BuildingDatabase buildingDatabase;
- 
+
+    public IPlayer Owner { get => builder.Owner; set => builder.Owner = value; }
+
     [Rpc(SendTo.Server)]
     public void TryPlaceBuildingServerRpc(FixedString128Bytes buildingId, Vector2Int pos, Facing rotation, RpcParams rpcParams = default) {
         GridObjectSO building = buildingDatabase.GetBuildingByID(buildingId.ToString());

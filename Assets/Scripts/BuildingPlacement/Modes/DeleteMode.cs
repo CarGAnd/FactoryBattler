@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class DeleteMode : IMouseMode {
+public class DeleteMode : IPlayerMode {
 
     [HideInInspector] public UnityEvent enterDeleteMode;
     [HideInInspector] public UnityEvent exitDeleteMode;

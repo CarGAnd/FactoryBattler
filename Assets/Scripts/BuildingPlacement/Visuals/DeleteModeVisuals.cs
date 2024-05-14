@@ -15,7 +15,7 @@ public class DeleteModeVisuals : MonoBehaviour
 
     private void Awake() {
         grid = playerModeManager.Grid;
-        deleteMarker = new CellMarker(CreateIndicatorObject, grid);
+        deleteMarker = new CellMarker(CreateIndicatorObject);
     }
 
     private void OnEnable() {
@@ -52,7 +52,7 @@ public class DeleteModeVisuals : MonoBehaviour
         if(sharedPositions.Count == 0) {
             sharedPositions.Add(hoveredPosition);
         }
-        deleteMarker.MarkPositions(sharedPositions);
+        deleteMarker.MarkPositions(sharedPositions, grid);
         for(int i = 0; i < sharedPositions.Count; i++) {
             Vector2Int buildPosition = sharedPositions[i];
             deleteMarker.GetMarker(i).transform.position = grid.GetCellCenter(buildPosition);

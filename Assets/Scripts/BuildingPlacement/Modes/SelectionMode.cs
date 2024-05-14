@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class SelectionMode : IMouseMode {
+public class SelectionMode : IPlayerMode {
 
     [HideInInspector] public UnityEvent enterSelectionMode;
     [HideInInspector] public UnityEvent exitSelectionMode;

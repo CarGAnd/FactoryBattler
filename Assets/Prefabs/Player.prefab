@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3803572705448401735}
-  - component: {fileID: 7382449636991581023}
   - component: {fileID: 5018177168160381916}
   m_Layer: 0
   m_Name: PlacementMode
@@ -33,33 +32,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1080412103204443430}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7382449636991581023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 313699721757579644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07cb43ccd3ce9694d856914f57743ca8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moduleRotated:
-    m_PersistentCalls:
-      m_Calls: []
-  moduleChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  enterPlacementMode:
-    m_PersistentCalls:
-      m_Calls: []
-  exitPlacementMode:
-    m_PersistentCalls:
-      m_Calls: []
-  gridSwitched:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5018177168160381916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c7de8e335d8e1240abe02b859a061a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementMode: {fileID: 7382449636991581023}
+  playerModeManager: {fileID: 8722686548207618740}
   indicatorPrefab: {fileID: 3848024107658539241, guid: 9601ae405e1aff44a9363a007113c591, type: 3}
   arrowPrefab: {fileID: 7972430090760012725, guid: 7fb032593765dc947a229638e1e1481e, type: 3}
   gridPlanePrefab: {fileID: 0}
@@ -122,7 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1222940307
+  GlobalObjectIdHash: 2684446833
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -143,6 +115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee35c39ea406b8448e6a62d363ae531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modeChanged:
+    m_PersistentCalls:
+      m_Calls: []
   grid: {fileID: 0}
   buildingSelector:
     selectedObjectChanged:
@@ -151,7 +126,6 @@ MonoBehaviour:
     placeableObjects:
     - {fileID: 11400000, guid: ca9ce8b43926b2641b9eb94164262b88, type: 2}
     - {fileID: 11400000, guid: 0adc0f716960c5d4f8baa17aeff38213, type: 2}
-  placementMode: {fileID: 7382449636991581023}
   owner:
     rid: -2
   references:

@@ -68,7 +68,6 @@ public class GameClientManager : NetworkBehaviour
         PlayerModeManager playerModeManager = playerNetworkObject.GetComponent<PlayerModeManager>();
         FactoryGrid grid = gridNetworkObject.GetComponentInChildren<FactoryGrid>();
         NetworkBuilder builder = gridNetworkObject.GetComponentInChildren<NetworkBuilder>();
-        gridNetworkObject.GetComponentInChildren<Builder>().Owner = playerGameInfo.player;
         playerModeManager.Owner = playerGameInfo.player;
         playerModeManager.UpdateGridReference(grid, builder);
     }

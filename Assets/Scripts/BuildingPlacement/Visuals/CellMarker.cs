@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class CellMarker
 {
-    private FactoryGrid grid;
     private Func<GameObject> CreateMarker;
-
     private List<GameObject> markers;
 
-    public CellMarker(Func<GameObject> createMarkerFunction, FactoryGrid grid) {
-        this.grid = grid;
+    public CellMarker(Func<GameObject> createMarkerFunction) {
         this.CreateMarker = createMarkerFunction;
         markers = new List<GameObject>();
     }
 
-    public void MarkPositions(List<Vector2Int> positions) {
+    public void MarkPositions(List<Vector2Int> positions, FactoryGrid grid) {
         SetNumActiveMarkers(positions.Count);
         for(int i = 0; i < positions.Count; i++) {
             markers[i].transform.position = grid.GetCellCenter(positions[i]);

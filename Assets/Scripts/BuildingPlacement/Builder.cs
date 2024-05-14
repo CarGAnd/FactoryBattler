@@ -6,7 +6,7 @@ using Unity.Netcode;
 using PlayerSystem;
 using UnityEngine;
 
-public class Builder : MonoBehaviour, IBuilder, IPlayerOwned
+public class Builder : MonoBehaviour, IBuilder
 {
     [SerializeField] private FactoryGrid grid;
     [SerializeField] private AssemblyLineSystem assemblyLineSystem;
@@ -57,7 +57,7 @@ public class Builder : MonoBehaviour, IBuilder, IPlayerOwned
     }
 }
 
-public interface IBuilder {
+public interface IBuilder : IPlayerOwned {
     public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation);
     public Vector2Int GetBuildingPlacementPosition(GridObjectSO buildingData, Vector3 worldPos, Facing rotation);
 }

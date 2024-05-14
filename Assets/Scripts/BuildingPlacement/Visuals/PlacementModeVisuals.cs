@@ -3,14 +3,15 @@ using UnityEngine;
 
 public class PlacementModeVisuals : MonoBehaviour
 {
-    [SerializeField] private PlacementMode placementMode;
-    
+    [SerializeField] private PlayerModeManager playerModeManager;
+
     [Header("Prefabs")]
     [SerializeField] private GameObject indicatorPrefab;
     [SerializeField] private GameObject arrowPrefab;
     [SerializeField] private GameObject gridPlanePrefab;
 
     private CellMarker hoveredCellsMarker;
+    private PlacementMode placementMode;
 
     private FactoryGrid buildGrid;
     private GameObject placementPreview;
@@ -28,37 +29,54 @@ public class PlacementModeVisuals : MonoBehaviour
     private Vector3 indicatorOffset = Vector3.up * 0.01f;
 
     private void Start() {
-        buildGrid = placementMode.Grid;
         CreateArrowObject();
-        hoveredCellsMarker = new CellMarker(CreateIndicatorObject, buildGrid);
+        hoveredCellsMarker = new CellMarker(CreateIndicatorObject);
         //CreateGridPlane();
+        playerModeManager.modeChanged.AddListener(OnModeChanged);
+        buildGrid = playerModeManager.Grid;
     }
 
-    private void OnEnable() {
+    private void OnDestroy() {
+        playerModeManager.modeChanged.RemoveListener(OnModeChanged);
+    }
+
+    private void OnModeChanged(IPlayerMode newMode) {
+        if(newMode is PlacementMode placeMode) {
+            if(placementMode != placeMode) {
+                placementMode = placeMode;
+                SubscribeToPlacementMode();
+            }
+            OnEnterPlacementMode();
+        }
+        else {
+            OnExitPlacementMode();
+            if(placementMode != null) { 
+                UnsubscribeFromPlacementMode();
+            }
+        }
+    }
+
+    private void SubscribeToPlacementMode() {
         placementMode.moduleChanged.AddListener(OnModuleChanged);
         placementMode.moduleRotated.AddListener(OnModuleRotated);
-        placementMode.enterPlacementMode.AddListener(OnEnterPlacementMode);
-        placementMode.exitPlacementMode.AddListener(OnExitPlacementMode);
         placementMode.gridSwitched.AddListener(OnGridSwitched);
     }
 
-    private void OnDisable() {
+    private void UnsubscribeFromPlacementMode() {
         placementMode.moduleChanged.RemoveListener(OnModuleChanged);
         placementMode.moduleRotated.RemoveListener(OnModuleRotated);
-        placementMode.enterPlacementMode.RemoveListener(OnEnterPlacementMode);
-        placementMode.exitPlacementMode.RemoveListener(OnExitPlacementMode);
         placementMode.gridSwitched.RemoveListener(OnGridSwitched);
     }
 
     private void OnEnterPlacementMode() {
-        placementPreview.SetActive(true);
+        placementPreview?.SetActive(true);
         arrowObject.SetActive(true);
         //gridPlaneObject.SetActive(true);
         UpdateGroundIndicators();
     }
 
     private void OnExitPlacementMode() {
-        placementPreview.SetActive(false);
+        placementPreview?.SetActive(false);
         arrowObject.SetActive(false);
         //gridPlaneObject.SetActive(false);
         hoveredCellsMarker.RemoveAllMarkers();
@@ -131,7 +149,7 @@ public class PlacementModeVisuals : MonoBehaviour
 
     private void UpdateGroundIndicators() {
         List<Vector2Int> hoveredPositions = placementMode.GetHoveredPositions();
-        hoveredCellsMarker.MarkPositions(hoveredPositions);
+        hoveredCellsMarker.MarkPositions(hoveredPositions, buildGrid);
         for(int i = 0; i < hoveredPositions.Count; i++) {
             GameObject markerObject = hoveredCellsMarker.GetMarker(i);
             Vector2Int buildPosition = hoveredPositions[i];

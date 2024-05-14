@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatMode : IMouseMode {
+public class CombatMode : IPlayerMode {
 
     public CombatMode() {
         
