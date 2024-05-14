@@ -3,25 +3,22 @@ using UnityEngine.Events;
 
 public class DeleteMode : IPlayerMode {
 
-    [HideInInspector] public UnityEvent enterDeleteMode;
-    [HideInInspector] public UnityEvent exitDeleteMode;
-
     public Vector3 LastMouseGridPosition { get; private set; }
 
     private FactoryGrid grid;
     private PlayerModeManager playerModeManager;
+    private IBuilder builder;
 
-    public DeleteMode(FactoryGrid grid, PlayerModeManager playerModeManager) {
+    public DeleteMode(FactoryGrid grid, IBuilder builder, PlayerModeManager playerModeManager) {
         this.grid = grid;
+        this.builder = builder;
         this.playerModeManager = playerModeManager;
     }
 
     public void EnterMode() {
-        enterDeleteMode.Invoke();
     }
 
     public void ExitMode() {
-        exitDeleteMode.Invoke();
     }
 
     public void UpdateInput(MouseInput mouseInput, Vector3 mousePositionOnGrid) {
@@ -35,10 +32,7 @@ public class DeleteMode : IPlayerMode {
     }
 
     public void RemoveModule(Vector2Int gridPosition) {
-        IGridObject gridObject = grid.GetObjectAt(gridPosition);
-        if(gridObject != null) {
-            gridObject.DestroyObject();
-        }
+        builder.RemoveBuilding(gridPosition);
     }   
 }
 

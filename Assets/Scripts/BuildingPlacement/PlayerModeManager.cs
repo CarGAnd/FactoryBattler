@@ -9,8 +9,6 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
     [HideInInspector] public UnityEvent<IPlayerMode> modeChanged;
 
     [FoldoutGroup("Systems")]
-    [SerializeReference] private IBuilder builder;
-    [FoldoutGroup("Systems")]
     [SerializeField] private FactoryGrid grid;
 
     [SerializeField][FoldoutGroup("Building Selector")][HideLabel] private BuildingSelector buildingSelector = new BuildingSelector();
@@ -25,6 +23,7 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
     private CameraController cameraController;
 
     private IPlayer owner;
+    private IBuilder builder;
 
     public FactoryGrid Grid { get { return grid; } } 
     public IPlayer Owner { get => owner; set => SetOwner(value); }
@@ -32,6 +31,12 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
     private IPlayerMode currentMode;
 
     private void Awake() {
+        //If we are in single player mode, assign the builder here
+        //This is mainly for being able to test the PlayerModeManager without having to go through the multiplayer scene flow
+        if(NetworkManager.Singleton == null) {
+            builder = grid.transform.root.GetComponentInChildren<Builder>();
+        }
+
         playerControls = new PlayerControls();
         EnableControls();
 
@@ -42,7 +47,7 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
 
         placementMode = new PlacementMode(grid, builder, this);
         selectionMode = new SelectionMode(grid);
-        deleteMode = new DeleteMode(grid, this);
+        deleteMode = new DeleteMode(grid, builder, this);
 
         currentMode = selectionMode;
         currentMode.EnterMode();
@@ -66,7 +71,7 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
     public void UpdateGridReference(FactoryGrid grid, IBuilder builder) {
         placementMode.ChangeGrid(grid, builder);
         selectionMode = new SelectionMode(grid);
-        deleteMode = new DeleteMode(grid, this);
+        deleteMode = new DeleteMode(grid, builder, this);
         this.builder = builder;
         this.grid = grid;
         builder.Owner = Owner;
@@ -78,7 +83,6 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
 
     private void OnDisable() {
         buildingSelector.selectedObjectChanged.RemoveListener(OnNewBuildingSelected);
-        GoToSelectionMode();
     }
 
     private void OnNewBuildingSelected(GridObjectSO newBuilding) {

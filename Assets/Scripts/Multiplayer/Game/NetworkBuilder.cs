@@ -13,7 +13,11 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
     public IPlayer Owner { get => builder.Owner; set => builder.Owner = value; }
 
     [Rpc(SendTo.Server)]
-    public void TryPlaceBuildingServerRpc(FixedString128Bytes buildingId, Vector2Int pos, Facing rotation, RpcParams rpcParams = default) {
+    private void TryPlaceBuildingServerRpc(FixedString128Bytes buildingId, Vector2Int pos, Facing rotation, RpcParams rpcParams = default) {
+        if(!SenderIsOwner(rpcParams)) {
+            Debug.LogError("Only the owner of a grid can place objects on it");
+            return;
+        }
         GridObjectSO building = buildingDatabase.GetBuildingByID(buildingId.ToString());
         IGridObject placedBuilding = builder.TryPlaceBuilding(building, pos, rotation);
         if(placedBuilding != null) {
@@ -49,8 +53,28 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
         }
         Debug.Log("Revealed board");
     }
+    
+    [Rpc(SendTo.Server)]
+    private void RemoveBuildingServerRpc(Vector2Int position, RpcParams rpcParams = default) {
+        if (!SenderIsOwner(rpcParams)) {
+            return;
+        }
+        IGridObject gridObject = builder.GetBuildingAtPosition(position);
+        if(gridObject != null) {
+            GameObject g = gridObject.GetGameObject();
+            g.GetComponent<NetworkObject>().Despawn();
+            gridObject.DestroyObject();
+        }
+    }
+
+    private bool SenderIsOwner(RpcParams rpcParams) {
+        return rpcParams.Receive.SenderClientId.ToString() == Owner.Id;
+    }
 
     public void RevealBoardToAll() {
+        if (!IsServer) {
+            return;
+        }
         List<ulong> clientList = new List<ulong>();
         foreach(ulong clientId in NetworkManager.ConnectedClientsIds) {
             clientList.Add(clientId);
@@ -62,7 +86,7 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
         TryPlaceBuildingServerRpc(buildingData.ID, coord, rotation);
     }
 
-    public Vector2Int GetBuildingPlacementPosition(GridObjectSO buildingData, Vector3 worldPos, Facing rotation) {
-        return builder.GetBuildingPlacementPosition(buildingData, worldPos, rotation);
+    public void RemoveBuilding(Vector2Int position) {
+        RemoveBuildingServerRpc(position);
     }
 }

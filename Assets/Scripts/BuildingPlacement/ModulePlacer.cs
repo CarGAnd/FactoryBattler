@@ -10,12 +10,6 @@ public class ModulePlacer
         this.grid = grid;
     }
 
-    public Vector2Int GetModulePlacementPosition(GridObjectSO moduleData, Vector3 mouseHitPosition, Facing facing) {
-        Vector2Int buildingDimensions = moduleData.GetLayoutShapeDimensions(facing);
-        Vector2Int gridPosition = grid.GetSubgridOriginCoord(mouseHitPosition, buildingDimensions);
-        return gridPosition;
-    }
-
     public bool CanPlaceModule(GridObjectSO gridObject, Vector2Int lowerLeft, Facing facing) {
         List<Vector2Int> buildingPositions = gridObject.GetLayoutShape(facing);
         for(int i = 0; i < buildingPositions.Count; i++) {

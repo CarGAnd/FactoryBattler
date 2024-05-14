@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class DeleteModeVisuals : MonoBehaviour
 {
-    [SerializeField] private DeleteMode deleteMode;
     [SerializeField] private PlayerModeManager playerModeManager;
     [SerializeField] private GameObject indicatorPrefab;
 
+    private DeleteMode deleteMode;
     private CellMarker deleteMarker;
 
     private FactoryGrid grid;
     private bool isActive;
+    private Vector3 indicatorOffset = Vector3.up * 0.01f;
 
     private void Awake() {
         grid = playerModeManager.Grid;
@@ -19,20 +20,31 @@ public class DeleteModeVisuals : MonoBehaviour
     }
 
     private void OnEnable() {
-        deleteMode.enterDeleteMode.AddListener(OnEnterDeleteMode);
-        deleteMode.exitDeleteMode.AddListener(OnExitDeleteMove);
+        playerModeManager.modeChanged.AddListener(OnModeChanged);
     }
 
     private void OnDisable() {
-        deleteMode.enterDeleteMode.RemoveListener(OnEnterDeleteMode);
-        deleteMode.exitDeleteMode.RemoveListener(OnExitDeleteMove);
+        playerModeManager.modeChanged.RemoveListener(OnModeChanged);
+    }
+
+    private void OnModeChanged(IPlayerMode newMode) {
+        if(newMode is DeleteMode delMode) {
+            if(deleteMode != delMode) {
+                deleteMode = delMode;
+                grid = playerModeManager.Grid;
+            }
+            OnEnterDeleteMode();
+        }
+        else {
+            OnExitDeleteMode();
+        }
     }
 
     private void OnEnterDeleteMode() {
         isActive = true;
     }
 
-    private void OnExitDeleteMove() {
+    private void OnExitDeleteMode() {
         deleteMarker.RemoveAllMarkers();
         isActive = false;
     }
@@ -55,16 +67,17 @@ public class DeleteModeVisuals : MonoBehaviour
         deleteMarker.MarkPositions(sharedPositions, grid);
         for(int i = 0; i < sharedPositions.Count; i++) {
             Vector2Int buildPosition = sharedPositions[i];
-            deleteMarker.GetMarker(i).transform.position = grid.GetCellCenter(buildPosition);
+            deleteMarker.GetMarker(i).transform.position = grid.GetCellCenter(buildPosition) + grid.Rotation * indicatorOffset;
         }
     }
 
     private GameObject CreateIndicatorObject() {
         GameObject newIndicatorObject = Instantiate(indicatorPrefab);
-        newIndicatorObject.transform.localScale = Vector3.one * grid.CellSize;
+        newIndicatorObject.transform.localScale = new Vector3(grid.CellSize.x, grid.CellSize.y, 1);
         Quaternion oldRot = newIndicatorObject.transform.rotation;
         newIndicatorObject.transform.rotation = grid.Rotation * oldRot;
         newIndicatorObject.transform.parent = transform;
+        newIndicatorObject.GetComponent<Renderer>().material.color = Color.red;
         return newIndicatorObject;
     }
 }

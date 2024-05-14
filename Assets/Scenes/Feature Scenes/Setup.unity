@@ -15675,8 +15675,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 67.78336, y: 42.035778, z: 39.36222}
-  m_Center: {x: 2.2948227, y: 16.017897, z: 2.794098}
+  m_Size: {x: 42.058456, y: 42.035778, z: 39.36222}
+  m_Center: {x: -10.567627, y: 16.017897, z: 2.794098}
 --- !u!4 &824140377
 Transform:
   m_ObjectHideFlags: 0
@@ -29434,6 +29434,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2386929738724099837, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 886921338
+      objectReference: {fileID: 0}
     - target: {fileID: 4801631025868026570, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
       propertyPath: cam
       value: 
@@ -42651,6 +42655,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1152883103793045021, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1838020096
+      objectReference: {fileID: 0}
     - target: {fileID: 1741700670077240363, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

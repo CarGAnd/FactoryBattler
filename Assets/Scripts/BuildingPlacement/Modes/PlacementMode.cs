@@ -89,7 +89,7 @@ public class PlacementMode : IPlayerMode {
     }
 
     public void TryPlaceModule(GridObjectSO gridObject, Vector3 worldPos, Facing facing) {
-        Vector2Int gridPosition = builder.GetBuildingPlacementPosition(gridObject, worldPos, facing);
+        Vector2Int gridPosition = grid.GetPlacementPosition(gridObject.GetLayoutShapeDimensions(facing), worldPos);
         TryPlaceModule(gridObject, gridPosition, facing);
     }
     

@@ -29,10 +29,6 @@ public class Builder : MonoBehaviour, IBuilder
         return newBuilding;
     }
 
-    public Vector2Int GetBuildingPlacementPosition(GridObjectSO moduleData, Vector3 mouseHitPosition, Facing facing) {
-        return modulePlacer.GetModulePlacementPosition(moduleData, mouseHitPosition, facing);    
-    }
-
     private void SetupBuilding(IGridObject building, Vector2Int gridPosition) {
         if(building is IAssemblyLineUser assemblyLineUser) {
             assemblyLineUser.ConnectToAssemblyLine(assemblyLineSystem);
@@ -55,9 +51,17 @@ public class Builder : MonoBehaviour, IBuilder
     void IBuilder.TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation) {
         TryPlaceBuilding(buildingData, coord, rotation);
     }
+
+    public IGridObject GetBuildingAtPosition(Vector2Int position) {
+        return grid.GetObjectAt(position);
+    }
+
+    public void RemoveBuilding(Vector2Int position) {
+        modulePlacer.RemoveModule(position);
+    }
 }
 
 public interface IBuilder : IPlayerOwned {
     public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation);
-    public Vector2Int GetBuildingPlacementPosition(GridObjectSO buildingData, Vector3 worldPos, Facing rotation);
+    public void RemoveBuilding(Vector2Int position);
 }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3803572705448401735}
   - component: {fileID: 5018177168160381916}
+  - component: {fileID: 9146102782736156472}
   m_Layer: 0
   m_Name: PlacementMode
   m_TagString: Untagged
@@ -48,6 +49,20 @@ MonoBehaviour:
   indicatorPrefab: {fileID: 3848024107658539241, guid: 9601ae405e1aff44a9363a007113c591, type: 3}
   arrowPrefab: {fileID: 7972430090760012725, guid: 7fb032593765dc947a229638e1e1481e, type: 3}
   gridPlanePrefab: {fileID: 0}
+--- !u!114 &9146102782736156472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313699721757579644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e618a320d934c142a22679743ae4b14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerModeManager: {fileID: 8722686548207618740}
+  indicatorPrefab: {fileID: 3848024107658539241, guid: dc8a0bebe90b0e04daaf208116b07f60, type: 3}
 --- !u!1 &4970881398481330147
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,10 +141,3 @@ MonoBehaviour:
     placeableObjects:
     - {fileID: 11400000, guid: ca9ce8b43926b2641b9eb94164262b88, type: 2}
     - {fileID: 11400000, guid: 0adc0f716960c5d4f8baa17aeff38213, type: 2}
-  owner:
-    rid: -2
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }

@@ -19,7 +19,7 @@ public class CameraController
     public void Update()
     {
         Vector3 cameraMoveDir = cameraInput.GetMovementInput().normalized;
-        UpdateCameraPosition(cameraMoveDir * Time.deltaTime);
+        UpdateCameraPosition(cameraMoveDir * Time.deltaTime * cameraMoveSpeed);
 
         float zoomDelta = cameraInput.GetZoomInput();
         //UpdateCameraZoom(zoomDelta * Time.deltaTime);
@@ -28,7 +28,7 @@ public class CameraController
 
     public void UpdateCameraPosition(Vector3 delta)
     {
-        virtualCamera.transform.position += (Quaternion.Euler(virtualCamera.transform.root.eulerAngles.y * Vector3.up) * delta) * cameraMoveSpeed;
+        virtualCamera.transform.position += (Quaternion.Euler(virtualCamera.transform.root.eulerAngles.y * Vector3.up) * delta);
     }
 
     /*public void UpdateCameraZoom(float delta)

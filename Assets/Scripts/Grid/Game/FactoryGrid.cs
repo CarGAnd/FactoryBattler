@@ -150,6 +150,11 @@ public class FactoryGrid : MonoBehaviour, ISearchable
         return gridLayout.RaycastGridPlane(ray);
     }
 
+    public Vector2Int GetPlacementPosition(Vector2Int buildingDimensions, Vector3 worldPos) {
+        Vector2Int gridPosition = GetSubgridOriginCoord(worldPos, buildingDimensions);
+        return gridPosition;
+    }
+
     #region Debugging
     [SerializeField] private bool showOccupiedCells = true;
     [SerializeField] private bool showGridLines = true;

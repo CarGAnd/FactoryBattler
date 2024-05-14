@@ -64,7 +64,8 @@ public class GameClientManager : NetworkBehaviour
         gridObject.TryGet(out NetworkObject gridNetworkObject);
         playerObject.TryGet(out NetworkObject playerNetworkObject);
         PlayerGameInfo playerGameInfo = NetworkManager.LocalClient.PlayerObject.GetComponent<PlayerGameInfo>();
-        playerGameInfo.player = new BasePlayer(playerGameInfo.clientInfo.playerName.ToString(), new WinLossScoreHolderStrategy(), playerId);
+        BasePlayer basePlayer = new BasePlayer(playerGameInfo.clientInfo.playerName.ToString(), new WinLossScoreHolderStrategy(), playerId);
+        playerGameInfo.player = basePlayer;
         PlayerModeManager playerModeManager = playerNetworkObject.GetComponent<PlayerModeManager>();
         FactoryGrid grid = gridNetworkObject.GetComponentInChildren<FactoryGrid>();
         NetworkBuilder builder = gridNetworkObject.GetComponentInChildren<NetworkBuilder>();
