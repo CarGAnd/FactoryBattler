@@ -1,11 +1,14 @@
 using Sirenix.OdinInspector;
+using Sirenix.Utilities.Editor;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CardManager : MonoBehaviour
 {
-    [SerializeField] private CardCollectionSO fullCollection;
+    private List<Card> fullCollection;
     [SerializeField] private CardCollectionSO usedCollection;
     [SerializeField] private GameObject cardTemplate;
     [SerializeField] private GameObject ui;
@@ -26,6 +29,11 @@ public class CardManager : MonoBehaviour
     [SerializeField] private int handMaxSize = 10;
     [SerializeField] private bool overdrawDiscards = true;
     [SerializeField] private DrawingStrategy drawingStrategy = DrawingStrategy.Random;
+
+    void Awake()
+    {
+        List<CardSO> allCards = AssetUtilities.GetAllAssetsOfType<CardSO>().ToList();
+    }
 
     void Update()
     {
@@ -54,7 +62,7 @@ public class CardManager : MonoBehaviour
             }
         }
 
-        if (player1Cards.Count > 0)
+        if (player1Cards.Count == usedCollection.cards.Count)
         {
             Debug.Log("Deck loaded successfully.");
         }
@@ -123,7 +131,6 @@ public class CardManager : MonoBehaviour
 
     private void SetCardFacing(Card card, bool faceUp)
     {
-
         GameObject cardObject = card.GetCardObject();
         List<Image> images = new List<Image>(cardObject.GetComponentsInChildren<Image>());
         foreach (Image image in images)
@@ -131,6 +138,7 @@ public class CardManager : MonoBehaviour
             if (image.gameObject == cardObject)
             {
                 image.enabled = faceUp;
+                card.IsFaceUp = faceUp;
             }
             else
             {

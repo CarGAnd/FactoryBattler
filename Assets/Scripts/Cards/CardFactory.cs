@@ -11,8 +11,13 @@ public class CardFactory
     public Card CreateCard(CardSO cardData)
     {
         GameObject cardObject = GameObject.Instantiate(cardPrefab);
-        Card card = new Card(cardObject, cardData);
-        if(cardData.cardName.Equals("No"))
+        Card card = cardObject.GetComponent<Card>();
+        if(card == null)
+        {
+            card = cardObject.AddComponent<Card>();
+        }
+        card.Initialize(cardData); // Initialize the card with the data.
+        if(cardData.cardName.Equals("CardRed"))
         {
             cardObject.GetComponent<Image>().color = Color.red;
         }
@@ -23,7 +28,12 @@ public class CardFactory
     public Card CreateBlankCard()
     {
         GameObject cardObject = GameObject.Instantiate(cardPrefab);
-        Card card = new Card(cardObject);
+        Card card = cardObject.GetComponent<Card>(); // Add the Card component.
+        if(card == null)
+        {
+            card = cardObject.AddComponent<Card>();
+        }
+        card.Initialize();
         return card;
     }
 }

@@ -37809,7 +37809,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cea620c086c7fb447bb144cd76051298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullCollection: {fileID: 11400000, guid: 8d8d67063a284e64b8159ca0f5ffc3a3, type: 2}
   usedCollection: {fileID: 11400000, guid: a47d2f7a45af5e34fb6dfa37c0249ba8, type: 2}
   cardTemplate: {fileID: 3514764470248737066, guid: a891cc85afee2a34fab95e292d4e9169, type: 3}
   ui: {fileID: 1998002321}
