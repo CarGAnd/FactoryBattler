@@ -1,18 +1,17 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 
 public class DeleteMode : IPlayerMode {
 
     public Vector3 LastMouseGridPosition { get; private set; }
 
     private FactoryGrid grid;
-    private PlayerModeManager playerModeManager;
+    private PlacementStateMachine placementStateMachine;
     private IBuilder builder;
 
-    public DeleteMode(FactoryGrid grid, IBuilder builder, PlayerModeManager playerModeManager) {
+    public DeleteMode(FactoryGrid grid, IBuilder builder, PlacementStateMachine placementStateMachine) {
         this.grid = grid;
         this.builder = builder;
-        this.playerModeManager = playerModeManager;
+        this.placementStateMachine = placementStateMachine;
     }
 
     public void EnterMode() {
@@ -24,7 +23,7 @@ public class DeleteMode : IPlayerMode {
     public void UpdateInput(MouseInput mouseInput, Vector3 mousePositionOnGrid) {
         LastMouseGridPosition = mousePositionOnGrid;
         if (mouseInput.CancelModulePlacement()) {
-            playerModeManager.GoToSelectionMode();
+            placementStateMachine.GoToSelectionMode();
         }
         if (mouseInput.DeleteModule()) {
             RemoveModule(grid.GetCellCoords(mousePositionOnGrid));

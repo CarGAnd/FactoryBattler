@@ -1,26 +1,20 @@
 using PlayerSystem;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.Events;
+using Sirenix.OdinInspector;
 
-public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
+public class PlacementStateMachine : MonoBehaviour, IPlayerOwned
 {
     [HideInInspector] public UnityEvent<IPlayerMode> modeChanged;
 
-    [FoldoutGroup("Systems")]
-    [SerializeField] private FactoryGrid grid;
-
     [SerializeField][FoldoutGroup("Building Selector")][HideLabel] private BuildingSelector buildingSelector = new BuildingSelector();
+
+    private FactoryGrid grid;
     
     private PlacementMode placementMode;
     private SelectionMode selectionMode;
     private DeleteMode deleteMode;
-
-    private PlayerControls playerControls; 
-    private MouseInput mouseInput;
-    private CameraInput cameraInput;
-    private CameraController cameraController;
 
     private IPlayer owner;
     private IBuilder builder;
@@ -31,19 +25,13 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
     private IPlayerMode currentMode;
 
     private void Awake() {
+        modeChanged = new UnityEvent<IPlayerMode>();
         //If we are in single player mode, assign the builder here
         //This is mainly for being able to test the PlayerModeManager without having to go through the multiplayer scene flow
         if(NetworkManager.Singleton == null) {
+            grid = GameObject.FindAnyObjectByType<FactoryGrid>();
             builder = grid.transform.root.GetComponentInChildren<Builder>();
         }
-
-        playerControls = new PlayerControls();
-        EnableControls();
-
-        mouseInput = new MouseInput(playerControls);
-        cameraInput = new CameraInput(playerControls);
-
-        cameraController = new CameraController(cameraInput);
 
         placementMode = new PlacementMode(grid, builder, this);
         selectionMode = new SelectionMode(grid);
@@ -53,14 +41,6 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
         currentMode.EnterMode();
     }
 
-    public void DisableControls() {
-        playerControls.Disable();
-    }
-
-    public void EnableControls() {
-        playerControls.Enable();
-    }
-
     private void SetOwner(IPlayer newOwner) {
         this.owner = newOwner;
         if(this.builder != null) {
@@ -68,7 +48,7 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
         }
     }
 
-    public void UpdateGridReference(FactoryGrid grid, IBuilder builder) {
+    public void AssignGrid(FactoryGrid grid, IBuilder builder) {
         placementMode.ChangeGrid(grid, builder);
         selectionMode = new SelectionMode(grid);
         deleteMode = new DeleteMode(grid, builder, this);
@@ -77,15 +57,7 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
         builder.Owner = Owner;
     }
 
-    private void OnEnable() {
-        buildingSelector.selectedObjectChanged.AddListener(OnNewBuildingSelected);
-    }
-
-    private void OnDisable() {
-        buildingSelector.selectedObjectChanged.RemoveListener(OnNewBuildingSelected);
-    }
-
-    private void OnNewBuildingSelected(GridObjectSO newBuilding) {
+    public void OnNewBuildingSelected(GridObjectSO newBuilding) {
         if(!CanPlaceObjects()) {
             GoToSelectionMode();
         }
@@ -94,12 +66,11 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
         }
     }
 
-    private void Update() {
+    public void UpdateInput(MouseInput mouseInput) {
         if(!CanPlaceObjects()) {
             return;
         }
         buildingSelector.Update();
-        cameraController.Update();
         Vector3 mousePositionOnGrid = mouseInput.GetMousePosOnGrid(grid);
         currentMode.UpdateInput(mouseInput, mousePositionOnGrid);
         if (Input.GetKeyDown(KeyCode.Escape)) {
@@ -111,7 +82,7 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
     }
 
     private bool CanPlaceObjects() {
-        return grid != null && (IsOwner || NetworkManager.Singleton == null);
+        return grid != null;
     }
 
     public void GoToBuildMode(GridObjectSO building) {
@@ -133,6 +104,14 @@ public class PlayerModeManager : NetworkBehaviour, IPlayerOwned
         currentMode.EnterMode();
         modeChanged?.Invoke(newMode);
     }
+
+    private void OnEnable() {
+        buildingSelector.selectedObjectChanged.AddListener(OnNewBuildingSelected);
+    }
+
+    private void OnDisable() {
+        buildingSelector.selectedObjectChanged.RemoveListener(OnNewBuildingSelected);
+    }
 }
 
 public interface IPlayerMode {
@@ -140,4 +119,3 @@ public interface IPlayerMode {
     void EnterMode();
     void ExitMode();
 }
-

@@ -20,7 +20,7 @@ namespace PlayerSystem {
         [SerializeField]
         private bool isDead = false;
         [SerializeField]
-        private PlayerModeManager playerModeManager;
+        private PlayerController playerModeManager;
 
         public string Name { get => name; private set => name = value; }
         public string Id { get => id; private set => id = value; }
@@ -28,7 +28,7 @@ namespace PlayerSystem {
         public bool IsDead { get => isDead; private set => isDead = value; }
         public FactoryGrid FactoryGrid { get => factoryGrid; private set => factoryGrid = value; }
         public IPlayer Opponent { get => opponent; private set => opponent = value; }
-        public PlayerModeManager PlayerModeManager { get => playerModeManager; private set => playerModeManager = value; }
+        public PlayerController PlayerModeManager { get => playerModeManager; private set => playerModeManager = value; }
 
         void IKillable.OnDeath(float health)
         {

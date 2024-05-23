@@ -53,6 +53,20 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
         }
         Debug.Log("Revealed board");
     }
+
+    public void HideBoard(List<ulong> playerIds) {
+        List<IGridObject> placedObjects = builder.GetAllPlacedBuildings();
+        foreach(IGridObject gridObject in placedObjects) {
+            GameObject gObject = gridObject.GetGameObject();
+            NetworkObject nObject = gObject.GetComponent<NetworkObject>();
+            foreach(ulong playerId in playerIds) {
+                if (nObject.IsNetworkVisibleTo(playerId)) {
+                    nObject.NetworkHide(playerId);
+                }
+            }
+        }
+        Debug.Log("Hid board");
+    }
     
     [Rpc(SendTo.Server)]
     private void RemoveBuildingServerRpc(Vector2Int position, RpcParams rpcParams = default) {
@@ -80,6 +94,21 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
             clientList.Add(clientId);
         }
         RevealBoard(clientList);
+    }
+
+    public void HideBoardFromAllExceptOwner() {
+        if (!IsServer) {
+            return;
+        }
+        List<ulong> clientList = new List<ulong>();
+        foreach(ulong clientId in NetworkManager.ConnectedClientsIds) {
+            //Dont hide the board from the owner
+            if(Owner.Id == clientId.ToString()) {
+                continue;
+            }
+            clientList.Add(clientId);
+        }
+        HideBoard(clientList);
     }
 
     public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation) {

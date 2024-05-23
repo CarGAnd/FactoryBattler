@@ -29438,30 +29438,10 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 886921338
       objectReference: {fileID: 0}
-    - target: {fileID: 4801631025868026570, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
-      propertyPath: cam
-      value: 
-      objectReference: {fileID: 549503192}
     - target: {fileID: 4970881398481330147, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7207505900094866942, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
-      propertyPath: placeableObjects.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207505900094866942, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
-      propertyPath: placeableObjects.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 0adc0f716960c5d4f8baa17aeff38213, type: 2}
-    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
-      propertyPath: grid
-      value: 
-      objectReference: {fileID: 4744333284971871684}
-    - target: {fileID: 8722686548207618740, guid: fa65965f6029f1d46b6413f1424a509b, type: 3}
-      propertyPath: builder
-      value: 
-      objectReference: {fileID: 4744333284971871685}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

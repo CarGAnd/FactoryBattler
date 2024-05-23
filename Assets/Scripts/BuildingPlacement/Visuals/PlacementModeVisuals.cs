@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class PlacementModeVisuals : MonoBehaviour
 {
-    [SerializeField] private PlayerModeManager playerModeManager;
+    [SerializeField] private PlayerController playerController;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject indicatorPrefab;
     [SerializeField] private GameObject arrowPrefab;
     [SerializeField] private GameObject gridPlanePrefab;
+    [SerializeField] private PlacementStateMachine placementStateMachine;
 
     private CellMarker hoveredCellsMarker;
     private PlacementMode placementMode;
@@ -32,12 +33,12 @@ public class PlacementModeVisuals : MonoBehaviour
         CreateArrowObject();
         hoveredCellsMarker = new CellMarker(CreateIndicatorObject);
         //CreateGridPlane();
-        playerModeManager.modeChanged.AddListener(OnModeChanged);
-        buildGrid = playerModeManager.Grid;
+        placementStateMachine.modeChanged.AddListener(OnModeChanged);
+        buildGrid = placementStateMachine.Grid;
     }
 
     private void OnDestroy() {
-        playerModeManager.modeChanged.RemoveListener(OnModeChanged);
+        placementStateMachine.modeChanged.RemoveListener(OnModeChanged);
     }
 
     private void OnModeChanged(IPlayerMode newMode) {

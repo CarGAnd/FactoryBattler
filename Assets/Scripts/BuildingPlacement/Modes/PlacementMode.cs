@@ -13,15 +13,15 @@ public class PlacementMode : IPlayerMode {
     public Vector3 CurrentMouseWorldPos { get; private set; }
     
     private FactoryGrid grid;
-    private PlayerModeManager playerModeManager;
+    private PlacementStateMachine placementStateMachine;
     private IPlacementStrategy placementHandler;
     private IBuilder builder;
     private GridObjectSO currentBuilding;
 
-    public PlacementMode(FactoryGrid grid, IBuilder builder, PlayerModeManager playerModeManager){
+    public PlacementMode(FactoryGrid grid, IBuilder builder, PlacementStateMachine placementStateMachine){
         this.grid = grid;
         this.builder = builder;
-        this.playerModeManager = playerModeManager;
+        this.placementStateMachine = placementStateMachine;
         SetModuleRotation(Facing.West);
         placementHandler = new NoPlacement();
 
@@ -46,7 +46,7 @@ public class PlacementMode : IPlayerMode {
         CurrentMouseWorldPos = mousePosOnGrid;
         placementHandler.UpdateInput(mouseInput);
         if (mouseInput.CancelModulePlacement()) {
-            playerModeManager.GoToSelectionMode();
+            placementStateMachine.GoToSelectionMode();
         }
     }
 
@@ -64,7 +64,7 @@ public class PlacementMode : IPlayerMode {
 
     public void SetSelectedBuilding(GridObjectSO newBuilding) {
         if(newBuilding == null) {
-            playerModeManager.GoToSelectionMode();
+            placementStateMachine.GoToSelectionMode();
             placementHandler = new NoPlacement();
         }
         else {

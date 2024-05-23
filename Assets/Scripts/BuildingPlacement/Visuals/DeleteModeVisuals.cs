@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DeleteModeVisuals : MonoBehaviour
 {
-    [SerializeField] private PlayerModeManager playerModeManager;
     [SerializeField] private GameObject indicatorPrefab;
+    [SerializeField] private PlacementStateMachine placementStateMachine;
 
     private DeleteMode deleteMode;
     private CellMarker deleteMarker;
@@ -15,23 +15,23 @@ public class DeleteModeVisuals : MonoBehaviour
     private Vector3 indicatorOffset = Vector3.up * 0.01f;
 
     private void Awake() {
-        grid = playerModeManager.Grid;
+        grid = placementStateMachine.Grid;
         deleteMarker = new CellMarker(CreateIndicatorObject);
     }
 
     private void OnEnable() {
-        playerModeManager.modeChanged.AddListener(OnModeChanged);
+        placementStateMachine.modeChanged.AddListener(OnModeChanged);
     }
 
     private void OnDisable() {
-        playerModeManager.modeChanged.RemoveListener(OnModeChanged);
+        placementStateMachine.modeChanged.RemoveListener(OnModeChanged);
     }
 
     private void OnModeChanged(IPlayerMode newMode) {
         if(newMode is DeleteMode delMode) {
             if(deleteMode != delMode) {
                 deleteMode = delMode;
-                grid = playerModeManager.Grid;
+                grid = placementStateMachine.Grid;
             }
             OnEnterDeleteMode();
         }

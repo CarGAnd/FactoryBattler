@@ -45,10 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c7de8e335d8e1240abe02b859a061a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerModeManager: {fileID: 8722686548207618740}
+  playerController: {fileID: 8722686548207618740}
   indicatorPrefab: {fileID: 3848024107658539241, guid: 9601ae405e1aff44a9363a007113c591, type: 3}
   arrowPrefab: {fileID: 7972430090760012725, guid: 7fb032593765dc947a229638e1e1481e, type: 3}
   gridPlanePrefab: {fileID: 0}
+  placementStateMachine: {fileID: -4006540685221662589}
 --- !u!114 &9146102782736156472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,8 +62,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e618a320d934c142a22679743ae4b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerModeManager: {fileID: 8722686548207618740}
   indicatorPrefab: {fileID: 3848024107658539241, guid: dc8a0bebe90b0e04daaf208116b07f60, type: 3}
+  placementStateMachine: {fileID: -4006540685221662589}
 --- !u!1 &4970881398481330147
 GameObject:
   m_ObjectHideFlags: 0
@@ -74,6 +75,7 @@ GameObject:
   - component: {fileID: 1080412103204443430}
   - component: {fileID: 2386929738724099837}
   - component: {fileID: 8722686548207618740}
+  - component: {fileID: -4006540685221662589}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -109,10 +111,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2684446833
+  GlobalObjectIdHash: 886921338
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
+  SynchronizeTransform: 0
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 1
   SpawnWithObservers: 1
@@ -130,10 +132,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee35c39ea406b8448e6a62d363ae531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placementStateMachine: {fileID: -4006540685221662589}
+--- !u!114 &-4006540685221662589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4970881398481330147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f9d768290aef84488eb5aad334e99e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   modeChanged:
     m_PersistentCalls:
       m_Calls: []
-  grid: {fileID: 0}
   buildingSelector:
     selectedObjectChanged:
       m_PersistentCalls:

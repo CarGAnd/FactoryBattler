@@ -6,7 +6,7 @@ namespace PlayerSystem {
         IScoreHolderStrategy ScoreStrategy {get;}
         FactoryGrid FactoryGrid {get;}
         IPlayer Opponent {get;}
-        PlayerModeManager PlayerModeManager {get;}
+        PlayerController PlayerModeManager {get;}
         //TODO Hand hand {get;}
         //TODO Deck deck {get;}
     }

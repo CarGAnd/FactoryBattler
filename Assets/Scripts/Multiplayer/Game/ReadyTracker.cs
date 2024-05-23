@@ -20,16 +20,7 @@ public class ReadyTracker : NetworkBehaviour
         if (!IsServer) {
             return;
         }
-        foreach(NetworkClient nClient in NetworkManager.ConnectedClientsList) {
-            PlayerGameInfo playerGameInfo = nClient.PlayerObject.GetComponent<PlayerGameInfo>();
-            if (!playerGameInfo.clientInfo.isSpectator) {
-                playerReadyStates.Add(new PlayerReadyState
-                {
-                    playerId = nClient.ClientId,
-                    isReadyForCombat = false
-                });
-            }
-        }
+        ResetReadyStates();
     }
 
     [Rpc(SendTo.Server)]
@@ -58,6 +49,10 @@ public class ReadyTracker : NetworkBehaviour
         }
     }
 
+    private void OnEnterBuildingPhase() {
+        ResetReadyStates();
+    }
+
     private bool IsAllPlayersReady() {
         for(int i = 0; i < playerReadyStates.Count; i++) {
             if(!playerReadyStates[i].isReadyForCombat) {
@@ -81,7 +76,16 @@ public class ReadyTracker : NetworkBehaviour
     }
 
     public void ResetReadyStates() {
-
+        foreach(NetworkClient nClient in NetworkManager.ConnectedClientsList) {
+            PlayerGameInfo playerGameInfo = nClient.PlayerObject.GetComponent<PlayerGameInfo>();
+            if (!playerGameInfo.clientInfo.isSpectator) {
+                playerReadyStates.Add(new PlayerReadyState
+                {
+                    playerId = nClient.ClientId,
+                    isReadyForCombat = false
+                });
+            }
+        }
     }
 }
 

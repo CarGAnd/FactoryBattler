@@ -5,14 +5,14 @@ using UnityEngine;
 public class SelectionModeVisual : MonoBehaviour
 {
     [SerializeField] private SelectionMode selectionMode;
-    [SerializeField] private PlayerModeManager playerModeManager;
     [SerializeField] private GameObject indicatorPrefab;
+    [SerializeField] private PlacementStateMachine placementStateMachine;
 
     private FactoryGrid grid;
     private GameObject indicatorInstance;
 
     private void Awake() {
-        grid = playerModeManager.Grid;
+        grid = placementStateMachine.Grid;
         CreateIndicatorObject();
     }
 
@@ -51,5 +51,4 @@ public class SelectionModeVisual : MonoBehaviour
         indicatorInstance.transform.parent = transform;
         indicatorInstance.SetActive(false);
     }
-
 }
