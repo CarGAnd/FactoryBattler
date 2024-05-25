@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8386325083140590886}
   - component: {fileID: 620589185295816782}
   - component: {fileID: 4651456616025736579}
+  - component: {fileID: 6885468948779533565}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -102,6 +103,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   builder: {fileID: 620589185295816782}
   buildingDatabase: {fileID: 11400000, guid: c373f45effdb5b34fac13fd84d877636, type: 2}
+--- !u!114 &6885468948779533565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929381512884961409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 652d0ffdb1aff0d46b80362510b85967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  phaseEvents:
+  - phaseName: CombatPhaseState
+    onEventTriggered:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4651456616025736579}
+          m_TargetAssemblyTypeName: NetworkBuilder, Assembly-CSharp
+          m_MethodName: RevealBoardToAll
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1168582064399871535
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,7 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2519270235
+  GlobalObjectIdHash: 229865147
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1

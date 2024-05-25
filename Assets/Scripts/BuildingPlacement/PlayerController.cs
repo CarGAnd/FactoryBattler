@@ -35,6 +35,14 @@ public class PlayerController : NetworkBehaviour, IPlayerOwned
         playerControls.Enable();
     }
 
+    public void DisableModuleControls() {
+        playerControls.Modules.Disable();
+    }
+
+    public void EnableModuleControls() {
+        playerControls.Modules.Enable();
+    }
+
     private void SetOwner(IPlayer newOwner) {
         this.owner = newOwner;
         placementStateMachine.Owner = newOwner;

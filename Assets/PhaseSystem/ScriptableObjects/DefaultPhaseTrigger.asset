@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerConditions:
   - rid: 6776449950579687429
-  - rid: 7605306707952009218
   triggerStrategy:
-    rid: 7605306707952009217
+    rid: 7605307111193444352
   references:
     version: 2
     RefIds:
@@ -24,10 +23,6 @@ MonoBehaviour:
       type: {class: TimedCondition, ns: PhaseSystem, asm: Assembly-CSharp}
       data:
         waitTime: 5
-    - rid: 7605306707952009217
-      type: {class: AllTrueTriggerStrategy, ns: PhaseSystem, asm: Assembly-CSharp}
+    - rid: 7605307111193444352
+      type: {class: AnyTrueStrategy, ns: PhaseSystem, asm: Assembly-CSharp}
       data: 
-    - rid: 7605306707952009218
-      type: {class: AllPlayersReadyCondition, ns: , asm: Assembly-CSharp}
-      data:
-        name: AllPlayersReady

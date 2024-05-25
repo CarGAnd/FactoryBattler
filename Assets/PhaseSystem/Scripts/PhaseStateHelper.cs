@@ -11,7 +11,7 @@ namespace PhaseSystem {
             return currentStateName;
         }
 
-        internal static void SetCurrentStateName(string newStateName) {
+        public static void SetCurrentStateName(string newStateName) {
             PhaseStateChangedTo?.Invoke(newStateName);
             PhaseStateChangedFromTo.Invoke(currentStateName, newStateName);
 

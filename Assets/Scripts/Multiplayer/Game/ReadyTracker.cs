@@ -41,15 +41,10 @@ public class ReadyTracker : NetworkBehaviour
     }
 
     private void GoToCombatPhase() {
-        foreach(PlayerReadyState pReadyState in playerReadyStates) {
-            NetworkClient nClient = NetworkManager.ConnectedClients[pReadyState.playerId];
-            //TODO: Set this up with events instead of digging for the reference
-            NetworkBuilder networkBuilder = nClient.PlayerObject.GetComponent<PlayerGameInfo>().playerGrid.GetComponentInChildren<NetworkBuilder>();
-            networkBuilder.RevealBoardToAll();
-        }
+        GameEvents.AllPlayersReadyEvent.Invoke();
     }
 
-    private void OnEnterBuildingPhase() {
+    public void OnEnterBuildingPhase() {
         ResetReadyStates();
     }
 
@@ -76,6 +71,10 @@ public class ReadyTracker : NetworkBehaviour
     }
 
     public void ResetReadyStates() {
+        if (!IsServer) {
+            return;
+        }
+        playerReadyStates.Clear();
         foreach(NetworkClient nClient in NetworkManager.ConnectedClientsList) {
             PlayerGameInfo playerGameInfo = nClient.PlayerObject.GetComponent<PlayerGameInfo>();
             if (!playerGameInfo.clientInfo.isSpectator) {

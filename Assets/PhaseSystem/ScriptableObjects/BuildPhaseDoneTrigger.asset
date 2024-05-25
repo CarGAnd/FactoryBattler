@@ -10,18 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dd3a2663479dc94c88939473c00c24b, type: 3}
-  m_Name: SecondPhaseTrigger
+  m_Name: BuildPhaseDoneTrigger
   m_EditorClassIdentifier: 
   triggerConditions:
-  - rid: 6776449942874226704
+  - rid: 6776449950579687429
+  - rid: 7605307111193444365
   triggerStrategy:
-    rid: 7605307111193444359
+    rid: 7605307111193444352
   references:
     version: 2
     RefIds:
-    - rid: 6776449942874226704
-      type: {class: TestButtonCondition, ns: PhaseSystem, asm: Assembly-CSharp}
-      data: 
-    - rid: 7605307111193444359
+    - rid: 6776449950579687429
+      type: {class: TimedCondition, ns: PhaseSystem, asm: Assembly-CSharp}
+      data:
+        waitTime: 30
+    - rid: 7605307111193444352
       type: {class: AnyTrueStrategy, ns: PhaseSystem, asm: Assembly-CSharp}
       data: 
+    - rid: 7605307111193444365
+      type: {class: AllPlayersReadyCondition, ns: , asm: Assembly-CSharp}
+      data:
+        name: AllPlayersReady

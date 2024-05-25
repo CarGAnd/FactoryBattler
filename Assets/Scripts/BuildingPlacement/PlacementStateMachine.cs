@@ -15,6 +15,7 @@ public class PlacementStateMachine : MonoBehaviour, IPlayerOwned
     private PlacementMode placementMode;
     private SelectionMode selectionMode;
     private DeleteMode deleteMode;
+    private CombatMode combatMode;
 
     private IPlayer owner;
     private IBuilder builder;
@@ -36,6 +37,7 @@ public class PlacementStateMachine : MonoBehaviour, IPlayerOwned
         placementMode = new PlacementMode(grid, builder, this);
         selectionMode = new SelectionMode(grid);
         deleteMode = new DeleteMode(grid, builder, this);
+        combatMode = new CombatMode();
 
         currentMode = selectionMode;
         currentMode.EnterMode();
@@ -70,7 +72,9 @@ public class PlacementStateMachine : MonoBehaviour, IPlayerOwned
         if(!CanPlaceObjects()) {
             return;
         }
-        buildingSelector.Update();
+        if (mouseInput.isEnabled()) {
+            buildingSelector.Update();
+        }
         Vector3 mousePositionOnGrid = mouseInput.GetMousePosOnGrid(grid);
         currentMode.UpdateInput(mouseInput, mousePositionOnGrid);
         if (Input.GetKeyDown(KeyCode.Escape)) {
@@ -96,6 +100,10 @@ public class PlacementStateMachine : MonoBehaviour, IPlayerOwned
 
     public void GoToDeleteMode() {
         ChangeMode(deleteMode);
+    }
+
+    public void GoToCombatMode() {
+        ChangeMode(combatMode);
     }
 
     private void ChangeMode(IPlayerMode newMode) {

@@ -15,11 +15,11 @@ public class AllPlayersReadyCondition : TriggerCondition
 
     public override void Initialize() {
         base.Initialize();
-        TestEvents.testEvent.AddListener(SetToTrue);
+        GameEvents.AllPlayersReadyEvent.AddListener(SetToTrue);
     }
 
     public override void Reset() {
         base.Reset();
-        TestEvents.testEvent.RemoveListener(SetToTrue);
+        GameEvents.AllPlayersReadyEvent.RemoveListener(SetToTrue);
     }
 }

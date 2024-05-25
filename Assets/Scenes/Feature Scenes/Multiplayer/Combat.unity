@@ -408,7 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1610f913ac2ab0d40b71d81af0efcda9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  readyTracker: {fileID: 982045872}
+  readyTracker: {fileID: 1304028590}
   readyStatusPrefab: {fileID: 6229748881094215970, guid: 3dac139c11bd93742ba42f419808c556, type: 3}
   readyStatusParent: {fileID: 253974601}
 --- !u!1 &549503190
@@ -672,6 +672,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1152883103793045021, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 928359006
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152883103793045021, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 229865147
+      objectReference: {fileID: 0}
     - target: {fileID: 1741700670077240363, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
       propertyPath: m_LocalPosition.x
       value: 26.82
@@ -735,10 +743,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9045947669671360164, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1496677657}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
 --- !u!1 &824140375
 GameObject:
@@ -847,9 +852,8 @@ GameObject:
   m_Component:
   - component: {fileID: 982045869}
   - component: {fileID: 982045868}
-  - component: {fileID: 982045870}
   - component: {fileID: 982045871}
-  - component: {fileID: 982045872}
+  - component: {fileID: 982045874}
   m_Layer: 0
   m_Name: PhaseController
   m_TagString: Untagged
@@ -871,36 +875,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phaseMachine:
     states:
-    - rid: 7605307109911035904
-    - rid: 7605307109911035905
-    - rid: 7605307109911035908
+    - rid: 7605307111193444360
+    - rid: 7605307111193444355
+    - rid: 7605307111193444363
   references:
     version: 2
     RefIds:
-    - rid: 7605307109911035904
-      type: {class: DefaultPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
-      data:
-        endTrigger: {fileID: 11400000, guid: 1e9c9bb1cec27644fbb33cb47954d83e, type: 2}
-    - rid: 7605307109911035905
+    - rid: 7605307111193444355
       type: {class: MultiPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
       data:
         repeatStates: 1
         states:
-        - rid: 7605307109911035906
-        - rid: 7605307109911035907
+        - rid: 7605307111193444361
+        - rid: 7605307111193444362
         endTrigger: {fileID: 11400000, guid: a8b51052c525e0d4787f4efb548b4b9c, type: 2}
-    - rid: 7605307109911035906
+    - rid: 7605307111193444360
       type: {class: DefaultPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
       data:
-        endTrigger: {fileID: 11400000, guid: 1e9c9bb1cec27644fbb33cb47954d83e, type: 2}
-    - rid: 7605307109911035907
+        endTrigger: {fileID: 11400000, guid: c12ca686133314248ba7b445330e049d, type: 2}
+    - rid: 7605307111193444361
+      type: {class: BuildPhaseState, ns: , asm: Assembly-CSharp}
+      data:
+        endTrigger: {fileID: 11400000, guid: aa5f53737312e264ea32c1e69d320d1f, type: 2}
+    - rid: 7605307111193444362
+      type: {class: CombatPhaseState, ns: , asm: Assembly-CSharp}
+      data:
+        endTrigger: {fileID: 11400000, guid: a8b51052c525e0d4787f4efb548b4b9c, type: 2}
+    - rid: 7605307111193444363
       type: {class: DefaultPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
       data:
-        endTrigger: {fileID: 11400000, guid: 1e9c9bb1cec27644fbb33cb47954d83e, type: 2}
-    - rid: 7605307109911035908
-      type: {class: DefaultPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
-      data:
-        endTrigger: {fileID: 11400000, guid: 1e9c9bb1cec27644fbb33cb47954d83e, type: 2}
+        endTrigger: {fileID: 11400000, guid: a8b51052c525e0d4787f4efb548b4b9c, type: 2}
 --- !u!4 &982045869
 Transform:
   m_ObjectHideFlags: 0
@@ -916,18 +920,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &982045870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 982045867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dee5f3ae94faf8f4dada0987cdba2f5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &982045871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -949,7 +941,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &982045872
+--- !u!114 &982045874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -958,9 +950,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 982045867}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6e4d41be067fc04ca7d498caa7707d2, type: 3}
+  m_Script: {fileID: 11500000, guid: cc33f5afeb871e64aaff0acc119efef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  phaseController: {fileID: 982045868}
 --- !u!1 &1210268753
 GameObject:
   m_ObjectHideFlags: 0
@@ -1038,6 +1031,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1210268753}
   m_CullTransparentMesh: 1
+--- !u!1 &1304028587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1304028591}
+  - component: {fileID: 1304028588}
+  - component: {fileID: 1304028590}
+  - component: {fileID: 1304028589}
+  m_Layer: 0
+  m_Name: ReadyTracker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1304028588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304028587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2550770674
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &1304028589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304028587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 652d0ffdb1aff0d46b80362510b85967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  phaseEvents:
+  - phaseName: BuildPhaseState
+    onEventTriggered:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1304028590}
+          m_TargetAssemblyTypeName: ReadyTracker, Assembly-CSharp
+          m_MethodName: OnEnterBuildingPhase
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &1304028590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304028587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6e4d41be067fc04ca7d498caa7707d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1304028591
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304028587}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 19.434977, y: 22.813595, z: -9.513032}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1359718863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1053,7 +1142,7 @@ PrefabInstance:
     - target: {fileID: 1870755740523302351, guid: eb7fbf36c873a0b4985d2355a9fb1ddc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 982045872}
+      objectReference: {fileID: 1304028590}
     - target: {fileID: 1870755740523302351, guid: eb7fbf36c873a0b4985d2355a9fb1ddc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ToggleLocalClientReady
@@ -1250,58 +1339,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &1496677656 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9045947669671360164, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
-  m_PrefabInstance: {fileID: 566888377}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1496677657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1496677656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1121984673
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
---- !u!1 &1676886284 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9045947669671360164, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
-  m_PrefabInstance: {fileID: 4744333284971871683}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1676886287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1676886284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2168621890
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1001 &4744333284971871683
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1310,6 +1347,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1152883103793045021, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3090518056
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152883103793045021, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 229865147
+      objectReference: {fileID: 0}
     - target: {fileID: 1741700670077240363, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1357,10 +1402,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9045947669671360164, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1676886287}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab025bec9f9cafc4bb701d955f2da590, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -1375,3 +1417,4 @@ SceneRoots:
   - {fileID: 982045869}
   - {fileID: 434908359}
   - {fileID: 336002063}
+  - {fileID: 1304028591}

@@ -10,6 +10,10 @@ public class MouseInput {
         playerControls.Modules.Enable();
     }
 
+    public bool isEnabled() {
+        return playerControls.Modules.enabled;
+    }
+
     public Vector3 GetMousePosOnGrid(FactoryGrid grid) {
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         Vector3 worldPosition = grid.RaycastGridPlane(ray);
