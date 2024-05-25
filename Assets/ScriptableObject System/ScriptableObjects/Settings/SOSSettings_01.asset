@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9053626a40559428b052526ec0070d, type: 3}
+  m_Name: SOSSettings_01
+  m_EditorClassIdentifier: 
+  sosDynamicParentPath: Assets/ScriptableObject System
+  boolRefPath: ScriptableObjects/Bools
+  floatRefPath: ScriptableObjects/Floats
+  intRefPath: ScriptableObjects/Ints
+  vector2RefPath: ScriptableObjects/Vector2s
+  vector3RefPath: ScriptableObjects/Vector3s
+  quaternionRefPath: ScriptableObjects/Quaternions
+  gameEventRefPath: ScriptableObjects/GameEvents
+  custemRefPath: ScriptableObjects/Custom
+  boolDenotionColor:
+    serializedVersion: 2
+    rgba: 4292926204
+  floatDenotionColor:
+    serializedVersion: 2
+    rgba: 4278315007
+  intDenotionColor:
+    serializedVersion: 2
+    rgba: 4294934589
+  vector2DenotionColor:
+    serializedVersion: 2
+    rgba: 4290379560
+  vector3DenotionColor:
+    serializedVersion: 2
+    rgba: 4284172965
+  quaternionDenotionColor:
+    serializedVersion: 2
+    rgba: 4294071807
+  gameEventDenotionColor:
+    serializedVersion: 2
+    rgba: 4286709504
+  customDenotionColor:
+    serializedVersion: 2
+    rgba: 4294965077
+  gameEventUnsubscribeColor:
+    serializedVersion: 2
+    rgba: 4287000051
+  setDirtyInEditor: 1
+  startReferenceIn: 0

@@ -23,7 +23,7 @@ namespace AttributeSystem {
 
             if (scriptableObjectChanged || isRelevantPath)
             {
-                Debug.Log("ScriptableObject has changed. Updating AttributeKeys...");
+                Debug.Log("AttributeDefinition has changed. Updating AttributeKeys...");
                 GenerateAttributeKeys();
             }
         }
@@ -37,7 +37,7 @@ namespace AttributeSystem {
         private static bool IsScriptableObject(string assetPath)
         {
             var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
-            return asset is ScriptableObject;
+            return asset is AttributeDefinition;
         }
 
         private static void GenerateAttributeKeys()

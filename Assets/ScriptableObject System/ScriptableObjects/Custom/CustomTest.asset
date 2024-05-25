@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e4df7d8a99c4904dafee632de209068, type: 3}
+  m_Name: CustomTest
+  m_EditorClassIdentifier: 
+  DynamicValue:
+    number: 0
+    boolExample: 0
+    number1: 0
+    boolExample1: 0
+    number2: 0
+    boolExample2: 0
+    number3: 0
+    boolExample3: 0
+  GlobalConstantValue:
+    number: 10
+    boolExample: 0
+    number1: 0
+    boolExample1: 0
+    number2: 0
+    boolExample2: 0
+    number3: 0
+    boolExample3: 0
+  referenceType: 20
