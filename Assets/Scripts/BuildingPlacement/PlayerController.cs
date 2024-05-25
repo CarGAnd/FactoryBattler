@@ -45,6 +45,7 @@ public class PlayerController : NetworkBehaviour, IPlayerOwned
     }
 
     private void Update() {
+        //Only update if we own this player object (multiplayer) or if we are in single player mode (mostly for editor testing)
         if(IsOwner || NetworkManager.Singleton == null) {
             cameraController.Update();
             placementStateMachine.UpdateInput(mouseInput);

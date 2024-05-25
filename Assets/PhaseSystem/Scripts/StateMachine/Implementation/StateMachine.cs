@@ -15,6 +15,7 @@ namespace PhaseSystem {
             }
 
             CurrentState = newState;
+            StateNameUpdate();
             CurrentState.Enter();
             CurrentState.ExitedState.AddListener(ForwardState);
         }
@@ -37,6 +38,10 @@ namespace PhaseSystem {
         public virtual void Update()
         {
             CurrentState?.Update();
+        }
+
+        protected virtual void StateNameUpdate() {
+            PhaseStateHelper.SetCurrentStateName(CurrentState.GetType().Name);
         }
     }
 }

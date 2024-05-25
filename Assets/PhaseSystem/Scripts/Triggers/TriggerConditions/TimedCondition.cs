@@ -1,6 +1,8 @@
 using System;
 using Sirenix.OdinInspector;
+#if UNITY_EDITOR
 using Sirenix.Utilities.Editor;
+#endif
 using UnityEngine;
 
 namespace PhaseSystem {

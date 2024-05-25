@@ -20,7 +20,7 @@ calculationGroup: a CalculationStrategyGroup object representing the calculation
 - Outputs
 The code creates attribute definitions and optionally a new attribute set. 
 */
-
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -204,3 +204,4 @@ namespace AttributeSystem
         #endregion
     }
 }
+#endif

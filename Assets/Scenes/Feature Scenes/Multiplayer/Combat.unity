@@ -871,19 +871,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phaseMachine:
     states:
-    - rid: 7605306707952009216
-    - rid: 7605306707952009219
+    - rid: 7605307109911035904
+    - rid: 7605307109911035905
+    - rid: 7605307109911035908
   references:
     version: 2
     RefIds:
-    - rid: 7605306707952009216
+    - rid: 7605307109911035904
       type: {class: DefaultPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
       data:
         endTrigger: {fileID: 11400000, guid: 1e9c9bb1cec27644fbb33cb47954d83e, type: 2}
-    - rid: 7605306707952009219
+    - rid: 7605307109911035905
+      type: {class: MultiPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
+      data:
+        repeatStates: 1
+        states:
+        - rid: 7605307109911035906
+        - rid: 7605307109911035907
+        endTrigger: {fileID: 11400000, guid: a8b51052c525e0d4787f4efb548b4b9c, type: 2}
+    - rid: 7605307109911035906
       type: {class: DefaultPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
       data:
-        endTrigger: {fileID: 11400000, guid: a8b51052c525e0d4787f4efb548b4b9c, type: 2}
+        endTrigger: {fileID: 11400000, guid: 1e9c9bb1cec27644fbb33cb47954d83e, type: 2}
+    - rid: 7605307109911035907
+      type: {class: DefaultPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
+      data:
+        endTrigger: {fileID: 11400000, guid: 1e9c9bb1cec27644fbb33cb47954d83e, type: 2}
+    - rid: 7605307109911035908
+      type: {class: DefaultPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
+      data:
+        endTrigger: {fileID: 11400000, guid: 1e9c9bb1cec27644fbb33cb47954d83e, type: 2}
 --- !u!4 &982045869
 Transform:
   m_ObjectHideFlags: 0
