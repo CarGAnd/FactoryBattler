@@ -54,6 +54,12 @@ public class Lobby : NetworkBehaviour
 
     public void RemovePlayer(ulong clientId) {
         int playerIndex = GetPlayerIndex(clientId);
+
+        if(playerIndex < 0) {
+            //If the player with the given id is not in the lobby, return
+            return;
+        }
+
         playerSlots.RemoveAt(playerIndex);
 
         if(clientId == LobbyOwnerId) {

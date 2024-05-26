@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -8,7 +9,7 @@ public class LobbyClientVisuals : MonoBehaviour
     [SerializeField] private GameObject startPanel;
     [SerializeField] private GameObject lobbyPanel;
     [SerializeField] private GameObject lobbyPlayerPrefab;
-    [SerializeField] private GameObject lobbyPlayerList;
+    [SerializeField] private GameObject lobbyPlayerParent;
     
     [SerializeField] private Lobby lobby;
 
@@ -16,14 +17,20 @@ public class LobbyClientVisuals : MonoBehaviour
         startPanel.SetActive(true);
         lobbyPanel.SetActive(false);
         NetworkManager.Singleton.OnConnectionEvent += OnConnectionEvent;
+        NetworkManager.Singleton.OnClientStopped += OnClientStopped;
         lobby.playerListChanged.AddListener(OnPlayerListChanged);
     }
 
     private void OnDestroy() {
         if(NetworkManager.Singleton != null) {
             NetworkManager.Singleton.OnConnectionEvent -= OnConnectionEvent;
+            NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
         }
         lobby.playerListChanged.RemoveListener(OnPlayerListChanged);
+    }
+
+    private void OnClientStopped(bool wasHost) {
+        GoToMainMenu();
     }
 
     private void OnConnectionEvent(NetworkManager nManager, ConnectionEventData connectionData) {
@@ -31,6 +38,7 @@ public class LobbyClientVisuals : MonoBehaviour
         if (!nManager.IsClient) {
             return;
         }
+
         //Since the host is both a client and a server, it will get ClientConnected/Disconnected events for every client that connects.
         //We only want to run this code when we are the ones that are connecting/disconnecting, so we check the clientId.
         //We dont want to disable the lobby UI on the host if we are not the ones that disconnected.
@@ -40,14 +48,22 @@ public class LobbyClientVisuals : MonoBehaviour
 
         switch (connectionData.EventType) {
             case ConnectionEvent.ClientConnected:
-                startPanel.SetActive(false);
-                lobbyPanel.SetActive(true);
+                GoToLobbyView();
                 break;
             case ConnectionEvent.ClientDisconnected:
-                startPanel.SetActive(true);
-                lobbyPanel.SetActive(false);
+                GoToMainMenu();
                 break;
         }
+    }
+
+    private void GoToLobbyView() {
+        startPanel.SetActive(false);
+        lobbyPanel.SetActive(true);
+    }
+
+    private void GoToMainMenu() {
+        startPanel.SetActive(true);
+        lobbyPanel.SetActive(false);
     }
 
     private void OnPlayerListChanged(NetworkListEvent<LobbyPlayerInfo> changeEventInfo) {
@@ -70,18 +86,18 @@ public class LobbyClientVisuals : MonoBehaviour
                 break;
         }*/
         //TODO: Right now we just set all values again when something changes. Ideally we should make more focused changes to the UI depending on the change.
-        int currentPlayerCount = lobbyPlayerList.transform.childCount;
+        int currentPlayerCount = lobbyPlayerParent.transform.childCount;
         int playersToSpawn = lobby.GetNumClientsConnected() - currentPlayerCount;
         int playersToRemove = -playersToSpawn;
         for(int i = 0; i < playersToSpawn; i++) {
-            Instantiate(lobbyPlayerPrefab, lobbyPlayerList.transform);
+            Instantiate(lobbyPlayerPrefab, lobbyPlayerParent.transform);
         }
         for(int i = 0; i < playersToRemove; i++) {
-            Destroy(lobbyPlayerList.transform.GetChild(lobbyPlayerList.transform.childCount - 1).gameObject);
+            Destroy(lobbyPlayerParent.transform.GetChild(lobbyPlayerParent.transform.childCount - 1).gameObject);
         }
         for(int i = 0; i < lobby.GetNumClientsConnected(); i++) {
             LobbyPlayerInfo playerInfo = lobby.GetPlayerInfo(i);
-            GameObject lobbyPlayerObject = lobbyPlayerList.transform.GetChild(i).gameObject;
+            GameObject lobbyPlayerObject = lobbyPlayerParent.transform.GetChild(i).gameObject;
             LobbyPlayerVisuals playerVisuals = lobbyPlayerObject.GetComponent<LobbyPlayerVisuals>();
             SetPlayerVisuals(playerVisuals, playerInfo);
         }

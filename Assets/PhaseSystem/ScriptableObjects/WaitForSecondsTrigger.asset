@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dd3a2663479dc94c88939473c00c24b, type: 3}
-  m_Name: AllPlayersLoadedTrigger
+  m_Name: WaitForSecondsTrigger
   m_EditorClassIdentifier: 
   triggerConditions:
   - rid: 6776449950579687429
   triggerStrategy:
-    rid: 7605307111193444367
+    rid: 7605307111193444352
   references:
     version: 2
     RefIds:
@@ -23,6 +23,6 @@ MonoBehaviour:
       type: {class: TimedCondition, ns: PhaseSystem, asm: Assembly-CSharp}
       data:
         waitTime: 5
-    - rid: 7605307111193444367
-      type: {class: AllTrueTriggerStrategy, ns: PhaseSystem, asm: Assembly-CSharp}
+    - rid: 7605307111193444352
+      type: {class: AnyTrueStrategy, ns: PhaseSystem, asm: Assembly-CSharp}
       data: 

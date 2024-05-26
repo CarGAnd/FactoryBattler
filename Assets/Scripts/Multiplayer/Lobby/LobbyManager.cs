@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -14,6 +15,23 @@ public class LobbyManager : NetworkBehaviour
         NetworkManager.Singleton.OnServerStarted += OnServerStarted;
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+        NetworkManager.Singleton.OnServerStopped += OnServerStopped;
+    }
+
+    public override void OnNetworkDespawn() {
+        UnsubscribeFromEvents();
+    }
+
+    private void OnServerStopped(bool obj) {
+        UnsubscribeFromEvents();
+        Debug.Log("Server was shut down");
+    }
+
+    private void UnsubscribeFromEvents() {
+        NetworkManager.Singleton.OnServerStarted -= OnServerStarted;
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
+        NetworkManager.Singleton.OnServerStopped -= OnServerStopped;
     }
 
     private void OnClientConnected(ulong clientId) {
@@ -79,6 +97,18 @@ public class LobbyManager : NetworkBehaviour
         StartGameServerRpc();
     }
 
+    [Rpc(SendTo.Server)]
+    private void RemovePlayerFromLobbyServerRpc(RpcParams rpcParams = default) {
+        ulong clientId = rpcParams.Receive.SenderClientId;
+        lobby.RemovePlayer(clientId);
+        if(clientId == NetworkManager.ServerClientId) {
+            NetworkManager.Shutdown();
+        }
+        else {
+            NetworkManager.DisconnectClient(clientId);
+        }
+    }
+
     #endregion
 
 
@@ -114,6 +144,11 @@ public class LobbyManager : NetworkBehaviour
         LobbyPlayerInfo playerInfo = lobby.GetPlayerInfo(NetworkManager.LocalClientId);
         playerInfo.isSpectator = !playerInfo.isSpectator;
         SetClientInfoServerRpc(playerInfo);
+    }
+
+    public void LeaveLobby() {
+        RemovePlayerFromLobbyServerRpc();
+        NetworkManager.Shutdown();
     }
 
     #endregion

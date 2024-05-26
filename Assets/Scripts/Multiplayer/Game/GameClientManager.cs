@@ -63,7 +63,13 @@ public class GameClientManager : NetworkBehaviour
     private void AssignGridToPlayer(NetworkObjectReference gridObject, NetworkObjectReference playerObject, ulong playerId) {
         gridObject.TryGet(out NetworkObject gridNetworkObject);
         playerObject.TryGet(out NetworkObject playerNetworkObject);
-        PlayerGameInfo playerGameInfo = NetworkManager.LocalClient.PlayerObject.GetComponent<PlayerGameInfo>();
+        PlayerGameInfo playerGameInfo = null;
+        if (IsServer) {
+            playerGameInfo = NetworkManager.ConnectedClients[playerId].PlayerObject.GetComponent<PlayerGameInfo>();
+        }
+        else {
+            playerGameInfo = NetworkManager.LocalClient.PlayerObject.GetComponent<PlayerGameInfo>();
+        }
         BasePlayer basePlayer = new BasePlayer(playerGameInfo.clientInfo.playerName.ToString(), new WinLossScoreHolderStrategy(), playerId);
         playerGameInfo.player = basePlayer;
         PlayerController playerModeManager = playerNetworkObject.GetComponent<PlayerController>();
