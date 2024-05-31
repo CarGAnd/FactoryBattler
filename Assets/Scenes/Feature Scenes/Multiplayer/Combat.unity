@@ -876,7 +876,6 @@ MonoBehaviour:
   phaseMachine:
     states:
     - rid: 7605307122909970435
-    - rid: 7605307122909970436
     - rid: 7605307111193444355
     - rid: 7605307111193444363
   references:
@@ -904,10 +903,6 @@ MonoBehaviour:
         endTrigger: {fileID: 11400000, guid: a8b51052c525e0d4787f4efb548b4b9c, type: 2}
     - rid: 7605307122909970435
       type: {class: DefaultPhaseState, ns: PhaseSystem, asm: Assembly-CSharp}
-      data:
-        endTrigger: {fileID: 11400000, guid: c73141ffd48f4dc41942fefaa2366672, type: 2}
-    - rid: 7605307122909970436
-      type: {class: IntermissionPhaseState, ns: , asm: Assembly-CSharp}
       data:
         endTrigger: {fileID: 11400000, guid: c73141ffd48f4dc41942fefaa2366672, type: 2}
 --- !u!4 &982045869

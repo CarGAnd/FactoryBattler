@@ -72,10 +72,9 @@ public class GameClientManager : NetworkBehaviour
         }
         BasePlayer basePlayer = new BasePlayer(playerGameInfo.clientInfo.playerName.ToString(), new WinLossScoreHolderStrategy(), playerId);
         playerGameInfo.player = basePlayer;
-        PlayerController playerModeManager = playerNetworkObject.GetComponent<PlayerController>();
-        FactoryGrid grid = gridNetworkObject.GetComponentInChildren<FactoryGrid>();
-        NetworkBuilder builder = gridNetworkObject.GetComponentInChildren<NetworkBuilder>();
-        playerModeManager.Owner = playerGameInfo.player;
-        playerModeManager.AssignGrid(grid, builder);
+        PlayerController playerController = playerNetworkObject.GetComponent<PlayerController>();
+        NetworkPlayerGrid builder = gridNetworkObject.GetComponent<NetworkPlayerGrid>();
+        playerController.Owner = playerGameInfo.player;
+        playerController.AssignGrid(builder);
     }
 }

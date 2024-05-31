@@ -51,9 +51,6 @@ public class PlacementModeVisuals : MonoBehaviour
         }
         else {
             OnExitPlacementMode();
-            if(placementMode != null) { 
-                UnsubscribeFromPlacementMode();
-            }
         }
     }
 

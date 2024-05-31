@@ -6,9 +6,9 @@ public class DeleteMode : IPlayerMode {
 
     private FactoryGrid grid;
     private PlacementStateMachine placementStateMachine;
-    private IBuilder builder;
+    private IPlayerGrid builder;
 
-    public DeleteMode(FactoryGrid grid, IBuilder builder, PlacementStateMachine placementStateMachine) {
+    public DeleteMode(FactoryGrid grid, IPlayerGrid builder, PlacementStateMachine placementStateMachine) {
         this.grid = grid;
         this.builder = builder;
         this.placementStateMachine = placementStateMachine;

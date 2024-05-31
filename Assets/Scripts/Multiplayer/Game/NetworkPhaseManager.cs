@@ -9,6 +9,7 @@ public class NetworkPhaseManager : NetworkBehaviour
     [SerializeField] private PhaseController phaseController;
 
     public override void OnNetworkSpawn() {
+        //Only the server runs the phase management logic
         if (!IsServer) {
             phaseController.enabled = false;
         }

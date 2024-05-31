@@ -14,8 +14,7 @@ public class LobbyClientVisuals : MonoBehaviour
     [SerializeField] private Lobby lobby;
 
     private void Start() {
-        startPanel.SetActive(true);
-        lobbyPanel.SetActive(false);
+        GoToMainMenu();
         NetworkManager.Singleton.OnConnectionEvent += OnConnectionEvent;
         NetworkManager.Singleton.OnClientStopped += OnClientStopped;
         lobby.playerListChanged.AddListener(OnPlayerListChanged);

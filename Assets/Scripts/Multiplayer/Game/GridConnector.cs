@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class GridConnector : NetworkBehaviour
 {
-    private NetworkBuilder networkBuilder;
+    private NetworkPlayerGrid networkBuilder;
     private Vector2Int position;
     private FixedString128Bytes buildingId;
     private Facing rotation;
 
-    public void Init(NetworkBuilder nBuilder, Vector2Int position, FixedString128Bytes buildingId, Facing rotation) {
+    public void Init(NetworkPlayerGrid nBuilder, Vector2Int position, FixedString128Bytes buildingId, Facing rotation) {
         this.networkBuilder = nBuilder;
         this.position = position;
         this.buildingId = buildingId;

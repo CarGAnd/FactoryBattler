@@ -18,7 +18,7 @@ public class PlacementStateMachine : MonoBehaviour, IPlayerOwned
     private CombatMode combatMode;
 
     private IPlayer owner;
-    private IBuilder builder;
+    private IPlayerGrid builder;
 
     public FactoryGrid Grid { get { return grid; } } 
     public IPlayer Owner { get => owner; set => SetOwner(value); }
@@ -31,7 +31,7 @@ public class PlacementStateMachine : MonoBehaviour, IPlayerOwned
         //This is mainly for being able to test the PlayerModeManager without having to go through the multiplayer scene flow
         if(NetworkManager.Singleton == null) {
             grid = GameObject.FindAnyObjectByType<FactoryGrid>();
-            builder = grid.transform.root.GetComponentInChildren<Builder>();
+            builder = grid.transform.root.GetComponentInChildren<PlayerGrid>();
         }
 
         placementMode = new PlacementMode(grid, builder, this);
@@ -50,12 +50,12 @@ public class PlacementStateMachine : MonoBehaviour, IPlayerOwned
         }
     }
 
-    public void AssignGrid(FactoryGrid grid, IBuilder builder) {
+    public void AssignGrid(IPlayerGrid builder) {
+        this.builder = builder;
+        this.grid = builder.FactoryGrid;
         placementMode.ChangeGrid(grid, builder);
         selectionMode = new SelectionMode(grid);
         deleteMode = new DeleteMode(grid, builder, this);
-        this.builder = builder;
-        this.grid = grid;
         builder.Owner = Owner;
     }
 

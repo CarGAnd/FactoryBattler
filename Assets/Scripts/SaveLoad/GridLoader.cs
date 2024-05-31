@@ -14,7 +14,7 @@ public class GridLoader : MonoBehaviour
         return jsonData;
     }
 
-    public void LoadDataToGrid(FactoryGrid grid, Builder builder, string jsonData) {
+    public void LoadDataToGrid(FactoryGrid grid, PlayerGrid builder, string jsonData) {
         grid.ClearGrid();
         GridSerializer serializer = new GridSerializer();
         List<ObjectPlacementData> savedObjects = serializer.JsonToGridObjects(jsonData);
@@ -23,7 +23,7 @@ public class GridLoader : MonoBehaviour
         }
     }
 
-    private void PlaceSavedObject(ObjectPlacementData placementData, Builder builder) {
+    private void PlaceSavedObject(ObjectPlacementData placementData, PlayerGrid builder) {
         IGridObject gridObject = builder.TryPlaceBuilding(buildingDatabase.GetBuildingByID(placementData.prefabId), new Vector2Int(placementData.x, placementData.y), placementData.facing);
     }
 }

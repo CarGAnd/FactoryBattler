@@ -48,8 +48,8 @@ public class PlayerController : NetworkBehaviour, IPlayerOwned
         placementStateMachine.Owner = newOwner;
     }
 
-    public void AssignGrid(FactoryGrid grid, IBuilder builder) {
-        placementStateMachine.AssignGrid(grid, builder);
+    public void AssignGrid(IPlayerGrid builder) {
+        placementStateMachine.AssignGrid(builder);
     }
 
     private void Update() {

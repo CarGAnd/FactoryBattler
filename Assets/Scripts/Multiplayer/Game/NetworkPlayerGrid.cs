@@ -5,12 +5,13 @@ using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class NetworkBuilder : NetworkBehaviour, IBuilder
+public class NetworkPlayerGrid : NetworkBehaviour, IPlayerGrid
 {
-    [SerializeField] private Builder builder;
+    [SerializeField] private PlayerGrid playerGrid;
     [SerializeField] private BuildingDatabase buildingDatabase;
 
-    public IPlayer Owner { get => builder.Owner; set => builder.Owner = value; }
+    public IPlayer Owner { get => playerGrid.Owner; set => playerGrid.Owner = value; }
+    public FactoryGrid FactoryGrid { get => playerGrid.FactoryGrid; }
 
     [Rpc(SendTo.Server)]
     private void TryPlaceBuildingServerRpc(FixedString128Bytes buildingId, Vector2Int pos, Facing rotation, RpcParams rpcParams = default) {
@@ -19,7 +20,7 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
             return;
         }
         GridObjectSO building = buildingDatabase.GetBuildingByID(buildingId.ToString());
-        IGridObject placedBuilding = builder.TryPlaceBuilding(building, pos, rotation);
+        IGridObject placedBuilding = playerGrid.TryPlaceBuilding(building, pos, rotation);
         if(placedBuilding != null) {
             GameObject placedObject = placedBuilding.GetGameObject();
             NetworkObject nObject = placedObject.GetComponent<NetworkObject>();
@@ -36,12 +37,12 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
         GameObject gObject = nObject.gameObject;
         GridObjectSO buildingData = buildingDatabase.GetBuildingByID(buildingId.ToString());
         if(gObject.TryGetComponent<IGridObject>(out IGridObject gridObject)) {
-            builder.ConnectExistingBuildingToGrid(buildingData, gridObject, pos, rotation);
+            playerGrid.ConnectExistingBuildingToGrid(buildingData, gridObject, pos, rotation);
         }
     }
 
     public void RevealBoard(List<ulong> playerIds) {
-        List<IGridObject> placedObjects = builder.GetAllPlacedBuildings();
+        List<IGridObject> placedObjects = playerGrid.GetAllPlacedBuildings();
         foreach(IGridObject gridObject in placedObjects) {
             GameObject gObject = gridObject.GetGameObject();
             NetworkObject nObject = gObject.GetComponent<NetworkObject>();
@@ -55,7 +56,7 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
     }
 
     public void HideBoard(List<ulong> playerIds) {
-        List<IGridObject> placedObjects = builder.GetAllPlacedBuildings();
+        List<IGridObject> placedObjects = playerGrid.GetAllPlacedBuildings();
         foreach(IGridObject gridObject in placedObjects) {
             GameObject gObject = gridObject.GetGameObject();
             NetworkObject nObject = gObject.GetComponent<NetworkObject>();
@@ -73,7 +74,7 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
         if (!SenderIsOwner(rpcParams)) {
             return;
         }
-        IGridObject gridObject = builder.GetBuildingAtPosition(position);
+        IGridObject gridObject = playerGrid.GetBuildingAtPosition(position);
         if(gridObject != null) {
             GameObject g = gridObject.GetGameObject();
             g.GetComponent<NetworkObject>().Despawn();
@@ -97,7 +98,7 @@ public class NetworkBuilder : NetworkBehaviour, IBuilder
     }
 
     public void HideBoardFromAllExceptOwner() {
-        if (!IsServer) {
+        if (!IsServer || Owner == null) {
             return;
         }
         List<ulong> clientList = new List<ulong>();

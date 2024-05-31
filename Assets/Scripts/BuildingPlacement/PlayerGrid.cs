@@ -6,11 +6,13 @@ using Unity.Netcode;
 using PlayerSystem;
 using UnityEngine;
 
-public class Builder : MonoBehaviour, IBuilder
+public class PlayerGrid : MonoBehaviour, IPlayerGrid
 {
     [SerializeField] private FactoryGrid grid;
     [SerializeField] private AssemblyLineSystem assemblyLineSystem;
+
     public IPlayer Owner { get => owner; set => owner = value; }
+    public FactoryGrid FactoryGrid { get => grid; }
 
     private IPlayer owner;
     private ModulePlacer modulePlacer;
@@ -48,7 +50,7 @@ public class Builder : MonoBehaviour, IBuilder
         return grid.GetAllPlacedObjects();
     }
 
-    void IBuilder.TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation) {
+    void IPlayerGrid.TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation) {
         TryPlaceBuilding(buildingData, coord, rotation);
     }
 
@@ -61,7 +63,8 @@ public class Builder : MonoBehaviour, IBuilder
     }
 }
 
-public interface IBuilder : IPlayerOwned {
-    public void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation);
-    public void RemoveBuilding(Vector2Int position);
+public interface IPlayerGrid : IPlayerOwned {
+    FactoryGrid FactoryGrid { get; }
+    void TryPlaceBuilding(GridObjectSO buildingData, Vector2Int coord, Facing rotation);
+    void RemoveBuilding(Vector2Int position);
 }

@@ -18,8 +18,10 @@ public class LobbyManager : NetworkBehaviour
         NetworkManager.Singleton.OnServerStopped += OnServerStopped;
     }
 
-    public override void OnNetworkDespawn() {
-        UnsubscribeFromEvents();
+    public override void OnDestroy() {
+        if(NetworkManager.Singleton != null) {
+            UnsubscribeFromEvents();
+        }
     }
 
     private void OnServerStopped(bool obj) {

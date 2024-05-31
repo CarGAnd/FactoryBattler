@@ -15,10 +15,10 @@ public class PlacementMode : IPlayerMode {
     private FactoryGrid grid;
     private PlacementStateMachine placementStateMachine;
     private IPlacementStrategy placementHandler;
-    private IBuilder builder;
+    private IPlayerGrid builder;
     private GridObjectSO currentBuilding;
 
-    public PlacementMode(FactoryGrid grid, IBuilder builder, PlacementStateMachine placementStateMachine){
+    public PlacementMode(FactoryGrid grid, IPlayerGrid builder, PlacementStateMachine placementStateMachine){
         this.grid = grid;
         this.builder = builder;
         this.placementStateMachine = placementStateMachine;
@@ -30,7 +30,7 @@ public class PlacementMode : IPlayerMode {
         gridSwitched = new UnityEvent<FactoryGrid>();
     }
 
-    public void ChangeGrid(FactoryGrid grid, IBuilder builder) {
+    public void ChangeGrid(FactoryGrid grid, IPlayerGrid builder) {
         this.grid = grid;
         this.builder = builder;
         if(currentBuilding == null) {

@@ -6,7 +6,7 @@ using UnityEngine;
 public class SetupSaveLoad : MonoBehaviour
 {
     [SerializeField] private FactoryGrid grid;
-    [SerializeField] private Builder builder;
+    [SerializeField] private PlayerGrid builder;
     [SerializeField] private GridLoader gridLoader;
 
     public void SaveSetupToFile(string saveName) {
